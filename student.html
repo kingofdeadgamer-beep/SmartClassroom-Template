@@ -1,0 +1,3020 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ระบบสำหรับนักเรียน | Smart Classroom Student</title>
+  <!-- Browser Tab Logo (Favicon): แสดงอัตโนมัติ หรือวางไฟล์ favicon.png ในโฟลเดอร์โปรเจกต์ -->
+  <link id="app-favicon" rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%234f46e5%22/%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%237c3aed%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2216%22%20fill%3D%22url%28%23g%29%22/%3E%3Cpath%20d%3D%22M21%2017h22a3%203%200%200%201%203%203v12H18V20a3%203%200%200%201%203-3zm-5%2017h32a3%203%200%200%201%203%203v4a2%202%200%200%201-2%202h-3v8a2%202%200%200%201-4%200v-8H22v8a2%202%200%200%201-4%200v-8h-3a2%202%200%200%201-2-2v-4a3%203%200%200%201%203-3z%22%20fill%3D%22%23ffffff%22/%3E%3C/svg%3E" />
+  <link id="app-apple-icon" rel="apple-touch-icon" href="./favicon.png" />
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"TH Niramit AS"', '"Niramit"', 'sans-serif'],
+            body: ['"TH Niramit AS"', '"Niramit"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Config -->
+  <script src="config.js"></script>
+  <!-- Google Fonts (Fallbacks & Optional Web Fonts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Mali:wght@400;500;600;700&family=Niramit:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&family=Prompt:wght@300;400;500;600;700&family=Sarabun:ital,wght@0,400;0,600;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <!-- Canvas Confetti for Student Milestones -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <!-- HTML5-QRCode (Camera QR Scanner + Image QR Decoder) -->
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+  <!-- jsQR Fallback for Reliable Screenshot / Photo QR Decoding -->
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+
+  <style>
+    /* ================= CUSTOM UPLOADED FONTS ================= */
+    @font-face {
+      font-family: 'TH Niramit AS';
+      src:
+        url('./fonts/TH%20Niramit%20AS.ttf') format('truetype'),
+        url('./TH%20Niramit%20AS.ttf') format('truetype'),
+        local('TH Niramit AS');
+      font-weight: 100 500;
+      font-style: normal;
+      font-display: swap;
+      size-adjust: 122%;
+    }
+    @font-face {
+      font-family: 'TH Niramit AS';
+      src:
+        url('./fonts/TH%20Niramit%20AS%20Italic.ttf') format('truetype'),
+        url('./TH%20Niramit%20AS%20Italic.ttf') format('truetype'),
+        local('TH Niramit AS Italic');
+      font-weight: 100 500;
+      font-style: italic;
+      font-display: swap;
+      size-adjust: 122%;
+    }
+    @font-face {
+      font-family: 'TH Niramit AS';
+      src:
+        url('./fonts/TH%20Niramit%20AS%20Bold.ttf') format('truetype'),
+        url('./TH%20Niramit%20AS%20Bold.ttf') format('truetype'),
+        local('TH Niramit AS Bold');
+      font-weight: 600 900;
+      font-style: normal;
+      font-display: swap;
+      size-adjust: 122%;
+    }
+    @font-face {
+      font-family: 'TH Niramit AS';
+      src:
+        url('./fonts/TH%20Niramit%20AS%20Bold%20Italic.ttf') format('truetype'),
+        url('./TH%20Niramit%20AS%20Bold%20Italic.ttf') format('truetype'),
+        local('TH Niramit AS Bold Italic');
+      font-weight: 600 900;
+      font-style: italic;
+      font-display: swap;
+      size-adjust: 122%;
+    }
+
+    @font-face {
+      font-family: 'TH Sarabun PSK';
+      src:
+        url('./fonts/THSarabun.ttf') format('truetype'),
+        url('./THSarabun.ttf') format('truetype'),
+        local('TH SarabunPSK'),
+        local('TH Sarabun New');
+      font-weight: 100 500;
+      font-style: normal;
+      font-display: swap;
+      size-adjust: 122%;
+    }
+    @font-face {
+      font-family: 'TH Sarabun PSK';
+      src:
+        url('./fonts/THSarabun%20Italic.ttf') format('truetype'),
+        url('./THSarabun%20Italic.ttf') format('truetype'),
+        local('TH SarabunPSK Italic');
+      font-weight: 100 500;
+      font-style: italic;
+      font-display: swap;
+      size-adjust: 122%;
+    }
+    @font-face {
+      font-family: 'TH Sarabun PSK';
+      src:
+        url('./fonts/THSarabun%20Bold.ttf') format('truetype'),
+        url('./THSarabun%20Bold.ttf') format('truetype'),
+        local('TH SarabunPSK Bold');
+      font-weight: 600 900;
+      font-style: normal;
+      font-display: swap;
+      size-adjust: 122%;
+    }
+    @font-face {
+      font-family: 'TH Sarabun PSK';
+      src:
+        url('./fonts/THSarabun%20Bold%20Italic.ttf') format('truetype'),
+        url('./THSarabun%20Bold%20Italic.ttf') format('truetype'),
+        local('TH SarabunPSK Bold Italic');
+      font-weight: 600 900;
+      font-style: italic;
+      font-display: swap;
+      size-adjust: 122%;
+    }
+
+    @font-face {
+      font-family: 'JaoHalloween';
+      src:
+        url('./fonts/%E0%B8%AA%E0%B8%B3%E0%B9%80%E0%B8%99%E0%B8%B2%E0%B8%82%E0%B8%AD%E0%B8%87%20JaoHalloween%20Bold.ttf') format('truetype'),
+        url('./fonts/JaoHalloween%20Bold.ttf') format('truetype'),
+        url('./%E0%B8%AA%E0%B8%B3%E0%B9%80%E0%B8%99%E0%B8%B2%E0%B8%82%E0%B8%AD%E0%B8%87%20JaoHalloween%20Bold.ttf') format('truetype'),
+        url('./JaoHalloween%20Bold.ttf') format('truetype'),
+        local('JaoHalloween Bold'),
+        local('JaoHalloween');
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+      size-adjust: 112%;
+      ascent-override: 95%;
+      descent-override: 25%;
+    }
+
+    @font-face {
+      font-family: 'Royal Institute of Siam New';
+      src:
+        url('./fonts/Royal-Institute-of-Siam-New.ttf') format('truetype'),
+        url('./Royal-Institute-of-Siam-New.ttf') format('truetype'),
+        local('Royal Institute of Siam New');
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+      size-adjust: 105%;
+    }
+
+    :root {
+      --app-font-family: 'TH Niramit AS', 'Niramit', sans-serif;
+      --app-accent: #4f46e5;
+      --app-accent-2: #7c3aed;
+      --app-accent-soft: #eef2ff;
+      --app-accent-border: #c7d2fe;
+      --app-accent-text: #3730a3;
+    }
+
+    html, body, button, input, select, textarea {
+      font-family: var(--app-font-family) !important;
+    }
+    .fa-solid, .fa-regular, .fa-brands, .fas, .far, .fab {
+      font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands' !important;
+    }
+
+    /* ================= CUSTOM BACKGROUND IMAGE & GLASS SURFACE SYSTEM ================= */
+    #app-bg-layer {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+      display: none;
+    }
+    body.has-custom-bg #app-bg-layer {
+      display: block;
+    }
+    body.has-custom-bg {
+      background-color: transparent !important;
+      background-image: none !important;
+    }
+    #app-bg-image {
+      position: absolute;
+      inset: -18px;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      transition: filter 0.25s ease;
+    }
+    #app-bg-overlay {
+      position: absolute;
+      inset: 0;
+      transition: background-color 0.25s ease;
+    }
+
+    /* Frosted glass transparency so custom background shines cleanly while keeping high readability */
+    body.has-custom-bg.bg-glass-mode header,
+    body.has-custom-bg.bg-glass-mode aside,
+    body.has-custom-bg.bg-glass-mode #config-toolbar,
+    body.has-custom-bg.bg-glass-mode #chart-container {
+      background-color: rgba(255, 255, 255, 0.84) !important;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    body.dark-theme.has-custom-bg.bg-glass-mode header,
+    body.dark-theme.has-custom-bg.bg-glass-mode aside,
+    body.dark-theme.has-custom-bg.bg-glass-mode #config-toolbar,
+    body.dark-theme.has-custom-bg.bg-glass-mode #chart-container {
+      background-color: rgba(15, 23, 42, 0.82) !important;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+
+    /* ================= STUDENT MODERN ENGAGING THEME ================= */
+    :root {
+      --st-btn-size: 42px;
+      --st-icon-size: 1.12rem;
+    }
+    body.icon-size-md {
+      --st-btn-size: 36px;
+      --st-icon-size: 0.94rem;
+    }
+    body.icon-size-lg {
+      --st-btn-size: 42px;
+      --st-icon-size: 1.12rem;
+    }
+    body.icon-size-xl {
+      --st-btn-size: 48px;
+      --st-icon-size: 1.32rem;
+    }
+
+    body {
+      font-family: var(--app-font-family);
+      background: linear-gradient(155deg, #eef2ff 0%, #f0f9ff 48%, #fdf2f8 100%);
+      color: #0f172a;
+      transition: background-color 0.25s ease, color 0.25s ease;
+      overflow-x: hidden;
+    }
+
+    /* Subtle Ambient Floating Orbs */
+    .st-ambient-orb {
+      position: fixed;
+      border-radius: 9999px;
+      filter: blur(70px);
+      pointer-events: none;
+      z-index: -2;
+      opacity: 0.5;
+      animation: float-orb 14s ease-in-out infinite alternate;
+    }
+    body.has-custom-bg .st-ambient-orb {
+      display: none !important;
+    }
+    @keyframes float-orb {
+      0%   { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(18px, -20px) scale(1.08); }
+    }
+
+    .ui-icon-btn {
+      width: var(--st-btn-size) !important;
+      height: var(--st-btn-size) !important;
+      min-width: var(--st-btn-size);
+      min-height: var(--st-btn-size);
+      aspect-ratio: 1 / 1;
+    }
+    .ui-icon-btn i {
+      font-size: var(--st-icon-size) !important;
+    }
+
+    /* Modern Glass Bento Cards */
+    .st-card {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1.5px solid rgba(255, 255, 255, 0.85);
+      box-shadow: 0 12px 32px -12px rgba(79, 70, 229, 0.14), 0 2px 6px rgba(15, 23, 42, 0.04);
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    .st-card:hover {
+      box-shadow: 0 16px 36px -12px rgba(79, 70, 229, 0.18), 0 4px 10px rgba(15, 23, 42, 0.05);
+    }
+
+    body.has-custom-bg.bg-glass-mode .st-card,
+    body.has-custom-bg.bg-glass-mode section {
+      background-color: rgba(255, 255, 255, 0.84) !important;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    body.dark-theme.has-custom-bg.bg-glass-mode .st-card,
+    body.dark-theme.has-custom-bg.bg-glass-mode section {
+      background-color: rgba(15, 23, 42, 0.82) !important;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    /* Accent overrides */
+    body.has-custom-accent #settings-modal-header {
+      background: linear-gradient(135deg, var(--app-accent), var(--app-accent-2)) !important;
+    }
+
+    /* Dark Theme (Rich Midnight Aurora + High Contrast) */
+    body.dark-theme {
+      background: radial-gradient(circle at 15% 10%, #1e1b4b 0%, #090d16 55%, #0c192c 100%) !important;
+      color: #f1f5f9 !important;
+    }
+    body.dark-theme .st-card,
+    body.dark-theme .bg-white {
+      background-color: rgba(15, 23, 42, 0.9) !important;
+      color: #f1f5f9 !important;
+      border-color: #1e293b !important;
+      box-shadow: 0 14px 34px -12px rgba(0, 0, 0, 0.55) !important;
+    }
+    body.dark-theme .bg-slate-50,
+    body.dark-theme .bg-slate-50\/60,
+    body.dark-theme .bg-slate-100 {
+      background-color: #162032 !important;
+      color: #e2e8f0 !important;
+      border-color: #334155 !important;
+    }
+    body.dark-theme input,
+    body.dark-theme select {
+      background-color: #1e293b !important;
+      color: #f8fafc !important;
+      border-color: #334155 !important;
+    }
+    body.dark-theme .text-slate-900,
+    body.dark-theme .text-slate-800,
+    body.dark-theme .text-slate-700 {
+      color: #f1f5f9 !important;
+    }
+    body.dark-theme .text-slate-500,
+    body.dark-theme .text-slate-600 {
+      color: #94a3b8 !important;
+    }
+    body.dark-theme .border-slate-200,
+    body.dark-theme .border-slate-200\/80,
+    body.dark-theme .border-indigo-200,
+    body.dark-theme .border-amber-200,
+    body.dark-theme .border-rose-200 {
+      border-color: #334155 !important;
+    }
+    body.dark-theme .bg-emerald-50,
+    body.dark-theme .bg-emerald-50\/40 {
+      background-color: rgba(6, 78, 59, 0.55) !important;
+      border-color: #34d399 !important;
+      color: #ecfdf5 !important;
+    }
+    body.dark-theme .text-emerald-800,
+    body.dark-theme .text-emerald-900 {
+      color: #a7f3d0 !important;
+    }
+    body.dark-theme .bg-amber-100,
+    body.dark-theme .bg-amber-50 {
+      background-color: rgba(120, 53, 15, 0.65) !important;
+      border-color: #f59e0b !important;
+      color: #fef3c7 !important;
+    }
+    body.dark-theme .text-amber-800,
+    body.dark-theme .text-amber-900 {
+      color: #fde68a !important;
+    }
+    body.dark-theme .bg-indigo-100,
+    body.dark-theme .bg-indigo-50,
+    body.dark-theme .bg-indigo-50\/50 {
+      background-color: rgba(49, 46, 129, 0.55) !important;
+      border-color: #818cf8 !important;
+      color: #e0e7ff !important;
+    }
+    body.dark-theme .text-indigo-800,
+    body.dark-theme .text-indigo-950 {
+      color: #c7d2fe !important;
+    }
+    body.dark-theme .bg-rose-100,
+    body.dark-theme .bg-rose-50 {
+      background-color: rgba(76, 5, 25, 0.65) !important;
+      border-color: #fb7185 !important;
+      color: #ffe4e6 !important;
+    }
+    body.dark-theme .bg-sky-100,
+    body.dark-theme .bg-sky-50 {
+      background-color: rgba(12, 74, 110, 0.65) !important;
+      border-color: #38bdf8 !important;
+      color: #bae6fd !important;
+    }
+    body.dark-theme .bg-violet-50,
+    body.dark-theme .bg-violet-100 {
+      background-color: rgba(76, 29, 149, 0.6) !important;
+      border-color: #a78bfa !important;
+      color: #ede9fe !important;
+    }
+    body.dark-theme .text-violet-900,
+    body.dark-theme .text-violet-800 {
+      color: #ddd6fe !important;
+    }
+    body.dark-theme .bg-teal-50,
+    body.dark-theme .bg-teal-100 {
+      background-color: rgba(19, 78, 74, 0.6) !important;
+      border-color: #2dd4bf !important;
+      color: #ccfbf1 !important;
+    }
+    body.dark-theme .text-teal-900,
+    body.dark-theme .text-teal-800 {
+      color: #99f6e4 !important;
+    }
+
+    /* Animations */
+    @keyframes pulse-ring {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.55); }
+      50% { box-shadow: 0 0 0 12px rgba(244, 63, 94, 0); }
+    }
+    .help-active-ring {
+      animation: pulse-ring 1.5s infinite;
+    }
+    @keyframes wave-hand {
+      0%, 100% { transform: rotate(0deg); }
+      20% { transform: rotate(16deg); }
+      40% { transform: rotate(-10deg); }
+      60% { transform: rotate(14deg); }
+      80% { transform: rotate(-6deg); }
+    }
+    .animate-wave {
+      display: inline-block;
+      transform-origin: 70% 70%;
+      animation: wave-hand 2.4s ease-in-out infinite;
+    }
+    @keyframes shuffle-pop {
+      0% { transform: scale(0.94); opacity: 0.5; }
+      65% { transform: scale(1.02); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .animate-shuffle {
+      animation: shuffle-pop 0.3s ease-out forwards;
+    }
+
+    /* Responsive Bento Layout for Landscape Phones, Tablets & Desktops */
+    @media (max-width: 440px) {
+      #st-header-inner .ui-icon-btn {
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+        min-height: 34px !important;
+      }
+      #st-header-inner .ui-icon-btn i {
+        font-size: 0.9rem !important;
+      }
+    }
+    @media (min-width: 768px) {
+      #st-header-inner {
+        max-width: 68rem !important;
+      }
+      #st-main-grid {
+        max-width: 68rem !important;
+        display: grid !important;
+        grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+        gap: 1.15rem !important;
+        align-items: start !important;
+      }
+      #st-main-grid > section {
+        margin-top: 0 !important;
+      }
+      #st-mission-hero { grid-column: span 12 / span 12; }
+      #section-qr-connect { grid-column: span 5 / span 5; }
+      #section-connected-classroom { grid-column: span 7 / span 7; }
+      #help-request-card { grid-column: span 5 / span 5; }
+      #section-student-tasks { grid-column: span 7 / span 7; }
+    }
+    @media (orientation: landscape) and (max-height: 540px) {
+      header .ui-icon-btn {
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+        min-height: 34px !important;
+      }
+      #st-main-grid {
+        padding: 0.75rem !important;
+        gap: 0.75rem !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col icon-size-lg relative">
+
+  <!-- Ambient Decorative Soft Orbs -->
+  <div class="st-ambient-orb w-72 h-72 bg-indigo-300/60 -top-20 -left-20"></div>
+  <div class="st-ambient-orb w-80 h-80 bg-sky-300/50 top-1/3 -right-24" style="animation-delay: -4s;"></div>
+  <div class="st-ambient-orb w-72 h-72 bg-pink-300/45 bottom-0 left-1/4" style="animation-delay: -8s;"></div>
+
+  <!-- ================= FLOATING MODERN STUDENT NAVBAR ================= -->
+  <header id="student-top-header" class="bg-gradient-to-r from-indigo-600 via-violet-600 to-sky-500 text-white sticky top-0 z-30 shadow-lg shadow-indigo-500/20">
+    <div id="st-header-inner" class="max-w-xl mx-auto px-3 sm:px-5 py-2.5 flex items-center justify-between gap-2 transition-all">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <div
+          id="st-brand-logo-slot"
+          class="hidden ui-icon-btn aspect-square rounded-2xl bg-white/95 border border-white/40 overflow-hidden items-center justify-center shrink-0 shadow-sm"
+          title="โลโก้ห้องเรียน (1:1)"
+        ></div>
+        <!-- Student Playful 3D Avatar + Number Badge -->
+        <div class="relative shrink-0">
+          <div id="nav-st-avatar-wrap" class="w-11 h-11 rounded-2xl overflow-hidden border-2 border-white/80 bg-white/20 shadow-md flex items-center justify-center">
+            <span class="text-sm font-extrabold">#<span id="nav-st-number">1</span></span>
+          </div>
+          <span id="nav-st-number-pill" class="absolute -bottom-1 -right-1 px-1.5 py-0.2 rounded-full bg-amber-400 text-slate-950 text-[9px] font-extrabold shadow-sm border border-white">
+            #1
+          </span>
+        </div>
+        <div class="min-w-0">
+          <div id="nav-st-name" class="text-sm sm:text-base font-extrabold truncate leading-tight">นักเรียน</div>
+          <div class="flex items-center gap-1.5 mt-0.5">
+            <span id="nav-conn-dot" class="w-2 h-2 rounded-full bg-amber-300 shrink-0"></span>
+            <span id="nav-st-room" class="text-[11px] text-white/90 truncate font-medium">ยังไม่ได้เชื่อมต่อห้องเรียน</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top-Right Tactile Icon Controls -->
+      <div class="flex items-center gap-1.5 shrink-0">
+        <button
+          type="button"
+          onclick="refreshClassroomConnection(true)"
+          class="ui-icon-btn rounded-2xl bg-white/15 hover:bg-white/25 text-white flex items-center justify-center transition active:scale-95"
+          title="ซิงก์ข้อมูลล่าสุดกับระบบครู"
+        >
+          <i id="st-sync-icon" class="fa-solid fa-rotate"></i>
+        </button>
+
+        <button
+          type="button"
+          id="st-btn-icon-size"
+          onclick="cycleStudentIconSize()"
+          class="ui-icon-btn rounded-2xl bg-white/15 hover:bg-white/25 text-white flex items-center justify-center transition relative active:scale-95"
+          title="ปรับขนาดไอคอน (M / L / XL)"
+        >
+          <i class="fa-solid fa-magnifying-glass-plus"></i>
+          <span id="st-icon-size-badge" class="absolute -bottom-1 -right-1 px-1 h-4 rounded-full bg-slate-900 text-sky-200 text-[9px] font-extrabold flex items-center justify-center leading-none">L</span>
+        </button>
+
+        <button
+          type="button"
+          onclick="openSettingsModal()"
+          class="ui-icon-btn rounded-2xl bg-white/15 hover:bg-white/25 text-white flex items-center justify-center transition active:scale-95"
+          title="ตั้งค่าฟอนต์ ขนาดตัวอักษร สีธีม และภาพพื้นหลัง"
+        >
+          <i class="fa-solid fa-gear"></i>
+        </button>
+
+        <button
+          type="button"
+          onclick="toggleStudentTheme()"
+          class="ui-icon-btn rounded-2xl bg-white/15 hover:bg-white/25 text-white flex items-center justify-center transition active:scale-95"
+          title="เปลี่ยนสีพื้นหลัง (ขาว / ดำ)"
+        >
+          <i id="st-theme-icon" class="fa-solid fa-moon"></i>
+        </button>
+
+        <button
+          type="button"
+          onclick="openStudentLogoutConfirm()"
+          class="ui-icon-btn rounded-2xl bg-rose-500/95 hover:bg-rose-600 text-white flex items-center justify-center transition shadow-md active:scale-95"
+          title="ออกจากระบบ"
+        >
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= MAIN STUDENT BENTO WORKSPACE ================= -->
+  <main id="st-main-grid" class="max-w-xl w-full mx-auto p-3.5 sm:p-5 space-y-4 flex-1 pb-14 transition-all">
+
+    <!-- 0. GAMIFIED WELCOME & DAILY MISSION PROGRESS HERO (Shown when connected) -->
+    <section id="st-mission-hero" class="hidden rounded-3xl p-4 sm:p-5 bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 text-white shadow-xl shadow-indigo-500/20 relative overflow-hidden">
+      <div class="absolute -right-8 -top-10 w-40 h-40 rounded-full bg-white/10 blur-xl pointer-events-none"></div>
+      <div class="absolute -left-10 -bottom-10 w-36 h-36 rounded-full bg-sky-300/20 blur-xl pointer-events-none"></div>
+
+      <div class="relative flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="flex items-center gap-3.5 min-w-0">
+          <div id="hero-st-avatar" class="w-16 h-16 rounded-3xl overflow-hidden border-3 border-white/90 shadow-lg bg-white/20 shrink-0 ring-4 ring-white/20"></div>
+          <div class="min-w-0">
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/20 text-[11px] font-bold backdrop-blur-xs mb-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-300 animate-pulse"></span>
+              <span id="hero-room-pill">เชื่อมต่อห้องเรียนแล้ว</span>
+            </div>
+            <h1 class="text-lg sm:text-xl font-extrabold truncate">
+              <span id="hero-greeting-text">สวัสดีครับ!</span> <span class="animate-wave">👋</span>
+            </h1>
+            <p id="hero-motivation-text" class="text-xs text-white/90 mt-0.5">พร้อมลุยภารกิจในห้องเรียนวันนี้กันหรือยัง?</p>
+          </div>
+        </div>
+
+        <!-- Daily Mission Progress Meter -->
+        <div class="bg-white/15 backdrop-blur-md rounded-2xl p-3 border border-white/20 min-w-[230px] sm:max-w-xs space-y-2">
+          <div class="flex items-center justify-between text-xs font-extrabold">
+            <span><i class="fa-solid fa-trophy text-amber-300 mr-1.5"></i>ภารกิจวันนี้</span>
+            <span id="hero-progress-pct" class="px-2 py-0.5 rounded-full bg-white text-indigo-700 text-[11px]">33%</span>
+          </div>
+          <div class="w-full h-2.5 rounded-full bg-black/25 overflow-hidden">
+            <div id="hero-progress-bar" class="h-full rounded-full bg-gradient-to-r from-amber-300 via-emerald-300 to-teal-300 transition-all duration-500" style="width: 33%;"></div>
+          </div>
+          <div class="grid grid-cols-3 gap-1 text-[10px] font-bold text-center pt-0.5">
+            <div id="mission-pill-join" class="px-1.5 py-1 rounded-xl bg-emerald-400/25 border border-emerald-300/50 text-emerald-100">✓ เข้าห้อง</div>
+            <div id="mission-pill-checkin" class="px-1.5 py-1 rounded-xl bg-white/10 border border-white/15 text-white/75">• เช็คชื่อ</div>
+            <div id="mission-pill-tasks" class="px-1.5 py-1 rounded-xl bg-white/10 border border-white/15 text-white/75">• ส่งงาน</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1. LIVE QR CODE SCANNER & CLASSROOM CONNECTION -->
+    <section id="section-qr-connect" class="st-card rounded-3xl p-4 sm:p-5 space-y-3.5">
+      <div class="flex items-center justify-between gap-2">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-sky-500 to-indigo-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-sky-500/25 text-lg">
+            <i class="fa-solid fa-qrcode"></i>
+          </div>
+          <div>
+            <h2 class="text-sm sm:text-base font-extrabold text-slate-900">สแกน QR / เชื่อมต่อห้องเรียน</h2>
+            <p class="text-[11px] text-slate-500">สแกน QR หน้าจอครูเพื่อเข้าห้องเรียน หรือสแกน QR ใบงาน</p>
+          </div>
+        </div>
+        <span id="qr-status-chip" class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[10px] font-extrabold shrink-0">พร้อมสแกน</span>
+      </div>
+
+      <!-- Disconnected / Removed Alert Banner -->
+      <div id="st-disconnected-banner" class="hidden p-3.5 rounded-2xl border text-xs font-bold flex items-start gap-2.5">
+        <i id="st-disconnected-icon" class="fa-solid fa-circle-info text-base mt-0.5 shrink-0"></i>
+        <div id="st-disconnected-msg" class="leading-relaxed"></div>
+      </div>
+
+      <!-- Scanned Assignment / External Link Banner (Fallback if mobile blocks popups) -->
+      <div id="st-scanned-link-banner" class="hidden p-3 rounded-2xl border-2 border-indigo-300 bg-indigo-50 text-indigo-950 text-xs font-bold flex items-center justify-between gap-2">
+        <div class="min-w-0">
+          <div class="text-[10px] uppercase tracking-wider text-indigo-600">สแกนลิงก์จาก QR Code สำเร็จ ✨</div>
+          <div id="st-scanned-link-text" class="truncate text-xs font-bold"></div>
+        </div>
+        <a
+          id="st-scanned-link-anchor"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-extrabold shrink-0 transition"
+        >
+          เปิดลิงก์ <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+        </a>
+      </div>
+
+      <!-- Camera Scanner Container -->
+      <div id="qr-reader-wrapper" class="hidden overflow-hidden rounded-2xl border-2 border-sky-400 bg-slate-900 relative shadow-inner">
+        <div id="qr-reader" class="w-full"></div>
+        <button type="button" onclick="stopQrScanner()" class="w-full py-2.5 bg-rose-600 hover:bg-rose-700 text-white text-xs font-extrabold">
+          <i class="fa-solid fa-stop mr-1"></i> ปิดกล้องสแกน
+        </button>
+      </div>
+
+      <!-- Vibrant Scanner Action Buttons -->
+      <div class="grid grid-cols-2 gap-2.5">
+        <button
+          type="button"
+          onclick="startQrScanner()"
+          class="py-3.5 px-3 rounded-2xl bg-gradient-to-r from-sky-500 via-indigo-600 to-violet-600 hover:from-sky-600 hover:to-violet-700 text-white text-xs sm:text-sm font-extrabold shadow-lg shadow-indigo-500/25 flex items-center justify-center gap-2 transition active:scale-[0.97]"
+        >
+          <i class="fa-solid fa-camera text-base"></i> เปิดกล้องสแกน
+        </button>
+
+        <label class="py-3.5 px-3 rounded-2xl bg-indigo-50 hover:bg-indigo-100 border-2 border-indigo-200 text-indigo-800 text-xs sm:text-sm font-extrabold flex items-center justify-center gap-2 cursor-pointer transition text-center active:scale-[0.97]">
+          <i class="fa-solid fa-image text-indigo-600 text-base"></i> เลือกรูป QR
+          <input type="file" accept="image/*" class="hidden" onchange="scanQrFromImageFile(event)" />
+        </label>
+      </div>
+
+      <!-- Connect by Paste Link or Teacher Username -->
+      <form onsubmit="handleManualJoinInput(event)" class="flex gap-1.5 pt-0.5">
+        <div class="relative flex-1">
+          <i class="fa-solid fa-link absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+          <input
+            type="text"
+            id="manual-room-link"
+            placeholder="วางลิงก์ห้องเรียน หรือพิมพ์ Username ครู..."
+            class="w-full pl-8 pr-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white text-xs outline-none focus:border-indigo-500 transition"
+          />
+        </div>
+        <button type="submit" id="btn-manual-join" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-extrabold shrink-0 transition active:scale-95">
+          เข้าร่วม
+        </button>
+      </form>
+
+      <!-- Teacher Classrooms Picker (Shown if teacher has multiple classes) -->
+      <div id="teacher-classes-picker-wrap" class="hidden pt-1 flex items-center gap-1.5">
+        <select
+          id="teacher-classes-picker"
+          onchange="selectTeacherClassId(this.value)"
+          class="flex-1 px-3 py-2 rounded-xl border border-indigo-300 bg-indigo-50/50 text-xs font-bold text-indigo-950 outline-none"
+        ></select>
+        <button
+          type="button"
+          id="btn-join-selected-class"
+          onclick="joinSelectedPickerClass()"
+          class="px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shrink-0 transition"
+          title="เข้าร่วมห้องเรียนที่เลือก"
+        >
+          เข้าห้องนี้
+        </button>
+      </div>
+    </section>
+
+    <!-- 2. MY SEAT TICKET, MY GROUP & BUDDY CARD, AND ATTENDANCE CHECK-IN -->
+    <section id="section-connected-classroom" class="hidden st-card rounded-3xl p-4 sm:p-5 space-y-4">
+      <div class="flex items-center justify-between gap-2">
+        <div class="flex items-center gap-2.5 min-w-0">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-emerald-500/25 text-lg">
+            <i class="fa-solid fa-chair"></i>
+          </div>
+          <div class="min-w-0">
+            <div class="text-[10px] font-extrabold uppercase tracking-wider text-emerald-600">My Classroom & Seat</div>
+            <h3 id="dash-room-title" class="text-base sm:text-lg font-extrabold text-slate-900 truncate">
+              ห้องเรียนออนไลน์
+            </h3>
+          </div>
+        </div>
+        <button
+          type="button"
+          onclick="leaveClassroomManually()"
+          class="px-3 py-1.5 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-600 text-rose-600 hover:text-white text-[11px] font-extrabold shrink-0 transition"
+          title="ออกจากห้องเรียนนี้"
+        >
+          <i class="fa-solid fa-door-open mr-1"></i>ออกห้อง
+        </button>
+      </div>
+
+      <!-- Visual Seat Ticket Boarding Pass -->
+      <div id="dash-seat-banner" class="hidden rounded-2xl p-3.5 bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-600 text-white shadow-md relative overflow-hidden">
+        <div class="absolute right-2 -bottom-4 text-white/10 text-6xl pointer-events-none"><i class="fa-solid fa-chair"></i></div>
+        <div class="relative flex items-center justify-between gap-3">
+          <div>
+            <div class="text-[11px] font-bold text-emerald-100 uppercase tracking-wider">ตำแหน่งโต๊ะเรียนของคุณ</div>
+            <div id="dash-seat-coord" class="text-lg sm:text-xl font-extrabold mt-0.5">แถวที่ 1 • คอลัมน์ที่ 2</div>
+          </div>
+          <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-xs flex items-center justify-center text-2xl shrink-0">
+            🪑
+          </div>
+        </div>
+      </div>
+
+      <!-- My Mixed-Ability Group, Assigned Role (Group 5) or Buddy Partner (Group 6) -->
+      <div id="dash-group-card" class="hidden rounded-2xl p-3.5 bg-violet-50 border-2 border-violet-200 space-y-2.5">
+        <div class="flex items-center justify-between gap-2">
+          <div class="flex items-center gap-2">
+            <span class="w-8 h-8 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 text-white flex items-center justify-center text-sm shadow-xs">
+              <i class="fa-solid fa-people-group"></i>
+            </span>
+            <div>
+              <div id="dash-group-title" class="text-sm font-extrabold text-violet-900">กลุ่มที่ 1</div>
+              <div id="dash-group-subtitle" class="text-[11px] text-slate-600">สมาชิกในกลุ่มของคุณ</div>
+            </div>
+          </div>
+          <span id="dash-group-badge-pill" class="px-2.5 py-0.5 rounded-full bg-violet-600 text-white text-[10px] font-extrabold shrink-0">กลุ่ม 4 คน</span>
+        </div>
+
+        <!-- Dynamic Role Banner (Groups of 5) or Buddy Banner (Groups of 6) -->
+        <div id="dash-group-highlight" class="hidden p-2.5 rounded-xl bg-white border border-violet-200 flex items-center justify-between gap-2"></div>
+
+        <!-- Teammates Chips -->
+        <div id="dash-group-members" class="flex flex-wrap gap-1.5"></div>
+      </div>
+
+      <!-- Roster Identity Picker -->
+      <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200/80 space-y-1.5">
+        <label class="block text-[11px] font-bold text-slate-600">
+          <i class="fa-solid fa-id-card text-indigo-500 mr-1"></i>ชื่อของคุณในผังที่นั่งห้องนี้:
+        </label>
+        <select
+          id="dash-roster-match-select"
+          onchange="linkStudentToRosterId(this.value)"
+          class="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm font-bold text-slate-800 outline-none focus:border-indigo-500"
+        >
+          <option value="">-- แตะเพื่อเลือกชื่อของคุณ --</option>
+        </select>
+      </div>
+
+      <!-- Big Rewarding Attendance Check-in CTA -->
+      <button
+        type="button"
+        id="dash-btn-checkin"
+        onclick="studentCheckInNow()"
+        class="w-full py-4 px-4 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-extrabold text-sm shadow-lg shadow-emerald-500/25 flex items-center justify-between transition active:scale-[0.98]"
+      >
+        <div class="flex items-center gap-3">
+          <span class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-user-check"></i>
+          </span>
+          <div class="text-left">
+            <div class="text-sm font-extrabold leading-tight">เช็คชื่อเข้าเรียนวันนี้</div>
+            <div id="dash-checkin-sub" class="text-[11px] text-emerald-100 font-medium">แตะเพื่อยืนยันการเข้าเรียนกับครู</div>
+          </div>
+        </div>
+        <span id="dash-checkin-badge" class="px-3 py-1 rounded-full bg-white/20 text-xs font-extrabold">แตะเช็คชื่อ</span>
+      </button>
+    </section>
+
+    <!-- 3. EXPRESSIVE LIVE HELP REQUEST WITH 1-TAP QUICK CHIPS -->
+    <section id="help-request-card" class="hidden st-card rounded-3xl p-4 sm:p-5 border-2 border-rose-200 space-y-3">
+      <div class="flex items-center justify-between gap-2">
+        <div class="flex items-center gap-2.5">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-rose-500 to-amber-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-rose-500/25 text-lg">
+            <i class="fa-solid fa-hand-sparkles"></i>
+          </div>
+          <div>
+            <h3 class="text-sm sm:text-base font-extrabold text-slate-900">ยกมือขอความช่วยเหลือ</h3>
+            <p class="text-[11px] text-slate-500">โต๊ะของคุณบนหน้าจอครูจะกะพริบแจ้งเตือนทันที</p>
+          </div>
+        </div>
+        <span id="dash-help-status-pill" class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-500 text-[10px] font-extrabold shrink-0">ปกติ</span>
+      </div>
+
+      <!-- Quick Tap Question Chips -->
+      <div class="flex flex-wrap gap-1.5">
+        <button type="button" onclick="fillQuickHelpChip('ไม่เข้าใจโจทย์ข้อนี้ครับ/ค่ะ')" class="px-2.5 py-1 rounded-full bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 text-[11px] font-bold transition active:scale-95">
+          ❓ ไม่เข้าใจโจทย์
+        </button>
+        <button type="button" onclick="fillQuickHelpChip('ช่วยตรวจคำตอบให้หน่อยครับ/ค่ะ')" class="px-2.5 py-1 rounded-full bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 text-[11px] font-bold transition active:scale-95">
+          👀 ช่วยตรวจงานหน่อย
+        </button>
+        <button type="button" onclick="fillQuickHelpChip('ขอคำแนะนำเพิ่มเติมครับ/ค่ะ')" class="px-2.5 py-1 rounded-full bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-800 text-[11px] font-bold transition active:scale-95">
+          💡 ขอคำแนะนำเพิ่ม
+        </button>
+      </div>
+
+      <input
+        type="text"
+        id="dash-help-note"
+        placeholder="พิมพ์สิ่งที่สงสัยถึงครู หรือแตะปุ่มด่วนด้านบน..."
+        class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white text-xs outline-none focus:border-rose-400 transition"
+      />
+
+      <button
+        type="button"
+        id="dash-btn-help"
+        onclick="toggleLiveHelpToTeacher()"
+        class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-rose-500 via-pink-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white font-extrabold text-sm shadow-lg shadow-rose-500/25 transition active:scale-[0.98]"
+      >
+        🙋 กดยกมือขอความช่วยเหลือ
+      </button>
+    </section>
+
+    <!-- 4. ASSIGNMENTS MISSION BOARD -->
+    <section id="section-student-tasks" class="hidden st-card rounded-3xl p-4 sm:p-5 border border-amber-200 space-y-3.5">
+      <div class="flex items-center justify-between gap-2">
+        <div class="flex items-center gap-2.5">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-amber-500/25 text-lg">
+            <i class="fa-solid fa-rocket"></i>
+          </div>
+          <div>
+            <h3 class="text-sm sm:text-base font-extrabold text-slate-900">ภารกิจงานที่ได้รับมอบหมาย</h3>
+            <p class="text-[11px] text-slate-500">ส่งงานแล้วกดยืนยัน สถานะจะซิงก์ไปหน้าจอครูทันที</p>
+          </div>
+        </div>
+        <span id="dash-tasks-summary-pill" class="px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-extrabold shrink-0 border border-amber-300">0/0</span>
+      </div>
+
+      <!-- Assignments Mini Progress Bar -->
+      <div class="w-full h-2 rounded-full bg-slate-100 overflow-hidden">
+        <div id="dash-tasks-progress-bar" class="h-full rounded-full bg-gradient-to-r from-amber-400 via-emerald-500 to-teal-500 transition-all duration-500" style="width: 0%;"></div>
+      </div>
+
+      <div id="dash-tasks-list" class="space-y-2.5">
+        <!-- Populated dynamically -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= CONFIRMATION DIALOG (LOGOUT) ================= -->
+  <div id="st-confirm-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-xs z-[120] hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full shadow-2xl border border-slate-200 text-center p-6 animate-shuffle">
+      <div class="w-14 h-14 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-4 text-2xl">
+        <i class="fa-solid fa-right-from-bracket"></i>
+      </div>
+      <h3 class="text-lg font-extrabold text-slate-900 mb-1.5">ยืนยันการออกจากระบบ?</h3>
+      <p class="text-xs sm:text-sm text-slate-500 mb-6">คุณต้องการออกจากระบบนักเรียนเพื่อกลับไปหน้าเลือกบทบาทใช่หรือไม่?</p>
+      <div class="flex items-center justify-center gap-2.5">
+        <button type="button" onclick="closeStudentLogoutConfirm()" class="flex-1 py-2.5 px-4 rounded-xl border border-slate-300 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm transition">
+          ยกเลิก
+        </button>
+        <button type="button" onclick="executeStudentLogout()" class="flex-1 py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm shadow-md transition">
+          ออกจากระบบ
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden div for file-based QR scanning -->
+  <div id="qr-file-temp" class="hidden"></div>
+
+  <!-- ================= MODAL 14: APPEARANCE & SETTINGS PAGE ================= -->
+  <div id="settings-modal" class="fixed inset-0 bg-slate-900/75 backdrop-blur-sm z-[110] hidden items-center justify-center p-2.5 sm:p-4 no-print">
+    <div class="bg-white rounded-3xl max-w-2xl w-full shadow-2xl border border-slate-200 overflow-hidden animate-shuffle flex flex-col max-h-[92vh]">
+      <!-- Header -->
+      <div id="settings-modal-header" class="p-4 sm:p-5 bg-gradient-to-r from-indigo-600 to-violet-600 text-white flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-10 h-10 rounded-2xl bg-white/15 flex items-center justify-center text-lg shrink-0">
+            <i class="fa-solid fa-sliders"></i>
+          </div>
+          <div class="min-w-0">
+            <h3 class="font-extrabold text-base sm:text-lg truncate">ตั้งค่าการแสดงผลและธีม (Settings)</h3>
+            <p class="text-xs text-white/85 truncate">ปรับฟอนต์ ขนาดตัวอักษร โทนสี UI และภาพพื้นหลังตามต้องการ</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeSettingsModal()" class="w-9 h-9 rounded-xl bg-white/15 hover:bg-white/25 flex items-center justify-center shrink-0 transition">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- Scrollable Settings Content -->
+      <div class="flex-1 overflow-y-auto p-4 sm:p-5 space-y-5">
+
+        <!-- SECTION 1: FONT FAMILY SELECTOR -->
+        <section class="space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h4 class="text-sm font-extrabold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-font text-indigo-600"></i>
+              <span>1. เลือกแบบอักษร (Font Family)</span>
+            </h4>
+            <span id="settings-current-font-badge" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-800">TH Niramit AS</span>
+          </div>
+          <div id="settings-font-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <!-- Populated via JS -->
+          </div>
+        </section>
+
+        <!-- SECTION 2: FONT SIZE ADJUSTMENT -->
+        <section class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-3">
+          <div class="flex items-center justify-between">
+            <h4 class="text-sm font-extrabold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-text-height text-indigo-600"></i>
+              <span>2. ปรับขนาดตัวอักษร (Font Size)</span>
+            </h4>
+            <span id="settings-font-size-value" class="text-xs font-extrabold px-2.5 py-0.5 rounded-lg bg-indigo-600 text-white">100%</span>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <span class="text-xs font-bold text-slate-500">ก</span>
+            <input
+              type="range"
+              id="settings-font-size-slider"
+              min="85"
+              max="130"
+              step="5"
+              value="100"
+              oninput="setAppearanceFontSize(this.value)"
+              class="flex-1 accent-indigo-600 cursor-pointer"
+            />
+            <span class="text-lg font-extrabold text-slate-700">ก</span>
+          </div>
+
+          <div class="grid grid-cols-4 gap-1.5">
+            <button type="button" onclick="setAppearanceFontSize(90)" data-fsize="90" class="settings-fsize-btn py-1.5 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-700 hover:border-indigo-400 transition">เล็ก (90%)</button>
+            <button type="button" onclick="setAppearanceFontSize(100)" data-fsize="100" class="settings-fsize-btn py-1.5 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-700 hover:border-indigo-400 transition">ปกติ (100%)</button>
+            <button type="button" onclick="setAppearanceFontSize(115)" data-fsize="115" class="settings-fsize-btn py-1.5 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-700 hover:border-indigo-400 transition">ใหญ่ (115%)</button>
+            <button type="button" onclick="setAppearanceFontSize(125)" data-fsize="125" class="settings-fsize-btn py-1.5 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-700 hover:border-indigo-400 transition">ใหญ่มาก (125%)</button>
+          </div>
+        </section>
+
+        <!-- SECTION 3: UI COLOR THEME -->
+        <section class="space-y-3">
+          <h4 class="text-sm font-extrabold text-slate-800 flex items-center gap-2">
+            <i class="fa-solid fa-palette text-indigo-600"></i>
+            <span>3. ปรับแต่งธีมสี UI (Color Theme)</span>
+          </h4>
+
+          <!-- Light / Dark Base Switcher -->
+          <div class="grid grid-cols-2 gap-2.5">
+            <button
+              type="button"
+              id="settings-mode-light"
+              onclick="setAppearanceDarkMode(false)"
+              class="p-3 rounded-2xl border-2 border-indigo-600 bg-slate-50 flex items-center justify-center gap-2 text-xs sm:text-sm font-extrabold text-slate-800 transition"
+            >
+              <i class="fa-solid fa-sun text-amber-500 text-base"></i> โหมดสว่าง (Light)
+            </button>
+            <button
+              type="button"
+              id="settings-mode-dark"
+              onclick="setAppearanceDarkMode(true)"
+              class="p-3 rounded-2xl border-2 border-slate-200 bg-slate-900 text-white flex items-center justify-center gap-2 text-xs sm:text-sm font-extrabold transition"
+            >
+              <i class="fa-solid fa-moon text-amber-300 text-base"></i> โหมดมืด (Dark)
+            </button>
+          </div>
+
+          <!-- Accent Color Palette + Custom Hex Picker -->
+          <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-xs font-bold text-slate-700">เลือกสีหลักของระบบ (Accent Color):</span>
+              <label class="inline-flex items-center gap-2 text-xs font-bold text-indigo-700 cursor-pointer bg-white px-2.5 py-1 rounded-xl border border-slate-300 hover:border-indigo-400">
+                <i class="fa-solid fa-eye-dropper"></i>
+                <span>เลือกสีเอง</span>
+                <input
+                  type="color"
+                  id="settings-custom-color-picker"
+                  value="#4f46e5"
+                  oninput="setAppearanceCustomAccent(this.value)"
+                  class="w-6 h-6 rounded border-0 p-0 cursor-pointer bg-transparent"
+                />
+              </label>
+            </div>
+            <div id="settings-accent-grid" class="grid grid-cols-4 sm:grid-cols-8 gap-2">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+        </section>
+
+        <!-- SECTION 4: CUSTOM BACKGROUND IMAGE -->
+        <section class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 space-y-3">
+          <div class="flex items-center justify-between gap-2">
+            <h4 class="text-sm font-extrabold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-image text-indigo-600"></i>
+              <span>4. ภาพพื้นหลังแบบกำหนดเอง (Custom Background)</span>
+            </h4>
+            <button
+              type="button"
+              id="settings-btn-remove-bg"
+              onclick="clearAppearanceBackground()"
+              class="hidden px-2.5 py-1 rounded-lg border border-rose-300 bg-rose-50 hover:bg-rose-100 text-rose-700 text-[11px] font-bold transition"
+            >
+              <i class="fa-solid fa-trash-can mr-1"></i>ลบภาพพื้นหลัง
+            </button>
+          </div>
+
+          <!-- Live Preview & Upload Button -->
+          <div class="flex flex-col sm:flex-row items-center gap-3">
+            <div
+              id="settings-bg-preview"
+              class="w-full sm:w-40 h-24 rounded-2xl border-2 border-dashed border-slate-300 bg-white flex flex-col items-center justify-center text-slate-400 text-xs overflow-hidden bg-cover bg-center shrink-0"
+            >
+              <i class="fa-regular fa-image text-2xl mb-1"></i>
+              <span>ยังไม่ได้ตั้งภาพพื้นหลัง</span>
+            </div>
+
+            <div class="flex-1 w-full space-y-2">
+              <input
+                type="file"
+                id="settings-bg-file-input"
+                accept="image/png,image/jpeg,image/webp,image/gif"
+                class="hidden"
+                onchange="handleAppearanceBgUpload(event)"
+              />
+              <button
+                type="button"
+                onclick="document.getElementById('settings-bg-file-input').click()"
+                class="w-full py-2.5 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-sm transition"
+              >
+                <i class="fa-solid fa-cloud-arrow-up"></i> เลือกรูปภาพจากเครื่องเป็นพื้นหลัง
+              </button>
+
+              <!-- Quick Aesthetic Gradient Wallpapers -->
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="text-[11px] font-bold text-slate-500">หรือพื้นหลังสำเร็จรูป:</span>
+                <button type="button" onclick="setPresetBgGradient('')" class="px-2 py-0.5 rounded-lg border border-slate-300 bg-white text-[10px] font-bold text-slate-700">ไม่มี</button>
+                <button type="button" onclick="setPresetBgGradient('linear-gradient(135deg,#e0f2fe 0%,#ede9fe 50%,#fce7f3 100%)')" class="w-6 h-5 rounded-md border border-slate-300" style="background:linear-gradient(135deg,#e0f2fe,#ede9fe,#fce7f3)" title="พาสเทลสกาย"></button>
+                <button type="button" onclick="setPresetBgGradient('linear-gradient(135deg,#0f172a 0%,#1e1b4b 50%,#0f766e 100%)')" class="w-6 h-5 rounded-md border border-slate-300" style="background:linear-gradient(135deg,#0f172a,#1e1b4b,#0f766e)" title="ออโรร่ากลางคืน"></button>
+                <button type="button" onclick="setPresetBgGradient('linear-gradient(135deg,#fef3c7 0%,#fbcfe8 50%,#c7d2fe 100%)')" class="w-6 h-5 rounded-md border border-slate-300" style="background:linear-gradient(135deg,#fef3c7,#fbcfe8,#c7d2fe)" title="พระอาทิตย์ตกพาสเทล"></button>
+                <button type="button" onclick="setPresetBgGradient('linear-gradient(135deg,#d1fae5 0%,#cffafe 50%,#e0e7ff 100%)')" class="w-6 h-5 rounded-md border border-slate-300" style="background:linear-gradient(135deg,#d1fae5,#cffafe,#e0e7ff)" title="มิ้นต์สดชื่น"></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Background Dim & Blur Sliders -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+            <div>
+              <div class="flex items-center justify-between text-[11px] font-bold text-slate-700 mb-1">
+                <span>ความเข้มชั้นกรองแสง (ช่วยให้ตัวหนังสือชัด)</span>
+                <span id="settings-bg-dim-val">35%</span>
+              </div>
+              <input
+                type="range"
+                id="settings-bg-dim-slider"
+                min="0"
+                max="85"
+                step="5"
+                value="35"
+                oninput="setAppearanceBgDim(this.value)"
+                class="w-full accent-indigo-600 cursor-pointer"
+              />
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between text-[11px] font-bold text-slate-700 mb-1">
+                <span>ความเบลอพื้นหลัง (Blur)</span>
+                <span id="settings-bg-blur-val">0 px</span>
+              </div>
+              <input
+                type="range"
+                id="settings-bg-blur-slider"
+                min="0"
+                max="14"
+                step="1"
+                value="0"
+                oninput="setAppearanceBgBlur(this.value)"
+                class="w-full accent-indigo-600 cursor-pointer"
+              />
+            </div>
+          </div>
+
+          <label class="inline-flex items-center gap-2 text-xs font-bold text-slate-700 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              id="settings-bg-glass-toggle"
+              checked
+              onchange="setAppearanceBgGlass(this.checked)"
+              class="rounded text-indigo-600 focus:ring-indigo-500"
+            />
+            <span>เปิดเอฟเฟกต์กระจกโปร่งแสง (Glassmorphism) ให้เห็นภาพพื้นหลังทะลุกรอบได้อย่างสวยงาม</span>
+          </label>
+        </section>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="p-3.5 sm:p-4 border-t border-slate-200 bg-slate-50 flex flex-wrap items-center justify-between gap-2 shrink-0">
+        <button
+          type="button"
+          onclick="resetAllAppearanceSettings()"
+          class="px-3.5 py-2 rounded-xl border border-rose-200 bg-white hover:bg-rose-50 text-rose-600 text-xs font-bold transition"
+        >
+          <i class="fa-solid fa-rotate-left mr-1"></i> คืนค่าเริ่มต้นทั้งหมด
+        </button>
+        <button
+          type="button"
+          onclick="closeSettingsModal()"
+          class="px-6 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-extrabold shadow-sm transition"
+        >
+          บันทึกและปิดหน้าตั้งค่า
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Toast Container -->
+  <div id="st-toast-container" class="fixed bottom-5 right-5 left-5 sm:left-auto z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <script>
+    const STUDENT_SESSION_KEY = 'SMART_SEATING_STUDENT_SESSION_V1';
+    const STUDENT_JOINED_STATE_KEY = 'SMART_SEATING_STUDENT_JOINED_ROOM_V1';
+    const MULTI_CLASS_KEY = 'SMART_SEATING_MULTI_CLASSES_V1';
+    const THEME_STORAGE_KEY = 'SMART_SEATING_THEME_MODE';
+    const ICON_SIZE_STORAGE_KEY = 'SMART_SEATING_ICON_SIZE';
+
+    let studentUser = null;
+    let activeClassId = '';
+    let teacherUsername = '';
+    let matchedRosterStudentId = null;
+    let joinedAtTimestamp = 0;
+    let classroomData = null;
+    let isJoinedToClassroom = false;
+    let html5QrCodeInstance = null;
+    let isJoiningNow = false;
+
+    // Playful, Dimensional, Cute Kawaii SVG Student Avatar Presets (3D gradients, glossy eyes & blush)
+    const AVATAR_PRESETS = [
+      { id: 'boy1', label: 'หนุ่มน้อยยิ้มใส', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="bg" cx="35%" cy="25%" r="75%"><stop offset="0%" stop-color="#e0f2fe"/><stop offset="100%" stop-color="#7dd3fc"/></radialGradient><radialGradient id="sk" cx="42%" cy="35%" r="65%"><stop offset="0%" stop-color="#fff0db"/><stop offset="65%" stop-color="#fbd39b"/><stop offset="100%" stop-color="#e9ad6c"/></radialGradient><linearGradient id="hr" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#334155"/><stop offset="100%" stop-color="#0f172a"/></linearGradient><linearGradient id="sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#38bdf8"/><stop offset="100%" stop-color="#0369a1"/></linearGradient><radialGradient id="bl" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#fb7185" stop-opacity="0.6"/><stop offset="100%" stop-color="#fb7185" stop-opacity="0"/></radialGradient></defs><rect width="100" height="100" fill="url(#bg)"/><circle cx="16" cy="20" r="4" fill="#fff" opacity="0.55"/><circle cx="85" cy="24" r="3" fill="#fff" opacity="0.6"/><circle cx="82" cy="76" r="5" fill="#fff" opacity="0.35"/><path d="M22 100 C24 78 36 74 50 74 C64 74 76 78 78 100 Z" fill="url(#sh)"/><path d="M40 75 L50 86 L60 75 Z" fill="#ffffff" opacity="0.92"/><rect x="44" y="68" width="12" height="11" rx="5" fill="#e5a668"/><circle cx="24" cy="54" r="6.5" fill="#f3bd82"/><circle cx="76" cy="54" r="6.5" fill="#f3bd82"/><circle cx="50" cy="52" r="27" fill="url(#sk)"/><path d="M21 50 C19 22 40 13 55 16 C72 17 82 28 79 50 C74 37 64 31 54 35 C46 27 32 32 21 50 Z" fill="url(#hr)"/><path d="M32 26 Q46 19 60 25" stroke="#94a3b8" stroke-width="2.2" fill="none" stroke-linecap="round" opacity="0.55"/><ellipse cx="34" cy="60" rx="6.5" ry="4" fill="url(#bl)"/><ellipse cx="66" cy="60" rx="6.5" ry="4" fill="url(#bl)"/><circle cx="39.5" cy="53" r="4.3" fill="#0f172a"/><circle cx="60.5" cy="53" r="4.3" fill="#0f172a"/><circle cx="41" cy="51.3" r="1.6" fill="#fff"/><circle cx="62" cy="51.3" r="1.6" fill="#fff"/><circle cx="38" cy="54.8" r="0.8" fill="#fff" opacity="0.8"/><circle cx="59" cy="54.8" r="0.8" fill="#fff" opacity="0.8"/><path d="M35 45 Q39.5 42.5 44 45" stroke="#334155" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M56 45 Q60.5 42.5 65 45" stroke="#334155" stroke-width="2" fill="none" stroke-linecap="round"/><path d="M43 63 Q50 71 57 63" stroke="#9a3412" stroke-width="2.6" fill="none" stroke-linecap="round"/></svg>` },
+      { id: 'boy2', label: 'หนุ่มแว่นเนิร์ด', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="bg" cx="35%" cy="25%" r="75%"><stop offset="0%" stop-color="#ede9fe"/><stop offset="100%" stop-color="#a5b4fc"/></radialGradient><radialGradient id="sk" cx="42%" cy="35%" r="65%"><stop offset="0%" stop-color="#fff4e4"/><stop offset="68%" stop-color="#fde0b2"/><stop offset="100%" stop-color="#eab676"/></radialGradient><linearGradient id="hr" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#475569"/><stop offset="100%" stop-color="#1e293b"/></linearGradient><linearGradient id="sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#3730a3"/></linearGradient><radialGradient id="bl" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#f472b6" stop-opacity="0.55"/><stop offset="100%" stop-color="#f472b6" stop-opacity="0"/></radialGradient></defs><rect width="100" height="100" fill="url(#bg)"/><circle cx="18" cy="22" r="3.5" fill="#fff" opacity="0.6"/><circle cx="84" cy="18" r="4.5" fill="#fff" opacity="0.45"/><path d="M22 100 C24 78 36 74 50 74 C64 74 76 78 78 100 Z" fill="url(#sh)"/><path d="M41 75 L50 87 L59 75 Z" fill="#fff"/><path d="M48 82 L52 82 L53 95 L50 98 L47 95 Z" fill="#f59e0b"/><rect x="44" y="68" width="12" height="11" rx="5" fill="#e5ae73"/><circle cx="24" cy="54" r="6.5" fill="#f4c58e"/><circle cx="76" cy="54" r="6.5" fill="#f4c58e"/><circle cx="50" cy="52" r="27" fill="url(#sk)"/><path d="M20 51 C20 20 48 13 62 17 C76 20 82 32 79 51 C70 36 58 34 46 31 C36 37 28 38 20 51 Z" fill="url(#hr)"/><path d="M34 24 Q50 18 65 25" stroke="#cbd5e1" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.45"/><ellipse cx="34" cy="61" rx="6" ry="3.6" fill="url(#bl)"/><ellipse cx="66" cy="61" rx="6" ry="3.6" fill="url(#bl)"/><circle cx="39" cy="53" r="3.9" fill="#0f172a"/><circle cx="61" cy="53" r="3.9" fill="#0f172a"/><circle cx="40.3" cy="51.6" r="1.4" fill="#fff"/><circle cx="62.3" cy="51.6" r="1.4" fill="#fff"/><rect x="29.5" y="45.5" width="18" height="14" rx="5.5" fill="#ffffff" fill-opacity="0.22" stroke="#1e293b" stroke-width="2.6"/><rect x="52.5" y="45.5" width="18" height="14" rx="5.5" fill="#ffffff" fill-opacity="0.22" stroke="#1e293b" stroke-width="2.6"/><line x1="47.5" y1="52" x2="52.5" y2="52" stroke="#1e293b" stroke-width="2.6"/><path d="M44 64 Q50 69.5 56 64" stroke="#9a3412" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>` },
+      { id: 'boy3', label: 'หนุ่มหยักศกขี้เล่น', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="bg" cx="35%" cy="25%" r="75%"><stop offset="0%" stop-color="#fef3c7"/><stop offset="100%" stop-color="#fdba74"/></radialGradient><radialGradient id="sk" cx="42%" cy="35%" r="65%"><stop offset="0%" stop-color="#ffe8cc"/><stop offset="68%" stop-color="#f5be82"/><stop offset="100%" stop-color="#dd9857"/></radialGradient><radialGradient id="hr" cx="40%" cy="30%" r="70%"><stop offset="0%" stop-color="#57534e"/><stop offset="100%" stop-color="#1c1917"/></radialGradient><linearGradient id="sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f97316"/><stop offset="100%" stop-color="#c2410c"/></linearGradient><radialGradient id="bl" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#f43f5e" stop-opacity="0.52"/><stop offset="100%" stop-color="#f43f5e" stop-opacity="0"/></radialGradient></defs><rect width="100" height="100" fill="url(#bg)"/><circle cx="16" cy="24" r="4" fill="#fff" opacity="0.55"/><circle cx="84" cy="20" r="3" fill="#fff" opacity="0.6"/><path d="M22 100 C24 78 36 74 50 74 C64 74 76 78 78 100 Z" fill="url(#sh)"/><path d="M35 76 Q50 86 65 76" stroke="#fed7aa" stroke-width="3" fill="none" stroke-linecap="round"/><rect x="44" y="68" width="12" height="11" rx="5" fill="#d99456"/><circle cx="24" cy="55" r="6.5" fill="#ebaf72"/><circle cx="76" cy="55" r="6.5" fill="#ebaf72"/><circle cx="50" cy="54" r="26.5" fill="url(#sk)"/><g fill="url(#hr)"><circle cx="27" cy="36" r="10"/><circle cx="38" cy="27" r="11"/><circle cx="52" cy="25" r="12"/><circle cx="65" cy="28" r="11"/><circle cx="74" cy="37" r="9.5"/><circle cx="34" cy="36" r="7.5"/><circle cx="50" cy="34" r="8"/><circle cx="66" cy="36" r="7.5"/></g><ellipse cx="34" cy="61" rx="6.5" ry="3.8" fill="url(#bl)"/><ellipse cx="66" cy="61" rx="6.5" ry="3.8" fill="url(#bl)"/><circle cx="39.5" cy="54" r="4.3" fill="#1c1917"/><circle cx="41" cy="52.4" r="1.5" fill="#fff"/><path d="M56 54.5 Q60.5 49.5 65 54.5" stroke="#1c1917" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M41 63 Q50 73 59 63 Z" fill="#991b1b"/><path d="M44 69 Q50 72 56 69 Q50 65.5 44 69 Z" fill="#fb7185"/><path d="M42.5 63.6 L57.5 63.6" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>` },
+      { id: 'boy4', label: 'หนุ่มหมวกแก๊ปสปอร์ต', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="bg" cx="35%" cy="25%" r="75%"><stop offset="0%" stop-color="#ccfbf1"/><stop offset="100%" stop-color="#5eead4"/></radialGradient><radialGradient id="sk" cx="42%" cy="38%" r="65%"><stop offset="0%" stop-color="#fff0db"/><stop offset="68%" stop-color="#fbd39b"/><stop offset="100%" stop-color="#e5a668"/></radialGradient><linearGradient id="cap" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#14b8a6"/><stop offset="100%" stop-color="#0f766e"/></linearGradient><linearGradient id="sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0ea5e9"/><stop offset="100%" stop-color="#0369a1"/></linearGradient><radialGradient id="bl" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#fb7185" stop-opacity="0.55"/><stop offset="100%" stop-color="#fb7185" stop-opacity="0"/></radialGradient></defs><rect width="100" height="100" fill="url(#bg)"/><circle cx="15" cy="72" r="4" fill="#fff" opacity="0.5"/><circle cx="84" cy="24" r="4" fill="#fff" opacity="0.55"/><path d="M22 100 C24 78 36 74 50 74 C64 74 76 78 78 100 Z" fill="url(#sh)"/><path d="M39 75 Q50 84 61 75" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/><rect x="44" y="68" width="12" height="11" rx="5" fill="#e2a365"/><circle cx="24" cy="56" r="6.5" fill="#f3be83"/><circle cx="76" cy="56" r="6.5" fill="#f3be83"/><circle cx="50" cy="54" r="26.5" fill="url(#sk)"/><path d="M23 44 C26 19 74 19 77 44 Z" fill="url(#cap)"/><path d="M20 42 Q52 34 86 43 Q74 49 52 46 Q32 45 20 42 Z" fill="#115e59"/><circle cx="50" cy="30" r="4" fill="#fef08a"/><ellipse cx="34" cy="61" rx="6" ry="3.8" fill="url(#bl)"/><ellipse cx="66" cy="61" rx="6" ry="3.8" fill="url(#bl)"/><circle cx="39.5" cy="54.5" r="4.2" fill="#0f172a"/><circle cx="60.5" cy="54.5" r="4.2" fill="#0f172a"/><circle cx="41" cy="53" r="1.5" fill="#fff"/><circle cx="62" cy="53" r="1.5" fill="#fff"/><path d="M41 64 Q50 73 59 64 Z" fill="#fff" stroke="#0f172a" stroke-width="2" stroke-linejoin="round"/></svg>` },
+      { id: 'boy5', label: 'หนุ่มผมตั้งสุดเท่', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="bg" cx="35%" cy="25%" r="75%"><stop offset="0%" stop-color="#dcfce7"/><stop offset="100%" stop-color="#86efac"/></radialGradient><radialGradient id="sk" cx="42%" cy="35%" r="65%"><stop offset="0%" stop-color="#fff1df"/><stop offset="68%" stop-color="#fbd39b"/><stop offset="100%" stop-color="#e5a668"/></radialGradient><linearGradient id="hr" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#78350f"/><stop offset="100%" stop-color="#451a03"/></linearGradient><linearGradient id="sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#047857"/></linearGradient><radialGradient id="bl" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#fb7185" stop-opacity="0.55"/><stop offset="100%" stop-color="#fb7185" stop-opacity="0"/></radialGradient></defs><rect width="100" height="100" fill="url(#bg)"/><path d="M82 16 L84 21 L89 23 L84 25 L82 30 L80 25 L75 23 L80 21 Z" fill="#fef08a"/><path d="M22 100 C24 78 36 74 50 74 C64 74 76 78 78 100 Z" fill="url(#sh)"/><path d="M40 75 L50 86 L60 75 Z" fill="#ecfdf5"/><rect x="44" y="68" width="12" height="11" rx="5" fill="#e3a466"/><circle cx="24" cy="55" r="6.5" fill="#f2bd83"/><circle cx="76" cy="55" r="6.5" fill="#f2bd83"/><circle cx="50" cy="53" r="26.5" fill="url(#sk)"/><path d="M22 48 L24 31 L34 34 L42 17 L52 28 L63 16 L69 31 L79 29 L78 48 C68 36 32 36 22 48 Z" fill="url(#hr)"/><ellipse cx="34" cy="61" rx="6.5" ry="3.8" fill="url(#bl)"/><ellipse cx="66" cy="61" rx="6.5" ry="3.8" fill="url(#bl)"/><circle cx="39.5" cy="54" r="4.3" fill="#1e293b"/><circle cx="60.5" cy="54" r="4.3" fill="#1e293b"/><circle cx="41" cy="52.4" r="1.5" fill="#fff"/><circle cx="62" cy="52.4" r="1.5" fill="#fff"/><path d="M43 64 Q50 70 57 64" stroke="#9a3412" stroke-width="2.7" fill="none" stroke-linecap="round"/></svg>` },
+      { id: 'girl1', label: 'สาวน้อยมัดแกละ', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="bg" cx="35%" cy="25%" r="75%"><stop offset="0%" stop-color="#fdf2f8"/><stop offset="100%" stop-color="#f9a8d4"/></radialGradient><radialGradient id="sk" cx="42%" cy="35%" r="65%"><stop offset="0%" stop-color="#fff4e6"/><stop offset="68%" stop-color="#fde0b8"/><stop offset="100%" stop-color="#ebb478"/></radialGradient><linearGradient id="hr" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#4c1d95"/><stop offset="100%" stop-color="#1e1b4b"/></linearGradient><linearGradient id="sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ec4899"/><stop offset="100%" stop-color="#be185d"/></linearGradient><radialGradient id="bl" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#fb7185" stop-opacity="0.65"/><stop offset="100%" stop-color="#fb7185" stop-opacity="0"/></radialGradient></defs><rect width="100" height="100" fill="url(#bg)"/><circle cx="15" cy="20" r="3.5" fill="#fff" opacity="0.7"/><circle cx="85" cy="22" r="4" fill="#fff" opacity="0.6"/><circle cx="17" cy="48" r="12" fill="url(#hr)"/><circle cx="83" cy="48" r="12" fill="url(#hr)"/><circle cx="25" cy="43" r="4" fill="#fb7185"/><circle cx="75" cy="43" r="4" fill="#fb7185"/><path d="M23 100 C25 78 36 74 50 74 C64 74 75 78 77 100 Z" fill="url(#sh)"/><path d="M36 76 Q43 85 50 80 Q57 85 64 76" fill="#fff"/><rect x="44" y="68" width="12" height="10" rx="5" fill="#e6ae74"/><circle cx="50" cy="53" r="26.5" fill="url(#sk)"/><path d="M22 50 C22 20 78 20 78 50 C70 36 58 34 50 38 C42 34 30 36 22 50 Z" fill="url(#hr)"/><path d="M33 27 Q50 20 67 27" stroke="#c4b5fd" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.5"/><ellipse cx="33" cy="60" rx="6.5" ry="4" fill="url(#bl)"/><ellipse cx="67" cy="60" rx="6.5" ry="4" fill="url(#bl)"/><circle cx="39" cy="53.5" r="4.5" fill="#1e1b4b"/><circle cx="61" cy="53.5" r="4.5" fill="#1e1b4b"/><circle cx="40.6" cy="51.8" r="1.7" fill="#fff"/><circle cx="62.6" cy="51.8" r="1.7" fill="#fff"/><circle cx="37.6" cy="55.2" r="0.9" fill="#fff"/><circle cx="59.6" cy="55.2" r="0.9" fill="#fff"/><path d="M44 63.5 Q50 69.5 56 63.5" stroke="#be123c" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>` },
+      { id: 'girl2', label: 'สาวผมบ็อบติดกิ๊บ', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="bg" cx="35%" cy="25%" r="75%"><stop offset="0%" stop-color="#fff1f2"/><stop offset="100%" stop-color="#fda4af"/></radialGradient><radialGradient id="sk" cx="42%" cy="35%" r="65%"><stop offset="0%" stop-color="#fff3e2"/><stop offset="68%" stop-color="#fcdab0"/><stop offset="100%" stop-color="#e8ae72"/></radialGradient><linearGradient id="hr" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#581c87"/><stop offset="100%" stop-color="#2e1065"/></linearGradient><linearGradient id="sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f43f5e"/><stop offset="100%" stop-color="#be123c"/></linearGradient><radialGradient id="bl" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#fb7185" stop-opacity="0.6"/><stop offset="100%" stop-color="#fb7185" stop-opacity="0"/></radialGradient></defs><rect width="100" height="100" fill="url(#bg)"/><path d="M18 56 C18 18 82 18 82 56 L84 74 C76 78 68 78 65 73 L35 73 C32 78 24 78 16 74 Z" fill="url(#hr)"/><path d="M23 100 C25 78 36 74 50 74 C64 74 75 78 77 100 Z" fill="url(#sh)"/><path d="M40 75 L50 86 L60 75 Z" fill="#fff1f2"/><rect x="44" y="68" width="12" height="10" rx="5" fill="#e5ac72"/><circle cx="50" cy="54" r="25.5" fill="url(#sk)"/><path d="M23 47 C26 24 74 24 77 47 L67 43 L62 47 L52 41 L42 47 L34 42 Z" fill="url(#hr)"/><rect x="61" y="34" width="11" height="4.5" rx="2.2" transform="rotate(14 66 36)" fill="#fde047" stroke="#f59e0b" stroke-width="0.8"/><ellipse cx="34" cy="61" rx="6" ry="3.8" fill="url(#bl)"/><ellipse cx="66" cy="61" rx="6" ry="3.8" fill="url(#bl)"/><circle cx="39.5" cy="54.5" r="4.3" fill="#1e1b4b"/><circle cx="60.5" cy="54.5" r="4.3" fill="#1e1b4b"/><circle cx="41" cy="52.8" r="1.6" fill="#fff"/><circle cx="62" cy="52.8" r="1.6" fill="#fff"/><path d="M43.5 64 Q50 70.5 56.5 64" stroke="#be123c" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>` },
+      { id: 'girl3', label: 'สาวแว่นน่ารัก', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="bg" cx="35%" cy="25%" r="75%"><stop offset="0%" stop-color="#f3e8ff"/><stop offset="100%" stop-color="#d8b4fe"/></radialGradient><radialGradient id="sk" cx="42%" cy="35%" r="65%"><stop offset="0%" stop-color="#fff4e4"/><stop offset="68%" stop-color="#fde0b8"/><stop offset="100%" stop-color="#eab477"/></radialGradient><linearGradient id="hr" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#6b21a8"/><stop offset="100%" stop-color="#3b0764"/></linearGradient><linearGradient id="sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#a855f7"/><stop offset="100%" stop-color="#7e22ce"/></linearGradient><radialGradient id="bl" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#f472b6" stop-opacity="0.58"/><stop offset="100%" stop-color="#f472b6" stop-opacity="0"/></radialGradient></defs><rect width="100" height="100" fill="url(#bg)"/><path d="M18 58 C18 18 82 18 82 58 L80 86 L20 86 Z" fill="url(#hr)"/><path d="M23 100 C25 78 36 74 50 74 C64 74 75 78 77 100 Z" fill="url(#sh)"/><path d="M40 75 L50 85 L60 75 Z" fill="#fff"/><rect x="44" y="68" width="12" height="10" rx="5" fill="#e6ae74"/><circle cx="50" cy="53" r="25.5" fill="url(#sk)"/><path d="M24 47 C27 24 73 24 76 47 C64 35 36 35 24 47 Z" fill="url(#hr)"/><ellipse cx="33" cy="61" rx="6" ry="3.6" fill="url(#bl)"/><ellipse cx="67" cy="61" rx="6" ry="3.6" fill="url(#bl)"/><circle cx="39" cy="54" r="3.9" fill="#1e1b4b"/><circle cx="61" cy="54" r="3.9" fill="#1e1b4b"/><circle cx="40.3" cy="52.6" r="1.4" fill="#fff"/><circle cx="62.3" cy="52.6" r="1.4" fill="#fff"/><circle cx="39" cy="54" r="8.5" fill="#ffffff" fill-opacity="0.22" stroke="#ec4899" stroke-width="2.5"/><circle cx="61" cy="54" r="8.5" fill="#ffffff" fill-opacity="0.22" stroke="#ec4899" stroke-width="2.5"/><line x1="47.5" y1="54" x2="52.5" y2="54" stroke="#ec4899" stroke-width="2.5"/><path d="M44.5 64.5 Q50 69.5 55.5 64.5" stroke="#be185d" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>` },
+      { id: 'girl4', label: 'สาวดังโงะติดโบว์', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="bg" cx="35%" cy="25%" r="75%"><stop offset="0%" stop-color="#fae8ff"/><stop offset="100%" stop-color="#f0abfc"/></radialGradient><radialGradient id="sk" cx="42%" cy="35%" r="65%"><stop offset="0%" stop-color="#fff4e4"/><stop offset="68%" stop-color="#fde0b8"/><stop offset="100%" stop-color="#ebb478"/></radialGradient><linearGradient id="hr" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#334155"/><stop offset="100%" stop-color="#0f172a"/></linearGradient><linearGradient id="sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#d946ef"/><stop offset="100%" stop-color="#a21caf"/></linearGradient><radialGradient id="bl" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#fb7185" stop-opacity="0.62"/><stop offset="100%" stop-color="#fb7185" stop-opacity="0"/></radialGradient></defs><rect width="100" height="100" fill="url(#bg)"/><circle cx="16" cy="22" r="3" fill="#fff" opacity="0.7"/><circle cx="84" cy="24" r="3.5" fill="#fff" opacity="0.6"/><circle cx="50" cy="21" r="12" fill="url(#hr)"/><path d="M35 23 L50 29 L35 35 C33 31 33 27 35 23 Z" fill="#f43f5e"/><path d="M65 23 L50 29 L65 35 C67 31 67 27 65 23 Z" fill="#f43f5e"/><circle cx="50" cy="29" r="3.5" fill="#ffe4e6"/><path d="M23 100 C25 78 36 74 50 74 C64 74 75 78 77 100 Z" fill="url(#sh)"/><path d="M38 76 Q50 86 62 76" stroke="#fae8ff" stroke-width="3" fill="none" stroke-linecap="round"/><rect x="44" y="68" width="12" height="10" rx="5" fill="#e5ad73"/><circle cx="50" cy="54" r="25.5" fill="url(#sk)"/><path d="M24 50 C24 25 76 25 76 50 C64 36 36 36 24 50 Z" fill="url(#hr)"/><ellipse cx="34" cy="61" rx="6.5" ry="3.8" fill="url(#bl)"/><ellipse cx="66" cy="61" rx="6.5" ry="3.8" fill="url(#bl)"/><path d="M35 54.5 Q39.5 49.5 44 54.5" stroke="#0f172a" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M56 54.5 Q60.5 49.5 65 54.5" stroke="#0f172a" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M43 63.5 Q50 71.5 57 63.5 Z" fill="#fb7185" stroke="#be123c" stroke-width="1.8" stroke-linejoin="round"/></svg>` },
+      { id: 'girl5', label: 'สาวผมยาวติดดาว', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="bg" cx="35%" cy="25%" r="75%"><stop offset="0%" stop-color="#ecfdf5"/><stop offset="100%" stop-color="#6ee7b7"/></radialGradient><radialGradient id="sk" cx="42%" cy="35%" r="65%"><stop offset="0%" stop-color="#fff3e2"/><stop offset="68%" stop-color="#fbd39b"/><stop offset="100%" stop-color="#e5a668"/></radialGradient><linearGradient id="hr" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#92400e"/><stop offset="100%" stop-color="#451a03"/></linearGradient><linearGradient id="sh" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#10b981"/><stop offset="100%" stop-color="#047857"/></linearGradient><radialGradient id="bl" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#fb7185" stop-opacity="0.6"/><stop offset="100%" stop-color="#fb7185" stop-opacity="0"/></radialGradient></defs><rect width="100" height="100" fill="url(#bg)"/><path d="M16 56 C16 17 84 17 84 56 L87 90 L13 90 Z" fill="url(#hr)"/><path d="M23 100 C25 78 36 74 50 74 C64 74 75 78 77 100 Z" fill="url(#sh)"/><path d="M39 75 L50 86 L61 75 Z" fill="#ecfdf5"/><rect x="44" y="68" width="12" height="10" rx="5" fill="#e5a76a"/><circle cx="50" cy="54" r="25.5" fill="url(#sk)"/><path d="M23 48 C28 24 72 24 77 48 C65 36 53 35 45 41 C38 35 28 38 23 48 Z" fill="url(#hr)"/><path d="M30 33 L32 37 L36 37.5 L33 40 L34 44 L30 42 L26 44 L27 40 L24 37.5 L28 37 Z" fill="#fde047" stroke="#eab308" stroke-width="0.7"/><ellipse cx="34" cy="61" rx="6.5" ry="3.8" fill="url(#bl)"/><ellipse cx="66" cy="61" rx="6.5" ry="3.8" fill="url(#bl)"/><circle cx="39.5" cy="54.5" r="4.4" fill="#291509"/><circle cx="60.5" cy="54.5" r="4.4" fill="#291509"/><circle cx="41" cy="52.8" r="1.6" fill="#fff"/><circle cx="62" cy="52.8" r="1.6" fill="#fff"/><circle cx="38" cy="56" r="0.8" fill="#fff"/><circle cx="59" cy="56" r="0.8" fill="#fff"/><path d="M43.5 64 Q50 70.5 56.5 64" stroke="#9a3412" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>` }
+    ].map(item => ({
+      ...item,
+      dataUrl: 'data:image/svg+xml;utf8,' + encodeURIComponent(item.svg)
+    }));
+
+
+    function getStudentAvatarUrl(rosterObj) {
+      if (rosterObj && rosterObj.photo) return rosterObj.photo;
+      const name = (rosterObj && rosterObj.name) || (studentUser && studentUser.fullname) || '';
+      const num = Number((rosterObj && rosterObj.number) || (studentUser && studentUser.number) || 1);
+      const gender = (rosterObj && rosterObj.gender) || detectStudentGender(name, num);
+      const pool = gender === 'F' ? AVATAR_PRESETS.slice(5, 10) : AVATAR_PRESETS.slice(0, 5);
+      return pool[num % pool.length].dataUrl;
+    }
+
+    function isCloudConfigured() {
+      return typeof APP_CONFIG !== 'undefined' && APP_CONFIG.API_URL && !APP_CONFIG.API_URL.includes('YOUR_SCRIPT_ID');
+    }
+
+    function detectStudentGender(name, number) {
+      const txt = String(name || '').trim();
+      if (/^(ด\.ญ\.|เด็กหญิง|น\.ส\.|นางสาว|ญ\.)/.test(txt)) return 'F';
+      if (/^(ด\.ช\.|เด็กชาย|นาย|ช\.)/.test(txt)) return 'M';
+      return (Number(number) || 1) % 2 === 1 ? 'M' : 'F';
+    }
+
+    function launchMiniConfetti() {
+      if (typeof confetti === 'function') {
+        confetti({
+          particleCount: 55,
+          spread: 65,
+          origin: { y: 0.72 }
+        });
+      }
+    }
+
+    function getThaiTimeGreeting() {
+      const h = new Date().getHours();
+      if (h < 12) return 'สวัสดีตอนเช้า';
+      if (h < 17) return 'สวัสดีตอนบ่าย';
+      return 'สวัสดีตอนเย็น';
+    }
+
+    // Immediate auth gate -> route to unified login.html with role=student if not signed in
+    (function checkStudentAuth() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('classId')) localStorage.setItem('PENDING_JOIN_CLASS_ID', params.get('classId'));
+      if (params.get('teacher')) localStorage.setItem('PENDING_JOIN_TEACHER', params.get('teacher'));
+
+      const rawSession = localStorage.getItem(STUDENT_SESSION_KEY);
+      if (!rawSession) {
+        const loginParams = new URLSearchParams();
+        loginParams.set('role', 'student');
+        if (params.get('classId')) loginParams.set('classId', params.get('classId'));
+        if (params.get('teacher')) loginParams.set('teacher', params.get('teacher'));
+        window.location.href = `login.html?${loginParams.toString()}`;
+      }
+    })();
+
+    function saveJoinedRoomState() {
+      if (!studentUser) return;
+      const key = `${STUDENT_JOINED_STATE_KEY}_${studentUser.username}`;
+      if (isJoinedToClassroom && activeClassId && matchedRosterStudentId) {
+        localStorage.setItem(key, JSON.stringify({
+          teacher: teacherUsername,
+          classId: activeClassId,
+          studentId: matchedRosterStudentId,
+          joinedAt: joinedAtTimestamp || Date.now()
+        }));
+      } else {
+        localStorage.removeItem(key);
+      }
+    }
+
+    function loadSavedJoinedRoomState() {
+      if (!studentUser) return null;
+      try {
+        const raw = localStorage.getItem(`${STUDENT_JOINED_STATE_KEY}_${studentUser.username}`);
+        return raw ? JSON.parse(raw) : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function renderStudentProfileAvatars(rosterObj = null) {
+      const avatarUrl = getStudentAvatarUrl(rosterObj);
+      const numVal = (rosterObj && rosterObj.number) || (studentUser && studentUser.number) || '-';
+      const navWrap = document.getElementById('nav-st-avatar-wrap');
+      const numPill = document.getElementById('nav-st-number-pill');
+      const heroWrap = document.getElementById('hero-st-avatar');
+
+      if (navWrap) {
+        navWrap.innerHTML = `<img src="${avatarUrl}" alt="Avatar" class="w-full h-full object-cover" />`;
+      }
+      if (numPill) {
+        numPill.textContent = `#${numVal}`;
+      }
+      if (heroWrap) {
+        heroWrap.innerHTML = `<img src="${avatarUrl}" alt="Avatar" class="w-full h-full object-cover" />`;
+      }
+    }
+
+    window.onload = async function () {
+      const rawSession = localStorage.getItem(STUDENT_SESSION_KEY);
+      if (!rawSession) return;
+      studentUser = JSON.parse(rawSession);
+
+      applyStudentTheme(localStorage.getItem(THEME_STORAGE_KEY) || 'light');
+      applySavedAppearance();
+      applyStudentIconSize(localStorage.getItem(ICON_SIZE_STORAGE_KEY) || 'lg');
+      applyStudentBrandLogo();
+      applyBrowserTabFavicon();
+
+      const navNumEl = document.getElementById('nav-st-number');
+      if (navNumEl) navNumEl.textContent = studentUser.number || '-';
+      document.getElementById('nav-st-name').textContent = `${studentUser.fullname}${studentUser.nickname ? ` (${studentUser.nickname})` : ''}`;
+      document.getElementById('nav-st-room').textContent = 'ยังไม่ได้เข้าร่วมห้องเรียน';
+      renderStudentProfileAvatars(null);
+
+      const params = new URLSearchParams(window.location.search);
+      const urlClassId = params.get('classId') || localStorage.getItem('PENDING_JOIN_CLASS_ID') || '';
+      const urlTeacher = params.get('teacher') || localStorage.getItem('PENDING_JOIN_TEACHER') || '';
+
+      // Clear pending join params & clean URL bar so later page reloads verify membership instead of silently re-joining
+      localStorage.removeItem('PENDING_JOIN_CLASS_ID');
+      localStorage.removeItem('PENDING_JOIN_TEACHER');
+      if (window.location.search) {
+        try {
+          window.history.replaceState({}, document.title, window.location.pathname);
+        } catch (e) {}
+      }
+
+      if (urlClassId || urlTeacher) {
+        await joinTeacherClassroom(urlTeacher, urlClassId, true);
+      } else {
+        const savedJoin = loadSavedJoinedRoomState();
+        if (savedJoin && savedJoin.classId && savedJoin.studentId) {
+          teacherUsername = savedJoin.teacher || '';
+          activeClassId = savedJoin.classId;
+          matchedRosterStudentId = savedJoin.studentId;
+          joinedAtTimestamp = savedJoin.joinedAt || 0;
+          isJoinedToClassroom = true;
+          await loadTeacherClassroomData(false);
+        } else {
+          showDisconnectedState('idle', 'ยังไม่ได้เข้าร่วมห้องเรียน แตะปุ่ม "เปิดกล้องสแกน" ด้านล่างเพื่อสแกน QR จากหน้าจอครู หรือพิมพ์ Username ครูเพื่อเริ่มใช้งาน ✨');
+        }
+      }
+
+      window.addEventListener('storage', (ev) => {
+        if (ev.key === MULTI_CLASS_KEY && isJoinedToClassroom) {
+          loadTeacherClassroomData(false);
+        } else if (ev.key === APPEARANCE_STORAGE_KEY) {
+          applySavedAppearance();
+        }
+      });
+
+      setInterval(() => {
+        if (isJoinedToClassroom && !isJoiningNow) {
+          loadTeacherClassroomData(false);
+        }
+      }, 5000);
+    };
+
+    /*************************************************************************
+     * 1. THEME, ICON SIZE, FAVICON, LOGO & LOGOUT CONFIRMATION
+     *************************************************************************/
+    const DEFAULT_TAB_FAVICON_URI = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%234f46e5%22/%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%237c3aed%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2216%22%20fill%3D%22url%28%23g%29%22/%3E%3Cpath%20d%3D%22M21%2017h22a3%203%200%200%201%203%203v12H18V20a3%203%200%200%201%203-3zm-5%2017h32a3%203%200%200%201%203%203v4a2%202%200%200%201-2%202h-3v8a2%202%200%200%201-4%200v-8H22v8a2%202%200%200%201-4%200v-8h-3a2%202%200%200%201-2-2v-4a3%203%200%200%201%203-3z%22%20fill%3D%22%23ffffff%22/%3E%3C/svg%3E';
+    const FAVICON_COLOR_HEX = {
+      indigo:  ['#4f46e5', '#7c3aed'],
+      sky:     ['#0ea5e9', '#0891b2'],
+      emerald: ['#10b981', '#0d9488'],
+      amber:   ['#f59e0b', '#ea580c'],
+      rose:    ['#ec4899', '#e11d48'],
+      slate:   ['#334155', '#0f172a']
+    };
+
+    function buildColorSvgFaviconUri(colorId) {
+      const pair = FAVICON_COLOR_HEX[colorId] || FAVICON_COLOR_HEX.indigo;
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="${pair[0]}"/><stop offset="100%" stop-color="${pair[1]}"/></linearGradient></defs><rect width="64" height="64" rx="16" fill="url(#g)"/><path d="M21 17h22a3 3 0 0 1 3 3v12H18V20a3 3 0 0 1 3-3zm-5 17h32a3 3 0 0 1 3 3v4a2 2 0 0 1-2 2h-3v8a2 2 0 0 1-4 0v-8H22v8a2 2 0 0 1-4 0v-8h-3a2 2 0 0 1-2-2v-4a3 3 0 0 1 3-3z" fill="#ffffff"/></svg>`;
+      return 'data:image/svg+xml,' + encodeURIComponent(svg);
+    }
+
+    function setBrowserTabFavicon(href, mimeType = 'image/png') {
+      let link = document.getElementById('app-favicon') || document.querySelector('link[rel~="icon"]');
+      if (!link) {
+        link = document.createElement('link');
+        link.id = 'app-favicon';
+        link.rel = 'icon';
+        document.head.appendChild(link);
+      }
+      link.type = mimeType;
+      link.href = href;
+
+      const apple = document.getElementById('app-apple-icon');
+      if (apple && mimeType === 'image/png') {
+        apple.href = href;
+      }
+    }
+
+    function applyBrowserTabFavicon(logoOverride = null) {
+      try {
+        let logo = logoOverride;
+        if (!logo) {
+          const raw = localStorage.getItem('SMART_SEATING_CUSTOM_LOGO_V1');
+          if (raw) logo = JSON.parse(raw);
+        }
+        if (logo && logo.type === 'image' && logo.dataUrl) {
+          setBrowserTabFavicon(logo.dataUrl, 'image/png');
+          return;
+        }
+        const probe = new Image();
+        probe.onload = () => setBrowserTabFavicon('./favicon.png', 'image/png');
+        probe.onerror = () => {
+          const colorId = (logo && logo.colorId) ? logo.colorId : 'indigo';
+          setBrowserTabFavicon(buildColorSvgFaviconUri(colorId), 'image/svg+xml');
+        };
+        probe.src = './favicon.png';
+      } catch (e) {
+        setBrowserTabFavicon(DEFAULT_TAB_FAVICON_URI, 'image/svg+xml');
+      }
+    }
+
+    function applyStudentBrandLogo() {
+      const slot = document.getElementById('st-brand-logo-slot');
+      if (!slot) return;
+      try {
+        const raw = localStorage.getItem('SMART_SEATING_CUSTOM_LOGO_V1');
+        if (!raw) return;
+        const logo = JSON.parse(raw);
+        if (logo && logo.type === 'image' && logo.dataUrl) {
+          slot.innerHTML = `<img src="${logo.dataUrl}" alt="Logo" class="w-full h-full aspect-square object-cover" />`;
+          slot.classList.remove('hidden');
+          slot.classList.add('flex');
+        }
+      } catch (e) {}
+    }
+
+    function applyStudentTheme(mode) {
+      const icon = document.getElementById('st-theme-icon');
+      if (mode === 'dark') {
+        document.body.classList.add('dark-theme');
+        localStorage.setItem(THEME_STORAGE_KEY, 'dark');
+        if (icon) icon.className = 'fa-solid fa-sun text-amber-300';
+      } else {
+        document.body.classList.remove('dark-theme');
+        localStorage.setItem(THEME_STORAGE_KEY, 'light');
+        if (icon) icon.className = 'fa-solid fa-moon';
+      }
+    }
+
+    function toggleStudentTheme() {
+      applyStudentTheme(document.body.classList.contains('dark-theme') ? 'light' : 'dark');
+      applySavedAppearance();
+    }
+
+    function applyStudentIconSize(size) {
+      document.body.classList.remove('icon-size-md', 'icon-size-lg', 'icon-size-xl');
+      const resolved = ['md', 'lg', 'xl'].includes(size) ? size : 'lg';
+      document.body.classList.add(`icon-size-${resolved}`);
+      localStorage.setItem(ICON_SIZE_STORAGE_KEY, resolved);
+      const badge = document.getElementById('st-icon-size-badge');
+      if (badge) badge.textContent = resolved === 'md' ? 'M' : resolved === 'xl' ? 'XL' : 'L';
+    }
+
+    function cycleStudentIconSize() {
+      const curr = localStorage.getItem(ICON_SIZE_STORAGE_KEY) || 'lg';
+      const order = ['md', 'lg', 'xl'];
+      const next = order[(order.indexOf(curr) + 1) % order.length];
+      applyStudentIconSize(next);
+      const labels = { md: 'ปกติ (M)', lg: 'ใหญ่ (L)', xl: 'ใหญ่พิเศษ (XL)' };
+      showToast(`ปรับขนาดไอคอนเป็น ${labels[next]}`, 'indigo');
+    }
+
+    function openStudentLogoutConfirm() {
+      const modal = document.getElementById('st-confirm-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeStudentLogoutConfirm() {
+      const modal = document.getElementById('st-confirm-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function executeStudentLogout() {
+      stopQrScanner();
+      localStorage.removeItem(STUDENT_SESSION_KEY);
+      window.location.href = 'login.html?role=student&switch=1';
+    }
+
+    function fillQuickHelpChip(text) {
+      const inp = document.getElementById('dash-help-note');
+      if (!inp) return;
+      inp.value = text;
+      inp.focus();
+    }
+
+    /*************************************************************************
+     * 2. EXPLICIT JOIN, LIVE MEMBERSHIP VERIFICATION & AUTO-DISCONNECT
+     *************************************************************************/
+    function setConnectedCardsVisible(visible) {
+      ['st-mission-hero', 'section-connected-classroom', 'help-request-card', 'section-student-tasks'].forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (visible) el.classList.remove('hidden');
+        else el.classList.add('hidden');
+      });
+      const dot = document.getElementById('nav-conn-dot');
+      const qrChip = document.getElementById('qr-status-chip');
+      if (dot) {
+        dot.className = visible
+          ? 'w-2 h-2 rounded-full bg-emerald-300 animate-pulse shrink-0'
+          : 'w-2 h-2 rounded-full bg-amber-300 shrink-0';
+      }
+      if (qrChip) {
+        qrChip.textContent = visible ? '✓ เชื่อมต่อแล้ว' : 'พร้อมสแกน';
+        qrChip.className = visible
+          ? 'px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-extrabold shrink-0'
+          : 'px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[10px] font-extrabold shrink-0';
+      }
+    }
+
+    function showDisconnectedState(reasonType, message) {
+      const banner = document.getElementById('st-disconnected-banner');
+      const icon = document.getElementById('st-disconnected-icon');
+      const msgEl = document.getElementById('st-disconnected-msg');
+
+      setConnectedCardsVisible(false);
+      document.getElementById('nav-st-room').textContent = 'ยังไม่ได้เชื่อมต่อห้องเรียน';
+
+      if (banner && msgEl) {
+        banner.classList.remove('hidden');
+        msgEl.textContent = message;
+        if (reasonType === 'removed') {
+          banner.className = 'p-3.5 rounded-2xl border-2 border-rose-400 bg-rose-50 text-rose-800 text-xs font-bold flex items-start gap-2.5';
+          if (icon) icon.className = 'fa-solid fa-user-slash text-rose-600 text-base mt-0.5 shrink-0';
+        } else {
+          banner.className = 'p-3.5 rounded-2xl border border-indigo-200 bg-indigo-50/70 text-indigo-900 text-xs font-semibold flex items-start gap-2.5';
+          if (icon) icon.className = 'fa-solid fa-sparkles text-indigo-500 text-base mt-0.5 shrink-0';
+        }
+      }
+    }
+
+    function hideDisconnectedBanner() {
+      const banner = document.getElementById('st-disconnected-banner');
+      if (banner) banner.classList.add('hidden');
+    }
+
+    function disconnectFromClassroom(reasonType, message) {
+      isJoinedToClassroom = false;
+      classroomData = null;
+      matchedRosterStudentId = null;
+      joinedAtTimestamp = 0;
+
+      if (studentUser && activeClassId) {
+        localStorage.removeItem(`MATCHED_ROSTER_${activeClassId}_${studentUser.username}`);
+      }
+      activeClassId = '';
+      localStorage.removeItem('LAST_SCANNED_CLASS_ID');
+      localStorage.removeItem('LAST_SCANNED_TEACHER');
+      saveJoinedRoomState();
+
+      showDisconnectedState(reasonType, message);
+      if (reasonType === 'removed') {
+        showToast(message, 'amber');
+      }
+    }
+
+    function leaveClassroomManually() {
+      disconnectFromClassroom('idle', 'คุณออกจากห้องเรียนแล้ว สแกน QR Code หรือเลือกห้องเรียนใหม่เพื่อเข้าร่วมอีกครั้ง');
+      showToast('ออกจากห้องเรียนเรียบร้อยแล้ว', 'slate');
+    }
+
+    function applyLocalStudentJoin(targetClassId, nowMs) {
+      const multiRaw = localStorage.getItem(MULTI_CLASS_KEY);
+      if (!multiRaw) return null;
+      try {
+        const multiObj = JSON.parse(multiRaw);
+        if (!multiObj || !multiObj.classes) return null;
+
+        const keys = Object.keys(multiObj.classes);
+        if (keys.length === 0) return null;
+
+        const resolvedId = (targetClassId && multiObj.classes[targetClassId])
+          ? targetClassId
+          : (multiObj.activeClassId && multiObj.classes[multiObj.activeClassId] ? multiObj.activeClassId : keys[0]);
+
+        const cls = multiObj.classes[resolvedId];
+        if (!Array.isArray(cls.students)) cls.students = [];
+        if (!cls.desks) cls.desks = {};
+        if (!cls.removedStudents) cls.removedStudents = {};
+
+        const accUser = String(studentUser.username || '').trim().toLowerCase();
+        const fullname = String(studentUser.fullname || '').trim();
+        const nickname = String(studentUser.nickname || '').trim();
+        const number = parseInt(studentUser.number, 10) || (cls.students.length + 1);
+        const gender = detectStudentGender(fullname, number);
+
+        delete cls.removedStudents['acc:' + accUser];
+        delete cls.removedStudents[accUser];
+
+        let matched = cls.students.find(s => String(s.accountUsername || '').toLowerCase() === accUser);
+        if (!matched) {
+          matched = cls.students.find(s =>
+            String(s.name || '').trim() === fullname ||
+            (Number(s.number) === number && !s.accountUsername && /นักเรียนคนที่\s*\d+/.test(String(s.name || '')))
+          );
+        }
+
+        let studentId = '';
+        if (matched) {
+          matched.accountUsername = accUser;
+          if (/นักเรียนคนที่\s*\d+/.test(String(matched.name || ''))) {
+            matched.name = fullname;
+            if (nickname) matched.nickname = nickname;
+            matched.gender = gender;
+          }
+          matched.joinedAt = nowMs;
+          delete cls.removedStudents[matched.id];
+          studentId = matched.id;
+        } else {
+          studentId = `st_acc_${accUser.replace(/[^a-z0-9_]/g, '')}_${nowMs}`;
+          cls.students.push({
+            id: studentId,
+            accountUsername: accUser,
+            number,
+            name: fullname,
+            nickname,
+            gender,
+            frontRow: false,
+            talkative: false,
+            role: '',
+            score: null,
+            joinedAt: nowMs
+          });
+          cls.students.sort((a, b) => (Number(a.number) || 0) - (Number(b.number) || 0));
+        }
+
+        const rows = Number(cls.rows) || 4;
+        const cols = Number(cls.cols) || 6;
+        let alreadySeated = false;
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            const k = `${r}-${c}`;
+            if (cls.desks[k] && !cls.desks[k].disabled && cls.desks[k].studentId === studentId) {
+              alreadySeated = true;
+            }
+          }
+        }
+        if (!alreadySeated) {
+          let placed = false;
+          for (let r = 0; r < rows && !placed; r++) {
+            for (let c = 0; c < cols && !placed; c++) {
+              const k = `${r}-${c}`;
+              if (!cls.desks[k]) cls.desks[k] = { studentId: null, locked: false, disabled: false };
+              if (!cls.desks[k].disabled && !cls.desks[k].studentId) {
+                cls.desks[k].studentId = studentId;
+                cls.desks[k].locked = false;
+                placed = true;
+              }
+            }
+          }
+          if (!placed && rows < 10) {
+            cls.rows = rows + 1;
+            for (let c = 0; c < cols; c++) {
+              cls.desks[`${rows}-${c}`] = { studentId: c === 0 ? studentId : null, locked: false, disabled: false };
+            }
+          }
+        }
+
+        cls.updatedAt = nowMs;
+        multiObj.updatedAt = nowMs;
+        localStorage.setItem(MULTI_CLASS_KEY, JSON.stringify(multiObj));
+
+        return {
+          classId: resolvedId,
+          studentId,
+          joinedAt: nowMs,
+          classroom: cls,
+          classList: keys.map(k => ({ id: k, title: multiObj.classes[k].classroomTitle || k }))
+        };
+      } catch (e) {
+        return null;
+      }
+    }
+
+    async function joinTeacherClassroom(targetTeacher, targetClassId, notify = true) {
+      if (!studentUser) return;
+      isJoiningNow = true;
+      const syncIcon = document.getElementById('st-sync-icon');
+      if (syncIcon) syncIcon.classList.add('fa-spin');
+
+      const resolvedTeacher = String(targetTeacher || teacherUsername || '').trim().toLowerCase();
+      if (resolvedTeacher) teacherUsername = resolvedTeacher;
+      const nowMs = Date.now();
+
+      const studentProfile = {
+        username: studentUser.username,
+        fullname: studentUser.fullname,
+        nickname: studentUser.nickname || '',
+        number: studentUser.number || 1,
+        gender: detectStudentGender(studentUser.fullname, studentUser.number)
+      };
+
+      let joinedResult = null;
+
+      try {
+        if (teacherUsername && isCloudConfigured()) {
+          try {
+            const res = await fetch(APP_CONFIG.API_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+              body: JSON.stringify({
+                action: 'joinClassroom',
+                teacher: teacherUsername,
+                classId: targetClassId || '',
+                student: studentProfile
+              })
+            });
+            const data = await res.json();
+            if (data.status === 'success' && data.classroom) {
+              joinedResult = {
+                classId: data.classId,
+                studentId: data.studentId,
+                joinedAt: data.joinedAt || nowMs,
+                classroom: data.classroom,
+                classList: data.classList || []
+              };
+            } else if (data.status === 'error' && data.message && data.message !== 'Invalid action') {
+              showToast(data.message, 'amber');
+            }
+          } catch (cloudErr) {}
+        }
+
+        const localJoin = applyLocalStudentJoin(joinedResult ? joinedResult.classId : targetClassId, joinedResult ? joinedResult.joinedAt : nowMs);
+        if (!joinedResult && localJoin) {
+          joinedResult = localJoin;
+        }
+
+        if (joinedResult && joinedResult.classroom) {
+          activeClassId = joinedResult.classId;
+          matchedRosterStudentId = joinedResult.studentId;
+          joinedAtTimestamp = joinedResult.joinedAt || nowMs;
+          classroomData = joinedResult.classroom;
+          isJoinedToClassroom = true;
+
+          if (Array.isArray(joinedResult.classList) && joinedResult.classList.length > 0) {
+            renderTeacherClassPicker(joinedResult.classList);
+          }
+
+          localStorage.setItem(`MATCHED_ROSTER_${activeClassId}_${studentUser.username}`, matchedRosterStudentId);
+          saveJoinedRoomState();
+          hideDisconnectedBanner();
+          setConnectedCardsVisible(true);
+          renderConnectedClassroomUI();
+
+          if (notify) {
+            launchMiniConfetti();
+            showToast(`เข้าร่วมห้อง "${classroomData.classroomTitle}" สำเร็จ! รายชื่อของคุณปรากฏบนผังครูแล้ว 🎉`, 'emerald');
+          }
+        } else {
+          showDisconnectedState('idle', 'ไม่พบห้องเรียนของครูท่านนี้ กรุณาตรวจสอบ Username ของครู หรือสแกน QR Code จากหน้าจอครูอีกครั้ง');
+          if (notify) showToast('ไม่สามารถเชื่อมต่อห้องเรียนได้ กรุณาตรวจสอบข้อมูลอีกครั้ง', 'amber');
+        }
+      } finally {
+        if (syncIcon) syncIcon.classList.remove('fa-spin');
+        isJoiningNow = false;
+      }
+    }
+
+    function checkIsStudentStillInClassroom(cls) {
+      if (!cls || !Array.isArray(cls.students)) return { present: false, studentId: null };
+
+      const accUser = String((studentUser && studentUser.username) || '').trim().toLowerCase();
+      const clearedAt = Number(cls.clearedAt) || 0;
+      if (joinedAtTimestamp > 0 && clearedAt >= joinedAtTimestamp) {
+        return { present: false, studentId: null };
+      }
+
+      const removedMap = cls.removedStudents || {};
+      if (matchedRosterStudentId && removedMap[matchedRosterStudentId] && Number(removedMap[matchedRosterStudentId]) >= joinedAtTimestamp) {
+        return { present: false, studentId: null };
+      }
+      if (accUser && removedMap['acc:' + accUser] && Number(removedMap['acc:' + accUser]) >= joinedAtTimestamp) {
+        return { present: false, studentId: null };
+      }
+
+      if (matchedRosterStudentId) {
+        const byId = cls.students.find(s => s.id === matchedRosterStudentId);
+        if (byId) return { present: true, studentId: byId.id };
+      }
+      if (accUser) {
+        const byAcc = cls.students.find(s => String(s.accountUsername || '').toLowerCase() === accUser);
+        if (byAcc) return { present: true, studentId: byAcc.id };
+      }
+      return { present: false, studentId: null };
+    }
+
+    async function loadTeacherClassroomData(showNotify = false) {
+      if (!isJoinedToClassroom || !activeClassId) {
+        if (showNotify) showToast('ยังไม่ได้เข้าร่วมห้องเรียน กรุณาสแกน QR หรือกรอก Username ครู', 'amber');
+        return;
+      }
+
+      const syncIcon = document.getElementById('st-sync-icon');
+      if (showNotify && syncIcon) syncIcon.classList.add('fa-spin');
+
+      let cloudClass = null;
+      let cloudRemoved = false;
+      let cloudClassList = [];
+      let localClass = null;
+      let localClassExistsInMulti = false;
+      let localClassList = [];
+
+      if (teacherUsername && isCloudConfigured()) {
+        try {
+          const res = await fetch(APP_CONFIG.API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({
+              action: 'getPublicClassroom',
+              teacher: teacherUsername,
+              classId: activeClassId,
+              strictClassId: true
+            })
+          });
+          const data = await res.json();
+          if (data.status === 'removed') {
+            cloudRemoved = true;
+          } else if (data.status === 'success' && data.classroom) {
+            cloudClass = data.classroom;
+            if (Array.isArray(data.classList)) cloudClassList = data.classList;
+          }
+        } catch (e) {}
+      }
+
+      const multiRaw = localStorage.getItem(MULTI_CLASS_KEY);
+      if (multiRaw) {
+        try {
+          const multiObj = JSON.parse(multiRaw);
+          if (multiObj && multiObj.classes) {
+            const keys = Object.keys(multiObj.classes);
+            localClassList = keys.map(k => ({ id: k, title: multiObj.classes[k].classroomTitle || k }));
+            if (multiObj.classes[activeClassId]) {
+              localClass = multiObj.classes[activeClassId];
+              localClassExistsInMulti = true;
+            }
+          }
+        } catch (e) {}
+      }
+
+      if (showNotify && syncIcon) syncIcon.classList.remove('fa-spin');
+
+      let latestClass = null;
+      if (cloudRemoved && !localClassExistsInMulti) {
+        disconnectFromClassroom('removed', 'ห้องเรียนนี้ถูกลบโดยครูผู้สอนแล้ว กรุณาเชื่อมต่อห้องเรียนใหม่');
+        return;
+      }
+
+      if (cloudClass && localClass) {
+        const cloudTs = Number(cloudClass.updatedAt) || 0;
+        const localTs = Number(localClass.updatedAt) || 0;
+        latestClass = localTs >= cloudTs ? localClass : cloudClass;
+      } else {
+        latestClass = cloudClass || localClass;
+      }
+
+      const bestClassList = cloudClassList.length > 0 ? cloudClassList : localClassList;
+      if (bestClassList.length > 0) {
+        renderTeacherClassPicker(bestClassList);
+      }
+
+      if (!latestClass) {
+        if (multiRaw && !localClassExistsInMulti) {
+          disconnectFromClassroom('removed', 'ห้องเรียนนี้ถูกลบหรือเปลี่ยนโดยครูผู้สอนแล้ว');
+        }
+        return;
+      }
+
+      const membership = checkIsStudentStillInClassroom(latestClass);
+      if (!membership.present) {
+        disconnectFromClassroom('removed', 'คุณถูกนำออกจากห้องเรียนโดยครูผู้สอนแล้ว กรุณาสแกน QR Code หรือกดเชื่อมต่อใหม่หากต้องการเข้าห้องอีกครั้ง');
+        return;
+      }
+
+      matchedRosterStudentId = membership.studentId;
+      classroomData = latestClass;
+      saveJoinedRoomState();
+      hideDisconnectedBanner();
+      setConnectedCardsVisible(true);
+      renderConnectedClassroomUI();
+
+      if (showNotify) showToast('ซิงก์ข้อมูลล่าสุดจากระบบครูแล้ว 🔄', 'emerald');
+    }
+
+    function renderTeacherClassPicker(classList) {
+      const wrap = document.getElementById('teacher-classes-picker-wrap');
+      const sel = document.getElementById('teacher-classes-picker');
+      if (!wrap || !sel || !Array.isArray(classList) || classList.length === 0) return;
+      wrap.classList.remove('hidden');
+      sel.innerHTML = classList.map(c =>
+        `<option value="${c.id}" ${c.id === activeClassId ? 'selected' : ''}>ห้องเรียน: ${escapeHtml(c.title)}</option>`
+      ).join('');
+    }
+
+    function selectTeacherClassId(cid) {
+      if (!cid) return;
+      joinTeacherClassroom(teacherUsername, cid, true);
+    }
+
+    function joinSelectedPickerClass() {
+      const sel = document.getElementById('teacher-classes-picker');
+      if (!sel || !sel.value) return;
+      joinTeacherClassroom(teacherUsername, sel.value, true);
+    }
+
+    function refreshClassroomConnection(notify = true) {
+      loadTeacherClassroomData(notify);
+    }
+
+    function renderConnectedClassroomUI() {
+      if (!classroomData || !isJoinedToClassroom) return;
+
+      const roomTitle = classroomData.classroomTitle || 'ห้องเรียนออนไลน์';
+      document.getElementById('dash-room-title').textContent = roomTitle;
+      document.getElementById('nav-st-room').textContent = roomTitle;
+      const heroPill = document.getElementById('hero-room-pill');
+      if (heroPill) heroPill.textContent = roomTitle;
+
+      const roster = classroomData.students || [];
+      const selectEl = document.getElementById('dash-roster-match-select');
+
+      selectEl.innerHTML = `<option value="">-- รายชื่อในห้อง (${roster.length} คน) --</option>` +
+        roster.map(st =>
+          `<option value="${st.id}" ${st.id === matchedRosterStudentId ? 'selected' : ''}>เลขที่ ${st.number} • ${escapeHtml(st.name)} ${st.nickname ? `(${escapeHtml(st.nickname)})` : ''}</option>`
+        ).join('');
+
+      const myRosterObj = roster.find(s => s.id === matchedRosterStudentId) || null;
+      renderStudentProfileAvatars(myRosterObj);
+
+      const displayNick = (myRosterObj && (myRosterObj.nickname || myRosterObj.name)) || (studentUser && (studentUser.nickname || studentUser.fullname)) || 'นักเรียน';
+      const greetingEl = document.getElementById('hero-greeting-text');
+      if (greetingEl) greetingEl.textContent = `${getThaiTimeGreeting()}, ${displayNick}!`;
+
+      updateStudentSeatAndActionStatus();
+    }
+
+    function linkStudentToRosterId(rosterId) {
+      if (!rosterId) return;
+      matchedRosterStudentId = rosterId;
+      localStorage.setItem(`MATCHED_ROSTER_${activeClassId}_${studentUser.username}`, rosterId);
+      saveJoinedRoomState();
+      renderConnectedClassroomUI();
+    }
+
+    function renderMyGroupShowcase() {
+      const card = document.getElementById('dash-group-card');
+      const titleEl = document.getElementById('dash-group-title');
+      const subEl = document.getElementById('dash-group-subtitle');
+      const pillEl = document.getElementById('dash-group-badge-pill');
+      const hlEl = document.getElementById('dash-group-highlight');
+      const membersEl = document.getElementById('dash-group-members');
+      if (!card || !classroomData || !matchedRosterStudentId) return;
+
+      const ga = classroomData.groupAssignments;
+      const myInfo = ga && ga.byStudentId && ga.byStudentId[matchedRosterStudentId];
+      if (!myInfo) {
+        card.classList.add('hidden');
+        return;
+      }
+
+      card.classList.remove('hidden');
+      const roster = classroomData.students || [];
+      const teammates = roster.filter(st => {
+        const info = ga.byStudentId[st.id];
+        return info && info.groupIndex === myInfo.groupIndex;
+      });
+
+      if (titleEl) titleEl.textContent = `กลุ่มที่ ${myInfo.groupIndex} ของคุณ`;
+      if (subEl) subEl.textContent = `สมาชิกทั้งหมด ${teammates.length} คน • สัดส่วน ${ga.ratioLabel || ''}`;
+      if (pillEl) pillEl.textContent = `กลุ่ม ${ga.groupSize || teammates.length} คน`;
+
+      // Highlight assigned Role (Groups of 5) or Buddy Partner (Groups of 6)
+      if (hlEl) {
+        if (myInfo.roleLabel) {
+          hlEl.classList.remove('hidden');
+          hlEl.innerHTML = `
+            <div class="flex items-center gap-2 min-w-0">
+              <span class="text-xl">${myInfo.roleIcon || '⭐'}</span>
+              <div class="min-w-0">
+                <div class="text-[10px] font-bold text-slate-500">หน้าที่ของคุณในกลุ่มนี้</div>
+                <div class="text-xs sm:text-sm font-extrabold text-violet-900 truncate">${escapeHtml(myInfo.roleLabel)}</div>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 rounded-full bg-violet-100 text-violet-800 text-[10px] font-extrabold shrink-0">My Role</span>
+          `;
+        } else if (myInfo.buddyPair) {
+          const buddyPartner = teammates.find(st => st.id !== matchedRosterStudentId && ga.byStudentId[st.id] && ga.byStudentId[st.id].buddyPair === myInfo.buddyPair);
+          hlEl.classList.remove('hidden');
+          hlEl.innerHTML = `
+            <div class="flex items-center gap-2 min-w-0">
+              <span class="text-xl">🤝</span>
+              <div class="min-w-0">
+                <div class="text-[10px] font-bold text-slate-500">คู่บัดดี้ที่ ${myInfo.buddyPair} ของคุณ</div>
+                <div class="text-xs sm:text-sm font-extrabold text-teal-900 truncate">${buddyPartner ? escapeHtml(buddyPartner.nickname || buddyPartner.name) : 'รอจับคู่บัดดี้'}</div>
+              </div>
+            </div>
+            <span class="px-2 py-0.5 rounded-full bg-teal-100 text-teal-800 text-[10px] font-extrabold shrink-0">คู่บัดดี้ ${myInfo.buddyPair}</span>
+          `;
+        } else {
+          hlEl.classList.add('hidden');
+        }
+      }
+
+      if (membersEl) {
+        membersEl.innerHTML = teammates.map(st => {
+          const isMe = st.id === matchedRosterStudentId;
+          const tInfo = ga.byStudentId[st.id] || {};
+          const av = getStudentAvatarUrl(st);
+          return `
+            <span class="inline-flex items-center gap-1.5 pl-1 pr-2.5 py-1 rounded-full text-[11px] font-bold border ${
+              isMe
+                ? 'bg-indigo-600 text-white border-indigo-700 shadow-xs'
+                : 'bg-white text-slate-800 border-violet-200'
+            }">
+              <img src="${av}" alt="" class="w-5 h-5 rounded-full object-cover bg-white" />
+              <span>${escapeHtml(st.nickname || st.name)}</span>
+              ${tInfo.roleIcon ? `<span title="${escapeHtml(tInfo.roleLabel)}">${tInfo.roleIcon}</span>` : (tInfo.buddyPair ? `<span class="text-[9px] opacity-80">คู่${tInfo.buddyPair}</span>` : '')}
+            </span>
+          `;
+        }).join('');
+      }
+    }
+
+    function updateMissionHeroProgress(isCheckedIn, doneTasks, totalTasks) {
+      const pctEl = document.getElementById('hero-progress-pct');
+      const barEl = document.getElementById('hero-progress-bar');
+      const motEl = document.getElementById('hero-motivation-text');
+      const pCheck = document.getElementById('mission-pill-checkin');
+      const pTasks = document.getElementById('mission-pill-tasks');
+
+      const tasksComplete = totalTasks === 0 || doneTasks >= totalTasks;
+      let score = 34; // Joined room
+      if (isCheckedIn) score += 33;
+      if (totalTasks > 0) score += Math.round((doneTasks / totalTasks) * 33);
+      else if (isCheckedIn) score = 100;
+      score = Math.min(100, score);
+
+      if (pctEl) pctEl.textContent = `${score}%`;
+      if (barEl) barEl.style.width = `${score}%`;
+
+      if (pCheck) {
+        if (isCheckedIn) {
+          pCheck.textContent = '✓ เช็คชื่อแล้ว';
+          pCheck.className = 'px-1.5 py-1 rounded-xl bg-emerald-400/25 border border-emerald-300/50 text-emerald-100';
+        } else {
+          pCheck.textContent = '• รอเช็คชื่อ';
+          pCheck.className = 'px-1.5 py-1 rounded-xl bg-white/10 border border-white/15 text-white/80';
+        }
+      }
+      if (pTasks) {
+        if (tasksComplete && totalTasks > 0) {
+          pTasks.textContent = `✓ งาน ${doneTasks}/${totalTasks}`;
+          pTasks.className = 'px-1.5 py-1 rounded-xl bg-amber-300/30 border border-amber-200/60 text-amber-50';
+        } else {
+          pTasks.textContent = `• งาน ${doneTasks}/${totalTasks}`;
+          pTasks.className = 'px-1.5 py-1 rounded-xl bg-white/10 border border-white/15 text-white/80';
+        }
+      }
+      if (motEl) {
+        if (score >= 100) motEl.textContent = 'สุดยอดมาก! คุณทำภารกิจห้องเรียนวันนี้ครบ 100% แล้ว 🏆✨';
+        else if (!isCheckedIn) motEl.textContent = 'แตะปุ่ม "เช็คชื่อเข้าเรียนวันนี้" เพื่อเก็บภารกิจแรกกันเลย!';
+        else motEl.textContent = `เช็คชื่อเรียบร้อย! เหลืองานอีก ${Math.max(0, totalTasks - doneTasks)} ชิ้น สู้ๆ นะ 🚀`;
+      }
+    }
+
+    function updateStudentSeatAndActionStatus() {
+      const seatBanner = document.getElementById('dash-seat-banner');
+      if (!classroomData || !matchedRosterStudentId) {
+        seatBanner.classList.add('hidden');
+        renderStudentTasksList();
+        return;
+      }
+
+      // 1. Seat Coordinate
+      let foundCoord = 'รอครูจัดโต๊ะบนผัง';
+      const desks = classroomData.desks || {};
+      for (const [key, d] of Object.entries(desks)) {
+        if (d && !d.disabled && d.studentId === matchedRosterStudentId) {
+          const [r, c] = key.split('-').map(Number);
+          foundCoord = `แถวที่ ${r + 1} • คอลัมน์ที่ ${c + 1}`;
+          break;
+        }
+      }
+      seatBanner.classList.remove('hidden');
+      document.getElementById('dash-seat-coord').textContent = foundCoord;
+
+      // 1.5 Group & Buddy Card
+      renderMyGroupShowcase();
+
+      // 2. Attendance Status
+      const today = new Date().toISOString().split('T')[0];
+      const attStatus = (classroomData.attendance && classroomData.attendance[today] && classroomData.attendance[today][matchedRosterStudentId]) || '';
+      const isCheckedIn = attStatus === 'present';
+      const checkinBadge = document.getElementById('dash-checkin-badge');
+      const checkinSub = document.getElementById('dash-checkin-sub');
+      if (isCheckedIn) {
+        checkinBadge.textContent = '✓ เช็คชื่อแล้ว';
+        checkinBadge.className = 'px-3 py-1 rounded-full bg-white text-emerald-700 text-xs font-extrabold shadow-xs';
+        if (checkinSub) checkinSub.textContent = 'บันทึกการเข้าเรียนวันนี้เรียบร้อยแล้ว ✨';
+      } else {
+        checkinBadge.textContent = 'แตะเช็คชื่อ';
+        checkinBadge.className = 'px-3 py-1 rounded-full bg-white/20 text-white text-xs font-extrabold';
+        if (checkinSub) checkinSub.textContent = 'แตะเพื่อยืนยันการเข้าเรียนกับครู';
+      }
+
+      // 3. Help Request Status
+      const helpObj = classroomData.helpRequests && classroomData.helpRequests[matchedRosterStudentId];
+      const isHelping = Boolean(helpObj && helpObj.active);
+      const helpCard = document.getElementById('help-request-card');
+      const helpPill = document.getElementById('dash-help-status-pill');
+      const helpBtn = document.getElementById('dash-btn-help');
+
+      if (isHelping) {
+        helpCard.classList.add('help-active-ring', 'border-rose-500');
+        helpPill.textContent = 'กำลังรอคุณครู...';
+        helpPill.className = 'px-2.5 py-1 rounded-full bg-rose-600 text-white text-[10px] font-extrabold animate-pulse shrink-0';
+        helpBtn.innerHTML = '⏳ ส่งสัญญาณขอความช่วยเหลือแล้ว (แตะเพื่อยกเลิก)';
+        helpBtn.className = 'w-full py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-900 text-white font-extrabold text-sm shadow-md transition';
+      } else {
+        helpCard.classList.remove('help-active-ring', 'border-rose-500');
+        helpPill.textContent = 'ปกติ';
+        helpPill.className = 'px-2.5 py-1 rounded-full bg-slate-100 text-slate-500 text-[10px] font-extrabold shrink-0';
+        helpBtn.innerHTML = '🙋 กดยกมือขอความช่วยเหลือ';
+        helpBtn.className = 'w-full py-3.5 rounded-2xl bg-gradient-to-r from-rose-500 via-pink-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white font-extrabold text-sm shadow-lg shadow-rose-500/25 transition active:scale-[0.98]';
+      }
+
+      // 4. Tasks List + Mission Progress Hero
+      const tasks = (classroomData && classroomData.tasks) || [];
+      const doneCount = tasks.filter(t => t.submissions && t.submissions[matchedRosterStudentId] === 'submitted').length;
+      updateMissionHeroProgress(isCheckedIn, doneCount, tasks.length);
+      renderStudentTasksList();
+    }
+
+    function renderStudentTasksList() {
+      const listEl = document.getElementById('dash-tasks-list');
+      const pillEl = document.getElementById('dash-tasks-summary-pill');
+      const barEl = document.getElementById('dash-tasks-progress-bar');
+      const tasks = (classroomData && classroomData.tasks) || [];
+
+      const doneCount = matchedRosterStudentId
+        ? tasks.filter(t => t.submissions && t.submissions[matchedRosterStudentId] === 'submitted').length
+        : 0;
+      if (pillEl) pillEl.textContent = `${doneCount}/${tasks.length}`;
+      if (barEl) barEl.style.width = tasks.length > 0 ? `${Math.round((doneCount / tasks.length) * 100)}%` : '0%';
+
+      if (tasks.length === 0) {
+        listEl.innerHTML = `
+          <div class="text-center py-8 px-4 rounded-2xl bg-slate-50 border border-dashed border-slate-200 space-y-1.5">
+            <div class="text-3xl">🎉</div>
+            <div class="text-xs font-extrabold text-slate-700">ยังไม่มีการบ้านหรือใบงานค้างในห้องนี้</div>
+            <div class="text-[11px] text-slate-400">เมื่อครูมอบหมายงานใหม่ รายการจะปรากฏที่นี่อัตโนมัติ</div>
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = tasks.map((t, idx) => {
+        const subStatus = (matchedRosterStudentId && t.submissions && t.submissions[matchedRosterStudentId]) || 'pending';
+        const isDone = subStatus === 'submitted';
+
+        return `
+          <div class="p-3.5 rounded-2xl border-2 transition ${isDone ? 'border-emerald-300 bg-emerald-50/40' : 'border-slate-200/90 bg-slate-50/60 hover:border-indigo-300'} space-y-3">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex items-start gap-2.5 min-w-0">
+                <span class="w-8 h-8 rounded-xl ${isDone ? 'bg-emerald-500 text-white' : 'bg-amber-100 text-amber-800'} flex items-center justify-center text-xs font-extrabold shrink-0">
+                  ${isDone ? '<i class="fa-solid fa-check"></i>' : (idx + 1)}
+                </span>
+                <div class="min-w-0">
+                  <div class="text-xs sm:text-sm font-extrabold text-slate-900 leading-snug">${escapeHtml(t.title)}</div>
+                  <div class="text-[11px] text-slate-500 mt-0.5"><i class="fa-regular fa-calendar mr-1"></i>กำหนดส่ง: ${escapeHtml(t.dueDate || '-')}</div>
+                </div>
+              </div>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold shrink-0 ${
+                isDone ? 'bg-emerald-600 text-white shadow-xs' : 'bg-amber-100 text-amber-800 border border-amber-300'
+              }">
+                ${isDone ? '✓ ส่งแล้ว' : 'ยังไม่ส่ง'}
+              </span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2">
+              <a
+                href="${escapeHtml(t.url)}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="py-2.5 px-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white text-xs font-extrabold text-center flex items-center justify-center gap-1.5 shadow-sm transition active:scale-[0.98]"
+              >
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> เปิดทำใบงาน
+              </a>
+              <button
+                type="button"
+                onclick="toggleTaskSubmission('${t.id}')"
+                class="py-2.5 px-3 rounded-xl ${
+                  isDone ? 'bg-emerald-600 hover:bg-emerald-700 text-white' : 'bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-slate-950'
+                } text-xs font-extrabold flex items-center justify-center gap-1.5 shadow-sm transition active:scale-[0.98]"
+              >
+                <i class="fa-solid ${isDone ? 'fa-circle-check' : 'fa-paper-plane'}"></i> ${isDone ? 'ส่งแล้ว (แตะแก้ไข)' : 'แจ้งส่งงานแล้ว'}
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    /*************************************************************************
+     * 3. REAL-TIME ACTIONS SYNCED DIRECTLY TO TEACHER'S SYSTEM
+     *************************************************************************/
+    async function pushStudentActionToTeacher(actionType, payloadObj) {
+      if (!isJoinedToClassroom || !matchedRosterStudentId) {
+        showToast('กรุณาเข้าร่วมห้องเรียนก่อนทำรายการนี้ครับ', 'amber');
+        return false;
+      }
+
+      const nowMs = Date.now();
+
+      if (teacherUsername && isCloudConfigured()) {
+        try {
+          const res = await fetch(APP_CONFIG.API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify({
+              action: 'studentLiveEvent',
+              teacher: teacherUsername,
+              classId: activeClassId,
+              studentId: matchedRosterStudentId,
+              eventType: actionType,
+              payload: payloadObj
+            })
+          });
+          const data = await res.json();
+          if (data.status === 'removed') {
+            disconnectFromClassroom('removed', data.message || 'คุณถูกนำออกจากห้องเรียนโดยครูผู้สอนแล้ว');
+            return false;
+          }
+        } catch (e) {}
+      }
+
+      const multiRaw = localStorage.getItem(MULTI_CLASS_KEY);
+      if (multiRaw) {
+        try {
+          const multiObj = JSON.parse(multiRaw);
+          if (multiObj && multiObj.classes && multiObj.classes[activeClassId]) {
+            const cls = multiObj.classes[activeClassId];
+            if (!checkIsStudentStillInClassroom(cls).present) {
+              disconnectFromClassroom('removed', 'คุณถูกนำออกจากห้องเรียนโดยครูผู้สอนแล้ว');
+              return false;
+            }
+            if (actionType === 'checkin') {
+              const today = new Date().toISOString().split('T')[0];
+              if (!cls.attendance) cls.attendance = {};
+              if (!cls.attendance[today]) cls.attendance[today] = {};
+              cls.attendance[today][matchedRosterStudentId] = 'present';
+            } else if (actionType === 'help') {
+              if (!cls.helpRequests) cls.helpRequests = {};
+              if (payloadObj.active) {
+                cls.helpRequests[matchedRosterStudentId] = {
+                  active: true,
+                  note: payloadObj.note || 'ต้องการความช่วยเหลือ',
+                  time: new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })
+                };
+              } else {
+                delete cls.helpRequests[matchedRosterStudentId];
+              }
+            } else if (actionType === 'submitTask') {
+              const task = (cls.tasks || []).find(t => t.id === payloadObj.taskId);
+              if (task) {
+                if (!task.submissions) task.submissions = {};
+                task.submissions[matchedRosterStudentId] = payloadObj.status || 'submitted';
+              }
+            }
+            cls.updatedAt = nowMs;
+            localStorage.setItem(MULTI_CLASS_KEY, JSON.stringify(multiObj));
+          }
+        } catch (e) {}
+      }
+
+      if (classroomData) {
+        if (actionType === 'checkin') {
+          const today = new Date().toISOString().split('T')[0];
+          if (!classroomData.attendance) classroomData.attendance = {};
+          if (!classroomData.attendance[today]) classroomData.attendance[today] = {};
+          classroomData.attendance[today][matchedRosterStudentId] = 'present';
+        } else if (actionType === 'help') {
+          if (!classroomData.helpRequests) classroomData.helpRequests = {};
+          if (payloadObj.active) {
+            classroomData.helpRequests[matchedRosterStudentId] = {
+              active: true,
+              note: payloadObj.note || 'ต้องการความช่วยเหลือ',
+              time: new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })
+            };
+          } else {
+            delete classroomData.helpRequests[matchedRosterStudentId];
+          }
+        } else if (actionType === 'submitTask') {
+          const task = (classroomData.tasks || []).find(t => t.id === payloadObj.taskId);
+          if (task) {
+            if (!task.submissions) task.submissions = {};
+            task.submissions[matchedRosterStudentId] = payloadObj.status || 'submitted';
+          }
+        }
+        classroomData.updatedAt = nowMs;
+      }
+
+      updateStudentSeatAndActionStatus();
+      return true;
+    }
+
+    async function studentCheckInNow() {
+      const ok = await pushStudentActionToTeacher('checkin', {});
+      if (ok) {
+        launchMiniConfetti();
+        showToast('เช็คชื่อเข้าเรียนเรียบร้อยแล้ว! ซิงก์ไปยังระบบครูแล้ว ✅', 'emerald');
+      }
+    }
+
+    async function toggleLiveHelpToTeacher() {
+      if (!matchedRosterStudentId) {
+        showToast('กรุณาเข้าร่วมห้องเรียนก่อนครับ', 'amber');
+        return;
+      }
+      const currentlyHelping = Boolean(
+        classroomData && classroomData.helpRequests && classroomData.helpRequests[matchedRosterStudentId] && classroomData.helpRequests[matchedRosterStudentId].active
+      );
+      const note = document.getElementById('dash-help-note').value.trim();
+
+      const ok = await pushStudentActionToTeacher('help', {
+        active: !currentlyHelping,
+        note
+      });
+
+      if (ok) {
+        if (!currentlyHelping) {
+          showToast('🙋 ส่งคำขอความช่วยเหลือไปที่โต๊ะของคุณบนหน้าจอครูแล้ว!', 'amber');
+        } else {
+          showToast('ยกเลิกคำขอความช่วยเหลือเรียบร้อยแล้ว', 'slate');
+        }
+      }
+    }
+
+    async function toggleTaskSubmission(taskId) {
+      if (!matchedRosterStudentId) {
+        showToast('กรุณาเข้าร่วมห้องเรียนก่อนครับ', 'amber');
+        return;
+      }
+      const task = (classroomData && classroomData.tasks || []).find(t => t.id === taskId);
+      const isDone = Boolean(task && task.submissions && task.submissions[matchedRosterStudentId] === 'submitted');
+      const nextStatus = isDone ? 'pending' : 'submitted';
+
+      const ok = await pushStudentActionToTeacher('submitTask', { taskId, status: nextStatus });
+      if (ok) {
+        if (nextStatus === 'submitted') launchMiniConfetti();
+        showToast(
+          nextStatus === 'submitted'
+            ? 'ส่งสถานะ "ส่งงานแล้ว" ไปยังระบบของครูเรียบร้อย! 🎉'
+            : 'เปลี่ยนสถานะเป็น "ยังไม่ส่ง" เรียบร้อยแล้ว',
+          nextStatus === 'submitted' ? 'emerald' : 'slate'
+        );
+      }
+    }
+
+    /*************************************************************************
+     * 4. QR CODE SCANNER (MULTI-CAMERA + JSQR IMAGE FALLBACK) & MANUAL CONNECT
+     *************************************************************************/
+    let isScannerStarting = false;
+
+    async function startQrScanner() {
+      if (isScannerStarting) return;
+
+      if (!window.isSecureContext && !/^(localhost|127\.0\.0\.1)$/i.test(window.location.hostname)) {
+        showToast('กล้องต้องเปิดผ่านเว็บ HTTPS (เช่น GitHub Pages) กรุณาใช้ปุ่ม "เลือกรูป QR" หรือกล้องมือถือแทนครับ', 'amber');
+        return;
+      }
+
+      if (typeof Html5Qrcode === 'undefined') {
+        showToast('กำลังโหลดตัวสแกน QR กรุณารอสักครู่หรือใช้ปุ่ม "เลือกรูป QR"', 'amber');
+        return;
+      }
+
+      const wrapper = document.getElementById('qr-reader-wrapper');
+      wrapper.classList.remove('hidden');
+
+      if (html5QrCodeInstance && html5QrCodeInstance.isScanning) {
+        return;
+      }
+
+      isScannerStarting = true;
+      try {
+        if (!html5QrCodeInstance) {
+          html5QrCodeInstance = new Html5Qrcode('qr-reader');
+        }
+
+        const scanConfig = {
+          fps: 12,
+          qrbox: (viewfinderWidth, viewfinderHeight) => {
+            const minEdge = Math.min(viewfinderWidth, viewfinderHeight);
+            const boxSize = Math.max(120, Math.min(260, Math.floor(minEdge * 0.75)));
+            return { width: boxSize, height: boxSize };
+          },
+          aspectRatio: 1.0
+        };
+
+        const onSuccess = (decodedText) => {
+          stopQrScanner();
+          processScannedQrText(decodedText);
+        };
+
+        try {
+          await html5QrCodeInstance.start({ facingMode: 'environment' }, scanConfig, onSuccess, () => {});
+          return;
+        } catch (envErr) {
+          const cameras = await Html5Qrcode.getCameras();
+          if (!cameras || cameras.length === 0) {
+            throw envErr;
+          }
+          const preferred = cameras.find(c => /back|rear|environment/i.test(c.label || '')) || cameras[0];
+          await html5QrCodeInstance.start(preferred.id, scanConfig, onSuccess, () => {});
+        }
+      } catch (err) {
+        wrapper.classList.add('hidden');
+        const errName = String((err && err.name) || err || '');
+        if (/NotAllowedError|Permission/i.test(errName)) {
+          showToast('ยังไม่ได้อนุญาตสิทธิ์กล้อง กรุณากดอนุญาตกล้องที่แถบเบราว์เซอร์ หรือใช้ปุ่ม "เลือกรูป QR"', 'amber');
+        } else if (/NotFoundError|OverconstrainedError/i.test(errName)) {
+          showToast('ไม่พบกล้องบนอุปกรณ์นี้ กรุณาใช้ปุ่ม "เลือกรูป QR" หรือวางลิงก์แทนครับ', 'amber');
+        } else if (/NotReadableError/i.test(errName)) {
+          showToast('กล้องกำลังถูกใช้งานโดยแอปอื่น กรุณาปิดแอปอื่นแล้วลองใหม่', 'amber');
+        } else {
+          showToast('ไม่สามารถเปิดกล้องได้ กรุณาใช้ปุ่ม "เลือกรูป QR" หรือพิมพ์ Username ครูแทนครับ', 'amber');
+        }
+      } finally {
+        isScannerStarting = false;
+      }
+    }
+
+    async function stopQrScanner() {
+      const wrapper = document.getElementById('qr-reader-wrapper');
+      if (wrapper) wrapper.classList.add('hidden');
+      if (html5QrCodeInstance) {
+        try {
+          if (html5QrCodeInstance.isScanning) {
+            await html5QrCodeInstance.stop();
+          }
+        } catch (e) {}
+      }
+    }
+
+    function decodeQrFileWithJsQr(file) {
+      return new Promise((resolve) => {
+        if (typeof jsQR !== 'function') {
+          resolve(null);
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => {
+            const trySizes = [Math.max(img.width, img.height), 1200, 800, 500];
+            const seen = new Set();
+            for (const targetMax of trySizes) {
+              const clamped = Math.min(Math.max(img.width, img.height), targetMax);
+              if (seen.has(clamped) || clamped < 80) continue;
+              seen.add(clamped);
+
+              const scale = clamped / Math.max(img.width, img.height);
+              const w = Math.max(1, Math.round(img.width * scale));
+              const h = Math.max(1, Math.round(img.height * scale));
+              const pad = 24;
+
+              const canvas = document.createElement('canvas');
+              canvas.width = w + pad * 2;
+              canvas.height = h + pad * 2;
+              const ctx = canvas.getContext('2d', { willReadFrequently: true });
+              ctx.fillStyle = '#ffffff';
+              ctx.fillRect(0, 0, canvas.width, canvas.height);
+              ctx.drawImage(img, pad, pad, w, h);
+
+              try {
+                const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const code = jsQR(imgData.data, canvas.width, canvas.height, { inversionAttempts: 'attemptBoth' });
+                if (code && code.data) {
+                  resolve(code.data);
+                  return;
+                }
+              } catch (err) {}
+            }
+            resolve(null);
+          };
+          img.onerror = () => resolve(null);
+          img.src = e.target.result;
+        };
+        reader.onerror = () => resolve(null);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    async function scanQrFromImageFile(event) {
+      const file = event.target.files && event.target.files[0];
+      event.target.value = '';
+      if (!file) return;
+
+      showToast('กำลังอ่าน QR Code จากรูปภาพ...', 'indigo');
+
+      const jsQrDecoded = await decodeQrFileWithJsQr(file);
+      if (jsQrDecoded) {
+        processScannedQrText(jsQrDecoded);
+        return;
+      }
+
+      if (typeof Html5Qrcode !== 'undefined') {
+        const fileScanner = new Html5Qrcode('qr-file-temp');
+        try {
+          const decodedText = await fileScanner.scanFile(file, false);
+          try { fileScanner.clear(); } catch (e) {}
+          if (decodedText) {
+            processScannedQrText(decodedText);
+            return;
+          }
+        } catch (e) {
+          try { fileScanner.clear(); } catch (ex) {}
+        }
+      }
+
+      showToast('ไม่พบ QR Code ในรูปภาพนี้ กรุณาครอปให้เห็นกรอบ QR ชัดเจน หรือใช้ปุ่ม "โหลด QR" จากหน้าจอครู', 'amber');
+    }
+
+    function handleManualJoinInput(e) {
+      e.preventDefault();
+      const val = document.getElementById('manual-room-link').value.trim();
+      if (!val) return;
+      document.getElementById('manual-room-link').value = '';
+
+      if (!/^https?:\/\//i.test(val) && !val.includes('?') && !val.includes('=')) {
+        joinTeacherClassroom(val.toLowerCase(), '', true);
+        return;
+      }
+      processScannedQrText(val);
+    }
+
+    function showScannedExternalLinkBanner(urlStr) {
+      const banner = document.getElementById('st-scanned-link-banner');
+      const textEl = document.getElementById('st-scanned-link-text');
+      const anchor = document.getElementById('st-scanned-link-anchor');
+      if (!banner || !textEl || !anchor) return;
+      textEl.textContent = urlStr;
+      anchor.href = urlStr;
+      banner.classList.remove('hidden');
+    }
+
+    function processScannedQrText(rawText) {
+      const text = String(rawText || '').trim();
+      if (!text) return;
+
+      try {
+        let parsedUrl = null;
+        if (/^https?:\/\//i.test(text) || /^file:\/\//i.test(text)) {
+          parsedUrl = new URL(text);
+        } else if (text.includes('classId=') || text.includes('teacher=')) {
+          const queryPart = text.includes('?') ? text.slice(text.indexOf('?')) : ('?' + text);
+          parsedUrl = new URL('https://smart-classroom.local/' + queryPart);
+        } else if (/^[a-z0-9.-]+\.[a-z]{2,}(\/|$)/i.test(text)) {
+          parsedUrl = new URL('https://' + text);
+        }
+
+        if (parsedUrl) {
+          const classId = parsedUrl.searchParams.get('classId');
+          const teacher = parsedUrl.searchParams.get('teacher');
+
+          if (classId || teacher) {
+            joinTeacherClassroom(teacher || '', classId || '', true);
+            return;
+          }
+
+          const finalUrl = parsedUrl.toString();
+          const activeTask = classroomData && classroomData.tasks && classroomData.tasks.find(t =>
+            t.url && (t.url.trim() === text || t.url.trim() === finalUrl)
+          );
+          if (activeTask && matchedRosterStudentId) {
+            pushStudentActionToTeacher('submitTask', { taskId: activeTask.id, status: 'submitted' });
+          }
+
+          showScannedExternalLinkBanner(finalUrl);
+          const opened = window.open(finalUrl, '_blank', 'noopener,noreferrer');
+          if (opened) {
+            showToast('เปิดลิงก์จาก QR Code แล้ว!', 'emerald');
+          } else {
+            showToast('สแกน QR สำเร็จ! แตะปุ่ม "เปิดลิงก์" ด้านบนเพื่อเข้าทำใบงาน', 'indigo');
+          }
+          return;
+        }
+
+        if (/^[a-zA-Z0-9_]{3,30}$/.test(text)) {
+          joinTeacherClassroom(text.toLowerCase(), '', true);
+          return;
+        }
+
+        showToast(`อ่านค่า QR Code ได้: ${text}`, 'indigo');
+      } catch (e) {
+        showToast(`อ่านค่า QR Code ได้: ${text}`, 'indigo');
+      }
+    }
+
+    /*************************************************************************
+     * APPEARANCE & SETTINGS ENGINE (FONTS, FONT SIZE, COLOR THEME, BACKGROUND)
+     *************************************************************************/
+    const APPEARANCE_STORAGE_KEY = 'SMART_SEATING_APPEARANCE_V1';
+
+    const AVAILABLE_FONTS = [
+      { id: 'TH Niramit AS',              label: 'TH Niramit AS',              desc: 'สุภาพ นุ่มนวล อ่านง่าย (ค่าเริ่มต้น)',   stack: "'TH Niramit AS', 'Niramit', sans-serif", uploaded: true },
+      { id: 'TH Sarabun PSK',             label: 'TH Sarabun PSK',             desc: 'มาตรฐานราชการไทย คมชัด',                 stack: "'TH Sarabun PSK', 'Sarabun', sans-serif", uploaded: true },
+      { id: 'JaoHalloween',               label: 'JaoHalloween Bold',          desc: 'หัวกลมน่ารัก ขี้เล่น สดใส',               stack: "'JaoHalloween', 'Mali', sans-serif", uploaded: true },
+      { id: 'Royal Institute of Siam New',label: 'Royal Institute of Siam',    desc: 'ไทยร่วมสมัย ภูมิฐาน คลาสสิก',             stack: "'Royal Institute of Siam New', 'Niramit', serif", uploaded: true },
+      { id: 'Kanit',                      label: 'Kanit',                      desc: 'ทันสมัย กะทัดรัด ชัดเจนบนหน้าจอ',         stack: "'Kanit', sans-serif", uploaded: false },
+      { id: 'Mali',                       label: 'Mali',                       desc: 'ลายมือเด็กน่ารัก เหมาะกับห้องเรียน',      stack: "'Mali', cursive, sans-serif", uploaded: false },
+      { id: 'Prompt',                     label: 'Prompt',                     desc: 'โมเดิร์น โปร่ง สะอาดตา',                 stack: "'Prompt', sans-serif", uploaded: false }
+    ];
+
+    const ACCENT_THEMES = [
+      { id: 'indigo',  label: 'คราม-ม่วง',   c1: '#4f46e5', c2: '#7c3aed', soft: '#eef2ff', border: '#a5b4fc' },
+      { id: 'sky',     label: 'ฟ้าสดใส',     c1: '#0284c7', c2: '#06b6d4', soft: '#e0f2fe', border: '#7dd3fc' },
+      { id: 'emerald', label: 'เขียวมิ้นต์', c1: '#059669', c2: '#14b8a6', soft: '#d1fae5', border: '#6ee7b7' },
+      { id: 'rose',    label: 'ชมพูซากุระ',  c1: '#e11d48', c2: '#ec4899', soft: '#ffe4e6', border: '#fda4af' },
+      { id: 'amber',   label: 'ส้มอบอุ่น',   c1: '#d97706', c2: '#f97316', soft: '#fef3c7', border: '#fcd34d' },
+      { id: 'violet',  label: 'ม่วงพาสเทล',  c1: '#7c3aed', c2: '#c026d3', soft: '#f3e8ff', border: '#d8b4fe' },
+      { id: 'crimson', label: 'แดงทับทิม',   c1: '#dc2626', c2: '#e11d48', soft: '#fee2e2', border: '#fca5a5' },
+      { id: 'slate',   label: 'เทามินิมอล',  c1: '#334155', c2: '#475569', soft: '#f1f5f9', border: '#94a3b8' }
+    ];
+
+    const DEFAULT_APPEARANCE = {
+      fontFamily: 'TH Niramit AS',
+      fontSizePct: 100,
+      accentId: 'indigo',
+      customAccentHex: '#4f46e5',
+      bgImage: '',
+      bgGradient: '',
+      bgDim: 35,
+      bgBlur: 0,
+      bgGlass: true
+    };
+
+    function getSavedAppearance() {
+      try {
+        const raw = localStorage.getItem(APPEARANCE_STORAGE_KEY);
+        if (raw) return { ...DEFAULT_APPEARANCE, ...JSON.parse(raw) };
+      } catch (e) {}
+      return { ...DEFAULT_APPEARANCE };
+    }
+
+    function saveAppearance(nextObj, notifyMsg = '') {
+      const merged = { ...DEFAULT_APPEARANCE, ...nextObj };
+      try {
+        localStorage.setItem(APPEARANCE_STORAGE_KEY, JSON.stringify(merged));
+      } catch (quotaErr) {
+        // If custom image was too big for quota, keep settings without image and alert user
+        merged.bgImage = '';
+        localStorage.setItem(APPEARANCE_STORAGE_KEY, JSON.stringify(merged));
+        if (typeof showToast === 'function') {
+          showToast('ไฟล์รูปพื้นหลังใหญ่เกินพื้นที่จัดเก็บ กรุณาเลือกรูปที่ขนาดเล็กลง', 'amber');
+        }
+      }
+      applySavedAppearance(merged);
+      if (document.getElementById('settings-modal') && !document.getElementById('settings-modal').classList.contains('hidden')) {
+        renderSettingsModalContent();
+      }
+      if (notifyMsg && typeof showToast === 'function') {
+        showToast(notifyMsg, 'indigo');
+      }
+    }
+
+    function shadeHexColor(hex, percent) {
+      const clean = String(hex || '#4f46e5').replace('#', '');
+      if (clean.length !== 6) return '#7c3aed';
+      const num = parseInt(clean, 16);
+      const r = Math.min(255, Math.max(0, (num >> 16) + Math.round(2.55 * percent)));
+      const g = Math.min(255, Math.max(0, ((num >> 8) & 0x00ff) + Math.round(2.55 * percent)));
+      const b = Math.min(255, Math.max(0, (num & 0x0000ff) + Math.round(2.55 * percent)));
+      return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
+
+    function ensureBackgroundLayerElement() {
+      let layer = document.getElementById('app-bg-layer');
+      if (!layer) {
+        layer = document.createElement('div');
+        layer.id = 'app-bg-layer';
+        layer.innerHTML = '<div id="app-bg-image"></div><div id="app-bg-overlay"></div>';
+        document.body.prepend(layer);
+      }
+      return layer;
+    }
+
+    function applySavedAppearance(override = null) {
+      const cfg = override || getSavedAppearance();
+      const root = document.documentElement;
+
+      // 1. Font Family
+      const fontObj = AVAILABLE_FONTS.find(f => f.id === cfg.fontFamily) || AVAILABLE_FONTS[0];
+      root.style.setProperty('--app-font-family', fontObj.stack);
+
+      // 2. Root Font Size Scaling (scales all Tailwind rem text proportionally)
+      const pct = Math.min(130, Math.max(85, Number(cfg.fontSizePct) || 100));
+      root.style.fontSize = `${(16 * pct / 100).toFixed(2)}px`;
+
+      // 3. Accent Color Theme
+      let c1 = '#4f46e5', c2 = '#7c3aed', soft = '#eef2ff', border = '#a5b4fc';
+      if (cfg.accentId === 'custom' && cfg.customAccentHex) {
+        c1 = cfg.customAccentHex;
+        c2 = shadeHexColor(c1, -18);
+        soft = c1 + '22';
+        border = c1 + '88';
+      } else {
+        const preset = ACCENT_THEMES.find(t => t.id === cfg.accentId) || ACCENT_THEMES[0];
+        c1 = preset.c1; c2 = preset.c2; soft = preset.soft; border = preset.border;
+      }
+      root.style.setProperty('--app-accent', c1);
+      root.style.setProperty('--app-accent-2', c2);
+      root.style.setProperty('--app-accent-soft', soft);
+      root.style.setProperty('--app-accent-border', border);
+      if (cfg.accentId && cfg.accentId !== 'indigo') {
+        document.body.classList.add('has-custom-accent');
+      } else {
+        document.body.classList.remove('has-custom-accent');
+      }
+
+      // Apply accent to student.html header if present
+      const stHeader = document.getElementById('student-top-header');
+      if (stHeader && cfg.accentId && cfg.accentId !== 'indigo') {
+        stHeader.style.background = `linear-gradient(90deg, ${c1}, ${c2})`;
+      } else if (stHeader) {
+        stHeader.style.background = '';
+      }
+
+      // 4. Custom Background Image / Gradient
+      const layer = ensureBackgroundLayerElement();
+      const bgImgEl = document.getElementById('app-bg-image');
+      const bgOverlayEl = document.getElementById('app-bg-overlay');
+      const isDark = document.body.classList.contains('dark-theme');
+
+      if (cfg.bgImage || cfg.bgGradient) {
+        document.body.classList.add('has-custom-bg');
+        if (cfg.bgGlass !== false) document.body.classList.add('bg-glass-mode');
+        else document.body.classList.remove('bg-glass-mode');
+
+        if (cfg.bgImage) {
+          bgImgEl.style.backgroundImage = `url("${cfg.bgImage}")`;
+        } else {
+          bgImgEl.style.backgroundImage = cfg.bgGradient;
+        }
+        const blurPx = Math.max(0, Math.min(14, Number(cfg.bgBlur) || 0));
+        bgImgEl.style.filter = blurPx > 0 ? `blur(${blurPx}px)` : 'none';
+
+        const dimAlpha = Math.max(0, Math.min(0.85, (Number(cfg.bgDim) || 0) / 100));
+        bgOverlayEl.style.backgroundColor = isDark
+          ? `rgba(9, 13, 22, ${dimAlpha})`
+          : `rgba(241, 245, 249, ${dimAlpha})`;
+      } else {
+        document.body.classList.remove('has-custom-bg', 'bg-glass-mode');
+        bgImgEl.style.backgroundImage = 'none';
+        bgOverlayEl.style.backgroundColor = 'transparent';
+      }
+
+      if (typeof applyResponsiveGridFit === 'function') {
+        requestAnimationFrame(() => applyResponsiveGridFit());
+      }
+    }
+
+    function openSettingsModal() {
+      renderSettingsModalContent();
+      const modal = document.getElementById('settings-modal');
+      if (!modal) return;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeSettingsModal() {
+      const modal = document.getElementById('settings-modal');
+      if (!modal) return;
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function renderSettingsModalContent() {
+      const cfg = getSavedAppearance();
+      const isDark = document.body.classList.contains('dark-theme');
+
+      // 1. Font Cards
+      const fontGrid = document.getElementById('settings-font-grid');
+      const fontBadge = document.getElementById('settings-current-font-badge');
+      if (fontBadge) fontBadge.textContent = cfg.fontFamily;
+      if (fontGrid) {
+        fontGrid.innerHTML = AVAILABLE_FONTS.map(f => {
+          const active = cfg.fontFamily === f.id;
+          return `
+            <button
+              type="button"
+              onclick="setAppearanceFont('${f.id}')"
+              class="p-3 rounded-2xl border-2 text-left transition flex items-center justify-between gap-2 ${
+                active
+                  ? 'border-indigo-600 bg-indigo-50/70 shadow-xs'
+                  : 'border-slate-200 bg-white hover:border-indigo-300'
+              }"
+            >
+              <div class="min-w-0">
+                <div class="text-sm font-bold text-slate-900 truncate" style="font-family: ${f.stack} !important;">
+                  ${f.label} • กขคง 123
+                </div>
+                <div class="text-[11px] text-slate-500 truncate">${f.desc}</div>
+              </div>
+              <div class="shrink-0">
+                ${active
+                  ? '<span class="w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs"><i class="fa-solid fa-check"></i></span>'
+                  : (f.uploaded ? '<span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[9px] font-bold">ฟอนต์หลัก</span>' : '')
+                }
+              </div>
+            </button>
+          `;
+        }).join('');
+      }
+
+      // 2. Font Size Slider & Preset Buttons
+      const slider = document.getElementById('settings-font-size-slider');
+      const sizeVal = document.getElementById('settings-font-size-value');
+      if (slider) slider.value = String(cfg.fontSizePct || 100);
+      if (sizeVal) sizeVal.textContent = `${cfg.fontSizePct || 100}%`;
+      document.querySelectorAll('.settings-fsize-btn').forEach(btn => {
+        const v = Number(btn.getAttribute('data-fsize'));
+        if (v === Number(cfg.fontSizePct || 100)) {
+          btn.className = 'settings-fsize-btn py-1.5 rounded-xl border-2 border-indigo-600 bg-indigo-600 text-white text-xs font-extrabold transition';
+        } else {
+          btn.className = 'settings-fsize-btn py-1.5 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-700 hover:border-indigo-400 transition';
+        }
+      });
+
+      // 3. Light / Dark Mode Buttons
+      const btnL = document.getElementById('settings-mode-light');
+      const btnD = document.getElementById('settings-mode-dark');
+      if (btnL && btnD) {
+        btnL.className = !isDark
+          ? 'p-3 rounded-2xl border-2 border-indigo-600 bg-indigo-50 flex items-center justify-center gap-2 text-xs sm:text-sm font-extrabold text-indigo-900 shadow-xs transition'
+          : 'p-3 rounded-2xl border-2 border-slate-600 bg-slate-800 flex items-center justify-center gap-2 text-xs sm:text-sm font-bold text-slate-300 hover:border-indigo-400 transition';
+        btnD.className = isDark
+          ? 'p-3 rounded-2xl border-2 border-indigo-400 bg-slate-950 text-white flex items-center justify-center gap-2 text-xs sm:text-sm font-extrabold shadow-xs transition'
+          : 'p-3 rounded-2xl border-2 border-slate-200 bg-slate-800 text-white flex items-center justify-center gap-2 text-xs sm:text-sm font-bold hover:border-indigo-400 transition';
+      }
+
+      // Accent Swatches
+      const accentGrid = document.getElementById('settings-accent-grid');
+      const customPicker = document.getElementById('settings-custom-color-picker');
+      if (customPicker && cfg.customAccentHex) customPicker.value = cfg.customAccentHex;
+      if (accentGrid) {
+        accentGrid.innerHTML = ACCENT_THEMES.map(t => {
+          const active = cfg.accentId === t.id;
+          return `
+            <button
+              type="button"
+              onclick="setAppearanceAccent('${t.id}')"
+              class="h-10 rounded-xl flex items-center justify-center text-white transition ${active ? 'ring-2 ring-offset-2 ring-slate-900 scale-105' : 'opacity-85 hover:opacity-100'}"
+              style="background: linear-gradient(135deg, ${t.c1}, ${t.c2});"
+              title="${t.label}"
+            >
+              ${active ? '<i class="fa-solid fa-check text-xs"></i>' : ''}
+            </button>
+          `;
+        }).join('');
+      }
+
+      // 4. Custom Background Preview & Sliders
+      const preview = document.getElementById('settings-bg-preview');
+      const rmBtn = document.getElementById('settings-btn-remove-bg');
+      const dimSlider = document.getElementById('settings-bg-dim-slider');
+      const dimVal = document.getElementById('settings-bg-dim-val');
+      const blurSlider = document.getElementById('settings-bg-blur-slider');
+      const blurVal = document.getElementById('settings-bg-blur-val');
+      const glassToggle = document.getElementById('settings-bg-glass-toggle');
+
+      if (preview) {
+        if (cfg.bgImage) {
+          preview.style.backgroundImage = `url("${cfg.bgImage}")`;
+          preview.innerHTML = '';
+        } else if (cfg.bgGradient) {
+          preview.style.backgroundImage = cfg.bgGradient;
+          preview.innerHTML = '';
+        } else {
+          preview.style.backgroundImage = 'none';
+          preview.innerHTML = '<i class="fa-regular fa-image text-2xl mb-1"></i><span>ยังไม่ได้ตั้งภาพพื้นหลัง</span>';
+        }
+      }
+      if (rmBtn) {
+        if (cfg.bgImage || cfg.bgGradient) rmBtn.classList.remove('hidden');
+        else rmBtn.classList.add('hidden');
+      }
+      if (dimSlider) dimSlider.value = String(cfg.bgDim ?? 35);
+      if (dimVal) dimVal.textContent = `${cfg.bgDim ?? 35}%`;
+      if (blurSlider) blurSlider.value = String(cfg.bgBlur ?? 0);
+      if (blurVal) blurVal.textContent = `${cfg.bgBlur ?? 0} px`;
+      if (glassToggle) glassToggle.checked = cfg.bgGlass !== false;
+    }
+
+    function setAppearanceFont(fontId) {
+      const curr = getSavedAppearance();
+      saveAppearance({ ...curr, fontFamily: fontId }, `เปลี่ยนฟอนต์เป็น "${fontId}" แล้ว ✨`);
+    }
+
+    function setAppearanceFontSize(val) {
+      const pct = Math.min(130, Math.max(85, parseInt(val, 10) || 100));
+      const curr = getSavedAppearance();
+      saveAppearance({ ...curr, fontSizePct: pct });
+    }
+
+    function setAppearanceDarkMode(isDark) {
+      if (typeof setAppTheme === 'function') {
+        setAppTheme(isDark ? 'dark' : 'light', false);
+      } else if (typeof applyStudentTheme === 'function') {
+        applyStudentTheme(isDark ? 'dark' : 'light');
+      }
+      applySavedAppearance();
+      renderSettingsModalContent();
+    }
+
+    function setAppearanceAccent(accentId) {
+      const curr = getSavedAppearance();
+      const preset = ACCENT_THEMES.find(t => t.id === accentId);
+      saveAppearance({ ...curr, accentId, customAccentHex: preset ? preset.c1 : curr.customAccentHex }, `เปลี่ยนธีมสี UI เป็น "${preset ? preset.label : accentId}" แล้ว 🎨`);
+    }
+
+    function setAppearanceCustomAccent(hex) {
+      const curr = getSavedAppearance();
+      saveAppearance({ ...curr, accentId: 'custom', customAccentHex: hex });
+    }
+
+    function setPresetBgGradient(grad) {
+      const curr = getSavedAppearance();
+      saveAppearance({ ...curr, bgImage: '', bgGradient: grad }, grad ? 'ตั้งค่าพื้นหลังสำเร็จรูปแล้ว ✨' : 'ลบภาพพื้นหลังแล้ว');
+    }
+
+    function setAppearanceBgDim(val) {
+      const curr = getSavedAppearance();
+      saveAppearance({ ...curr, bgDim: parseInt(val, 10) || 0 });
+    }
+
+    function setAppearanceBgBlur(val) {
+      const curr = getSavedAppearance();
+      saveAppearance({ ...curr, bgBlur: parseInt(val, 10) || 0 });
+    }
+
+    function setAppearanceBgGlass(enabled) {
+      const curr = getSavedAppearance();
+      saveAppearance({ ...curr, bgGlass: Boolean(enabled) });
+    }
+
+    function clearAppearanceBackground() {
+      const curr = getSavedAppearance();
+      saveAppearance({ ...curr, bgImage: '', bgGradient: '' }, 'ลบภาพพื้นหลังเรียบร้อยแล้ว');
+    }
+
+    function handleAppearanceBgUpload(event) {
+      const file = event.target.files && event.target.files[0];
+      event.target.value = '';
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          // Compress nicely to max 1600px so it stays sharp and fits smoothly inside localStorage
+          const maxDim = 1600;
+          let w = img.naturalWidth || img.width;
+          let h = img.naturalHeight || img.height;
+          if (w > maxDim || h > maxDim) {
+            const ratio = maxDim / Math.max(w, h);
+            w = Math.round(w * ratio);
+            h = Math.round(h * ratio);
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.80);
+
+          const curr = getSavedAppearance();
+          saveAppearance({ ...curr, bgImage: dataUrl, bgGradient: '' }, 'ตั้งค่ารูปภาพพื้นหลังใหม่เรียบร้อยแล้ว! 🖼️');
+        };
+        img.onerror = () => {
+          if (typeof showToast === 'function') showToast('ไม่สามารถอ่านไฟล์รูปภาพนี้ได้', 'amber');
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function resetAllAppearanceSettings() {
+      localStorage.removeItem(APPEARANCE_STORAGE_KEY);
+      applySavedAppearance(DEFAULT_APPEARANCE);
+      if (document.getElementById('settings-modal') && !document.getElementById('settings-modal').classList.contains('hidden')) {
+        renderSettingsModalContent();
+      }
+      if (typeof showToast === 'function') {
+        showToast('คืนค่าฟอนต์ ขนาดตัวอักษร สีธีม และพื้นหลังกลับเป็นค่าเริ่มต้นแล้ว', 'slate');
+      }
+    }
+
+
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function showToast(message, color = 'indigo') {
+      const container = document.getElementById('st-toast-container');
+      const toast = document.createElement('div');
+      const colors = {
+        indigo: 'bg-indigo-950 text-white border-indigo-700',
+        emerald: 'bg-emerald-900 text-white border-emerald-700',
+        amber: 'bg-amber-900 text-white border-amber-700',
+        slate: 'bg-slate-800 text-white border-slate-700'
+      };
+      toast.className = `px-4 py-3 rounded-2xl border shadow-xl text-xs font-bold flex items-center gap-2 animate-shuffle ${colors[color] || colors.indigo}`;
+      toast.innerHTML = `<i class="fa-solid fa-circle-info"></i> <span>${escapeHtml(message)}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 3500);
+    }
+  </script>
+</body>
+</html>

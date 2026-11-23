@@ -1,0 +1,839 @@
+// หากเปิดจากเมนู "ส่วนขยาย > Apps Script" ใน Google Sheets ให้เว้นว่างไว้
+// หากสร้างโปรเจกต์แยกต่างหาก ให้ใส่รหัสไฟล์ Google Sheets (ระหว่าง /d/ กับ /edit)
+const SPREADSHEET_ID = '';
+
+const SHEET_USERS = 'Users';
+const SHEET_STUDENTS = 'Students';
+const SHEET_DATA = 'UserData';
+
+const HEADERS_USERS = [
+  'ชื่อผู้ใช้งานครู (username)',
+  'รหัสผ่าน (password)',
+  'ชื่อ-นามสกุล (fullname)',
+  'โรงเรียน (school)',
+  'วันที่สมัคร (created_at)'
+];
+
+const HEADERS_STUDENTS = [
+  'รหัสนักเรียน / ชื่อผู้ใช้ (username)',
+  'รหัสผ่าน (password)',
+  'ชื่อ-นามสกุล (fullname)',
+  'ชื่อเล่น (nickname)',
+  'เลขที่ (number)',
+  'ชั้นเรียน (classroom)',
+  'วันที่สมัคร (created_at)'
+];
+
+const HEADERS_DATA = [
+  'ชื่อผู้ใช้งานครู (username)',
+  'ข้อมูลห้องเรียน (state_json)',
+  'อัปเดตล่าสุด (updated_at)'
+];
+
+function getSpreadsheet() {
+  const ss = SPREADSHEET_ID
+    ? SpreadsheetApp.openById(SPREADSHEET_ID)
+    : SpreadsheetApp.getActiveSpreadsheet();
+  if (!ss) {
+    throw new Error('ไม่พบไฟล์ Google Sheets กรุณาเปิดจากเมนู "ส่วนขยาย > Apps Script" ในไฟล์ชีต หรือใส่ SPREADSHEET_ID');
+  }
+  return ss;
+}
+
+// =========================================================================
+// กดเลือกฟังก์ชันนี้ด้านบนแล้วคลิก "เรียกใช้ (Run)" 1 ครั้ง
+// เพื่อจัดหัวตารางและซ่อมคอลัมน์ให้ครบทั้งฝั่งครู (Users, UserData) และนักเรียน (Students)
+// =========================================================================
+function setupAndFixAllSheets() {
+  const ss = getSpreadsheet();
+  fixUsersSheet(ss);
+  fixStudentsSheet(ss);
+  fixUserDataSheet(ss);
+  Logger.log('ปรับปรุงหัวตารางและจัดเรียงข้อมูลครบทั้ง 3 ชีต (Users, Students, UserData) เรียบร้อยแล้ว');
+}
+
+function setupAllSheetHeaders() {
+  setupAndFixAllSheets();
+}
+
+function isHeaderText(cellValue) {
+  const text = String(cellValue === undefined || cellValue === null ? '' : cellValue).trim().toLowerCase();
+  return (
+    text === 'username' ||
+    text.indexOf('(username)') !== -1 ||
+    text.indexOf('ชื่อผู้ใช้งาน') !== -1 ||
+    text.indexOf('รหัสนักเรียน') !== -1
+  );
+}
+
+function fixUsersSheet(ss) {
+  if (!ss) ss = getSpreadsheet();
+  let sheet = ss.getSheetByName(SHEET_USERS);
+  if (!sheet) {
+    sheet = ss.insertSheet(SHEET_USERS);
+    sheet.appendRow(HEADERS_USERS);
+  } else if (sheet.getLastRow() === 0) {
+    sheet.appendRow(HEADERS_USERS);
+  } else {
+    const firstCell = sheet.getRange(1, 1).getValue();
+    if (isHeaderText(firstCell)) {
+      sheet.getRange(1, 1, 1, HEADERS_USERS.length).setValues([HEADERS_USERS]);
+    } else {
+      sheet.insertRowBefore(1);
+      sheet.getRange(1, 1, 1, HEADERS_USERS.length).setValues([HEADERS_USERS]);
+    }
+  }
+  formatHeaderRow(sheet, HEADERS_USERS.length, SHEET_USERS);
+}
+
+function fixStudentsSheet(ss) {
+  if (!ss) ss = getSpreadsheet();
+  let sheet = ss.getSheetByName(SHEET_STUDENTS);
+  if (!sheet) {
+    sheet = ss.insertSheet(SHEET_STUDENTS);
+    sheet.appendRow(HEADERS_STUDENTS);
+  } else {
+    const lastRow = sheet.getLastRow();
+    const lastCol = Math.max(sheet.getLastColumn(), 8);
+
+    if (lastRow === 0) {
+      sheet.appendRow(HEADERS_STUDENTS);
+    } else {
+      const firstCell = sheet.getRange(1, 1).getValue();
+      const dataStartRow = isHeaderText(firstCell) ? 2 : 1;
+
+      if (lastRow >= dataStartRow) {
+        const rawRows = sheet.getRange(dataStartRow, 1, lastRow - dataStartRow + 1, lastCol).getValues();
+        const fixedRows = [];
+
+        for (let i = 0; i < rawRows.length; i++) {
+          const row = rawRows[i];
+          const hasAnyData = row.some(function (v) {
+            return String(v === undefined || v === null ? '' : v).trim() !== '';
+          });
+          if (!hasAnyData) continue;
+
+          const colG = String(row[6] === undefined || row[6] === null ? '' : row[6]).trim();
+          const colH = String(row[7] === undefined || row[7] === null ? '' : row[7]).trim();
+
+          if (colG !== '' && colH !== '') {
+            fixedRows.push([row[0], row[1], row[3], row[4], row[5], row[6], row[7]]);
+          } else if (colG === '' && colH !== '') {
+            fixedRows.push([row[0], row[1], row[2], row[3], row[4], row[5], row[7]]);
+          } else {
+            fixedRows.push([row[0], row[1], row[2], row[3], row[4], row[5], row[6]]);
+          }
+        }
+
+        sheet.clearContents();
+        sheet.getRange(1, 1, 1, HEADERS_STUDENTS.length).setValues([HEADERS_STUDENTS]);
+        if (fixedRows.length > 0) {
+          sheet.getRange(2, 1, fixedRows.length, HEADERS_STUDENTS.length).setValues(fixedRows);
+        }
+      } else {
+        sheet.clearContents();
+        sheet.getRange(1, 1, 1, HEADERS_STUDENTS.length).setValues([HEADERS_STUDENTS]);
+      }
+
+      if (sheet.getMaxColumns() >= 8) {
+        sheet.getRange(1, 8, Math.max(lastRow, 1), 1).clearFormat();
+      }
+    }
+  }
+  formatHeaderRow(sheet, HEADERS_STUDENTS.length, SHEET_STUDENTS);
+}
+
+function fixUserDataSheet(ss) {
+  if (!ss) ss = getSpreadsheet();
+  let sheet = ss.getSheetByName(SHEET_DATA);
+  if (!sheet) {
+    sheet = ss.insertSheet(SHEET_DATA);
+    sheet.appendRow(HEADERS_DATA);
+  } else if (sheet.getLastRow() === 0) {
+    sheet.appendRow(HEADERS_DATA);
+  } else {
+    const firstCell = sheet.getRange(1, 1).getValue();
+    if (isHeaderText(firstCell)) {
+      sheet.getRange(1, 1, 1, HEADERS_DATA.length).setValues([HEADERS_DATA]);
+    } else {
+      sheet.insertRowBefore(1);
+      sheet.getRange(1, 1, 1, HEADERS_DATA.length).setValues([HEADERS_DATA]);
+    }
+  }
+  formatHeaderRow(sheet, HEADERS_DATA.length, SHEET_DATA);
+}
+
+function doGet() {
+  return jsonResponse({ status: 'ok', message: 'Smart Classroom API is running' });
+}
+
+function detectGenderFromName(name, number) {
+  const txt = String(name || '').trim();
+  if (/^(ด\.ญ\.|เด็กหญิง|น\.ส\.|นางสาว|ญ\.)/.test(txt)) return 'F';
+  if (/^(ด\.ช\.|เด็กชาย|นาย|ช\.)/.test(txt)) return 'M';
+  return (Number(number) || 1) % 2 === 1 ? 'M' : 'F';
+}
+
+function seatStudentOnFirstEmptyDesk(targetClass, studentId) {
+  if (!targetClass.desks) targetClass.desks = {};
+  const rows = Number(targetClass.rows) || 4;
+  const cols = Number(targetClass.cols) || 6;
+
+  // Check if student is already seated
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const key = r + '-' + c;
+      if (targetClass.desks[key] && !targetClass.desks[key].disabled && targetClass.desks[key].studentId === studentId) {
+        return key;
+      }
+    }
+  }
+
+  // Find first empty active desk
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const key = r + '-' + c;
+      if (!targetClass.desks[key]) {
+        targetClass.desks[key] = { studentId: null, locked: false, disabled: false };
+      }
+      if (!targetClass.desks[key].disabled && !targetClass.desks[key].studentId) {
+        targetClass.desks[key].studentId = studentId;
+        targetClass.desks[key].locked = false;
+        return key;
+      }
+    }
+  }
+
+  // If all desks are full and rows < 10, expand by 1 row and place on first desk of new row
+  if (rows < 10) {
+    targetClass.rows = rows + 1;
+    for (let c = 0; c < cols; c++) {
+      const key = rows + '-' + c;
+      targetClass.desks[key] = { studentId: c === 0 ? studentId : null, locked: false, disabled: false };
+    }
+    return rows + '-0';
+  }
+  return null;
+}
+
+function applyStudentJoinToClass(targetClass, studentProfile, nowMs) {
+  if (!Array.isArray(targetClass.students)) targetClass.students = [];
+  if (!targetClass.desks) targetClass.desks = {};
+  if (!targetClass.removedStudents) targetClass.removedStudents = {};
+
+  const accUser = String(studentProfile.username || '').trim().toLowerCase();
+  const fullname = String(studentProfile.fullname || '').trim() || ('นักเรียน ' + (studentProfile.number || ''));
+  const nickname = String(studentProfile.nickname || '').trim();
+  const number = parseInt(studentProfile.number, 10) || (targetClass.students.length + 1);
+  const gender = studentProfile.gender || detectGenderFromName(fullname, number);
+
+  // Clear previous removal markers because the student is explicitly joining now
+  if (accUser) {
+    delete targetClass.removedStudents['acc:' + accUser];
+    delete targetClass.removedStudents[accUser];
+  }
+
+  // 1. Try matching existing student by accountUsername
+  let matched = null;
+  if (accUser) {
+    for (let i = 0; i < targetClass.students.length; i++) {
+      if (String(targetClass.students[i].accountUsername || '').trim().toLowerCase() === accUser) {
+        matched = targetClass.students[i];
+        break;
+      }
+    }
+  }
+
+  // 2. Try matching by exact name or placeholder with same number
+  if (!matched) {
+    for (let i = 0; i < targetClass.students.length; i++) {
+      const st = targetClass.students[i];
+      const sameName = String(st.name || '').trim() === fullname;
+      const isPlaceholderSameNum =
+        Number(st.number) === number &&
+        (!st.accountUsername) &&
+        /นักเรียนคนที่\s*\d+/.test(String(st.name || ''));
+      if (sameName || isPlaceholderSameNum) {
+        matched = st;
+        break;
+      }
+    }
+  }
+
+  if (matched) {
+    if (accUser) matched.accountUsername = accUser;
+    if (/นักเรียนคนที่\s*\d+/.test(String(matched.name || ''))) {
+      matched.name = fullname;
+      if (nickname) matched.nickname = nickname;
+      matched.gender = gender;
+    }
+    matched.joinedAt = nowMs;
+    delete targetClass.removedStudents[matched.id];
+    seatStudentOnFirstEmptyDesk(targetClass, matched.id);
+    targetClass.updatedAt = nowMs;
+    return matched.id;
+  }
+
+  // 3. Create new student entry and place on first empty desk
+  const newId = accUser
+    ? ('st_acc_' + accUser.replace(/[^a-z0-9_]/g, '') + '_' + nowMs)
+    : ('st_join_' + nowMs + '_' + Math.floor(Math.random() * 1000));
+
+  const newStudent = {
+    id: newId,
+    accountUsername: accUser,
+    number: number,
+    name: fullname,
+    nickname: nickname,
+    gender: gender,
+    frontRow: false,
+    talkative: false,
+    role: '',
+    score: null,
+    joinedAt: nowMs
+  };
+
+  targetClass.students.push(newStudent);
+  targetClass.students.sort(function (a, b) {
+    return (Number(a.number) || 0) - (Number(b.number) || 0);
+  });
+  seatStudentOnFirstEmptyDesk(targetClass, newId);
+  targetClass.updatedAt = nowMs;
+  return newId;
+}
+
+// Merge concurrent student joins/events that happened while teacher was editing, WITHOUT resurrecting deleted students
+function mergeConcurrentStudentActivity(incomingClass, existingClass) {
+  if (!incomingClass || !existingClass) return;
+  const clearedAt = Number(incomingClass.clearedAt) || 0;
+  const removedMap = incomingClass.removedStudents || {};
+  if (!Array.isArray(incomingClass.students)) incomingClass.students = [];
+  if (!Array.isArray(existingClass.students)) return;
+
+  const existingIds = {};
+  const existingUsers = {};
+  for (let i = 0; i < incomingClass.students.length; i++) {
+    existingIds[incomingClass.students[i].id] = true;
+    if (incomingClass.students[i].accountUsername) {
+      existingUsers[String(incomingClass.students[i].accountUsername).toLowerCase()] = true;
+    }
+  }
+
+  for (let i = 0; i < existingClass.students.length; i++) {
+    const oldSt = existingClass.students[i];
+    const joinedAt = Number(oldSt.joinedAt) || 0;
+    if (!joinedAt) continue; // Only auto-preserve explicitly joined students
+    if (existingIds[oldSt.id]) continue;
+
+    const accKey = oldSt.accountUsername ? ('acc:' + String(oldSt.accountUsername).toLowerCase()) : '';
+    if (accKey && existingUsers[String(oldSt.accountUsername).toLowerCase()]) continue;
+
+    // If teacher explicitly deleted this student or cleared the class after they joined, DO NOT resurrect
+    if (clearedAt >= joinedAt) continue;
+    if (removedMap[oldSt.id] && Number(removedMap[oldSt.id]) >= joinedAt) continue;
+    if (accKey && removedMap[accKey] && Number(removedMap[accKey]) >= joinedAt) continue;
+
+    // Student joined concurrently while teacher was saving something else -> preserve them!
+    incomingClass.students.push(oldSt);
+    seatStudentOnFirstEmptyDesk(incomingClass, oldSt.id);
+  }
+}
+
+function doPost(e) {
+  const lock = LockService.getScriptLock();
+  lock.tryLock(10000);
+
+  try {
+    const req = JSON.parse(e.postData.contents);
+    const action = req.action;
+    const ss = getSpreadsheet();
+
+    // 1. สมัครสมาชิกครู (Teacher Register)
+    if (action === 'register') {
+      const sheet = getOrCreateSheet(ss, SHEET_USERS, HEADERS_USERS);
+      const data = sheet.getDataRange().getValues();
+      const username = String(req.username || '').trim().toLowerCase();
+
+      for (let i = 1; i < data.length; i++) {
+        if (String(data[i][0]).trim().toLowerCase() === username) {
+          return jsonResponse({ status: 'error', message: 'ชื่อผู้ใช้งานนี้ถูกใช้ไปแล้ว' });
+        }
+      }
+      sheet.appendRow([username, req.password, req.fullname, req.school, new Date()]);
+      return jsonResponse({ status: 'success', message: 'สมัครสมาชิกสำเร็จ!' });
+    }
+
+    // 2. เข้าสู่ระบบครู (Teacher Login)
+    if (action === 'login') {
+      const sheet = getOrCreateSheet(ss, SHEET_USERS, HEADERS_USERS);
+      const data = sheet.getDataRange().getValues();
+      const username = String(req.username || '').trim().toLowerCase();
+
+      for (let i = 1; i < data.length; i++) {
+        if (String(data[i][0]).trim().toLowerCase() === username && String(data[i][1]) === String(req.password)) {
+          const savedState = getUserState(ss, username);
+          return jsonResponse({
+            status: 'success',
+            user: { role: 'teacher', username: data[i][0], fullname: data[i][2], school: data[i][3] },
+            savedState: savedState
+          });
+        }
+      }
+      return jsonResponse({ status: 'error', message: 'ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง' });
+    }
+
+    // 3. สมัครสมาชิกนักเรียน (Student Register)
+    if (action === 'registerStudent') {
+      const sheet = getOrCreateSheet(ss, SHEET_STUDENTS, HEADERS_STUDENTS);
+      const data = sheet.getDataRange().getValues();
+      const username = String(req.username || '').trim().toLowerCase();
+
+      for (let i = 1; i < data.length; i++) {
+        if (String(data[i][0]).trim().toLowerCase() === username) {
+          return jsonResponse({ status: 'error', message: 'ชื่อผู้ใช้งานนี้ถูกใช้ไปแล้ว' });
+        }
+      }
+      sheet.appendRow([username, req.password, req.fullname, req.nickname, req.number, req.classroom, new Date()]);
+      return jsonResponse({ status: 'success', message: 'สมัครสมาชิกนักเรียนสำเร็จ!' });
+    }
+
+    // 4. เข้าสู่ระบบนักเรียน (Student Login)
+    if (action === 'loginStudent') {
+      const sheet = getOrCreateSheet(ss, SHEET_STUDENTS, HEADERS_STUDENTS);
+      const data = sheet.getDataRange().getValues();
+      const username = String(req.username || '').trim().toLowerCase();
+
+      for (let i = 1; i < data.length; i++) {
+        if (String(data[i][0]).trim().toLowerCase() === username && String(data[i][1]) === String(req.password)) {
+          return jsonResponse({
+            status: 'success',
+            user: {
+              role: 'student',
+              username: data[i][0],
+              fullname: data[i][2],
+              nickname: data[i][3],
+              number: data[i][4],
+              classroom: data[i][5]
+            }
+          });
+        }
+      }
+      return jsonResponse({ status: 'error', message: 'ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง' });
+    }
+
+    // 5. ตรวจสอบตัวตนเพื่อกู้คืนรหัสผ่าน (Teacher & Student)
+    if (action === 'verifyRecovery') {
+      const role = req.role === 'student' ? 'student' : 'teacher';
+      const username = String(req.username || '').trim().toLowerCase();
+      const verifyText = String(req.verifyText || '').trim().toLowerCase();
+
+      if (!username || !verifyText) {
+        return jsonResponse({ status: 'error', message: 'กรุณากรอกข้อมูลยืนยันตัวตนให้ครบถ้วน' });
+      }
+
+      if (role === 'teacher') {
+        const sheet = getOrCreateSheet(ss, SHEET_USERS, HEADERS_USERS);
+        const data = sheet.getDataRange().getValues();
+        for (let i = 1; i < data.length; i++) {
+          if (String(data[i][0]).trim().toLowerCase() === username) {
+            const dbFullname = String(data[i][2] || '').trim().toLowerCase();
+            const dbSchool = String(data[i][3] || '').trim().toLowerCase();
+            if (verifyText === dbFullname || verifyText === dbSchool) {
+              return jsonResponse({
+                status: 'success',
+                account: { fullname: data[i][2], school: data[i][3] }
+              });
+            }
+            return jsonResponse({ status: 'error', message: 'ชื่อ-นามสกุล หรือชื่อโรงเรียนไม่ตรงกับที่ลงทะเบียนไว้' });
+          }
+        }
+        return jsonResponse({ status: 'error', message: 'ไม่พบชื่อผู้ใช้งานครูนี้ในระบบ' });
+      } else {
+        const sheet = getOrCreateSheet(ss, SHEET_STUDENTS, HEADERS_STUDENTS);
+        const data = sheet.getDataRange().getValues();
+        const reqNum = String(req.number || '').trim();
+        for (let i = 1; i < data.length; i++) {
+          if (String(data[i][0]).trim().toLowerCase() === username) {
+            const dbFullname = String(data[i][2] || '').trim().toLowerCase();
+            const dbNickname = String(data[i][3] || '').trim().toLowerCase();
+            const dbNumber = String(data[i][4] || '').trim();
+            if (reqNum === dbNumber && (verifyText === dbFullname || verifyText === dbNickname)) {
+              return jsonResponse({
+                status: 'success',
+                account: { fullname: data[i][2], nickname: data[i][3], classroom: data[i][5] }
+              });
+            }
+            return jsonResponse({ status: 'error', message: 'เลขที่ หรือชื่อ-นามสกุล/ชื่อเล่น ไม่ตรงกับข้อมูลที่ลงทะเบียนไว้' });
+          }
+        }
+        return jsonResponse({ status: 'error', message: 'ไม่พบรหัสนักเรียน/ชื่อผู้ใช้งานนี้ในระบบ' });
+      }
+    }
+
+    // 6. รีเซ็ตรหัสผ่านใหม่ (Teacher & Student)
+    if (action === 'resetPassword') {
+      const role = req.role === 'student' ? 'student' : 'teacher';
+      const username = String(req.username || '').trim().toLowerCase();
+      const verifyText = String(req.verifyText || '').trim().toLowerCase();
+      const newPassword = String(req.newPassword || '');
+
+      if (!username || !verifyText || newPassword.length < 4) {
+        return jsonResponse({ status: 'error', message: 'ข้อมูลไม่ครบถ้วน หรือรหัสผ่านใหม่สั้นกว่า 4 ตัวอักษร' });
+      }
+
+      if (role === 'teacher') {
+        const sheet = getOrCreateSheet(ss, SHEET_USERS, HEADERS_USERS);
+        const data = sheet.getDataRange().getValues();
+        for (let i = 1; i < data.length; i++) {
+          if (String(data[i][0]).trim().toLowerCase() === username) {
+            const dbFullname = String(data[i][2] || '').trim().toLowerCase();
+            const dbSchool = String(data[i][3] || '').trim().toLowerCase();
+            if (verifyText === dbFullname || verifyText === dbSchool) {
+              sheet.getRange(i + 1, 2).setValue(newPassword);
+              return jsonResponse({ status: 'success', message: 'รีเซ็ตรหัสผ่านครูผู้สอนสำเร็จ!' });
+            }
+            return jsonResponse({ status: 'error', message: 'การยืนยันตัวตนไม่ถูกต้อง' });
+          }
+        }
+        return jsonResponse({ status: 'error', message: 'ไม่พบชื่อผู้ใช้งานนี้ในระบบ' });
+      } else {
+        const sheet = getOrCreateSheet(ss, SHEET_STUDENTS, HEADERS_STUDENTS);
+        const data = sheet.getDataRange().getValues();
+        const reqNum = String(req.number || '').trim();
+        for (let i = 1; i < data.length; i++) {
+          if (String(data[i][0]).trim().toLowerCase() === username) {
+            const dbFullname = String(data[i][2] || '').trim().toLowerCase();
+            const dbNickname = String(data[i][3] || '').trim().toLowerCase();
+            const dbNumber = String(data[i][4] || '').trim();
+            if (reqNum === dbNumber && (verifyText === dbFullname || verifyText === dbNickname)) {
+              sheet.getRange(i + 1, 2).setValue(newPassword);
+              return jsonResponse({ status: 'success', message: 'รีเซ็ตรหัสผ่านนักเรียนสำเร็จ!' });
+            }
+            return jsonResponse({ status: 'error', message: 'การยืนยันตัวตนไม่ถูกต้อง' });
+          }
+        }
+        return jsonResponse({ status: 'error', message: 'ไม่พบชื่อผู้ใช้งานนี้ในระบบ' });
+      }
+    }
+
+    // 7. บันทึกข้อมูลผังห้องเรียนของครู (Teacher Save State)
+    if (action === 'saveState') {
+      const sheet = getOrCreateSheet(ss, SHEET_DATA, HEADERS_DATA);
+      const data = sheet.getDataRange().getValues();
+      const username = String(req.username || '').trim().toLowerCase();
+
+      let finalJsonStr = req.stateJson;
+      for (let i = 1; i < data.length; i++) {
+        if (String(data[i][0]).trim().toLowerCase() === username) {
+          try {
+            const incoming = JSON.parse(req.stateJson);
+            const existing = JSON.parse(data[i][1] || '{}');
+            if (incoming._multiClasses && incoming._multiClasses.classes && existing._multiClasses && existing._multiClasses.classes) {
+              const cKeys = Object.keys(incoming._multiClasses.classes);
+              for (let k = 0; k < cKeys.length; k++) {
+                const cid = cKeys[k];
+                if (existing._multiClasses.classes[cid]) {
+                  mergeConcurrentStudentActivity(incoming._multiClasses.classes[cid], existing._multiClasses.classes[cid]);
+                }
+              }
+              const activeId = incoming._multiClasses.activeClassId;
+              if (activeId && incoming._multiClasses.classes[activeId]) {
+                incoming.students = incoming._multiClasses.classes[activeId].students;
+                incoming.desks = incoming._multiClasses.classes[activeId].desks;
+              }
+            } else {
+              mergeConcurrentStudentActivity(incoming, existing);
+            }
+            finalJsonStr = JSON.stringify(incoming);
+          } catch (mergeErr) {}
+
+          sheet.getRange(i + 1, 2).setValue(finalJsonStr);
+          sheet.getRange(i + 1, 3).setValue(new Date());
+          return jsonResponse({ status: 'success' });
+        }
+      }
+      sheet.appendRow([username, finalJsonStr, new Date()]);
+      return jsonResponse({ status: 'success' });
+    }
+
+    // 8. นักเรียนดึงข้อมูลห้องเรียนของครู
+    if (action === 'getPublicClassroom') {
+      const teacher = String(req.teacher || '').trim().toLowerCase();
+      const rawJson = getUserState(ss, teacher);
+      if (!rawJson) return jsonResponse({ status: 'error', message: 'ไม่พบข้อมูลห้องเรียนของครูท่านนี้' });
+
+      const parsed = JSON.parse(rawJson);
+      let classroom = parsed;
+      let resolvedClassId = req.classId || 'class_default_1';
+      let classList = [];
+      let classFound = true;
+
+      if (parsed._multiClasses && parsed._multiClasses.classes) {
+        const classesObj = parsed._multiClasses.classes;
+        const keys = Object.keys(classesObj);
+        classList = keys.map(function (k) {
+          return { id: k, title: classesObj[k].classroomTitle || k };
+        });
+
+        if (req.classId && classesObj[req.classId]) {
+          resolvedClassId = req.classId;
+          classroom = classesObj[req.classId];
+        } else if (req.strictClassId && req.classId && !classesObj[req.classId]) {
+          classFound = false;
+          classroom = null;
+        } else if (parsed._multiClasses.activeClassId && classesObj[parsed._multiClasses.activeClassId]) {
+          resolvedClassId = parsed._multiClasses.activeClassId;
+          classroom = classesObj[resolvedClassId];
+        } else if (keys.length > 0) {
+          resolvedClassId = keys[0];
+          classroom = classesObj[resolvedClassId];
+        }
+      }
+
+      return jsonResponse({
+        status: classFound ? 'success' : 'removed',
+        classId: resolvedClassId,
+        classList: classList,
+        classroom: classroom
+      });
+    }
+
+    // 8.5 นักเรียนเข้าร่วมห้องเรียน (ลงชื่อเข้าผังที่นั่งครูอัตโนมัติ)
+    if (action === 'joinClassroom') {
+      const sheet = getOrCreateSheet(ss, SHEET_DATA, HEADERS_DATA);
+      const data = sheet.getDataRange().getValues();
+      const teacher = String(req.teacher || '').trim().toLowerCase();
+      const nowMs = Date.now();
+
+      for (let i = 1; i < data.length; i++) {
+        if (String(data[i][0]).trim().toLowerCase() === teacher) {
+          const parsed = JSON.parse(data[i][1]);
+          let resolvedClassId = req.classId || 'class_default_1';
+          let classList = [];
+          let targetClass = parsed;
+
+          if (parsed._multiClasses && parsed._multiClasses.classes) {
+            const classesObj = parsed._multiClasses.classes;
+            const keys = Object.keys(classesObj);
+            classList = keys.map(function (k) {
+              return { id: k, title: classesObj[k].classroomTitle || k };
+            });
+
+            if (req.classId && classesObj[req.classId]) {
+              resolvedClassId = req.classId;
+              targetClass = classesObj[req.classId];
+            } else if (parsed._multiClasses.activeClassId && classesObj[parsed._multiClasses.activeClassId]) {
+              resolvedClassId = parsed._multiClasses.activeClassId;
+              targetClass = classesObj[resolvedClassId];
+            } else if (keys.length > 0) {
+              resolvedClassId = keys[0];
+              targetClass = classesObj[resolvedClassId];
+            }
+          }
+
+          const studentId = applyStudentJoinToClass(targetClass, req.student || {}, nowMs);
+
+          // Keep top-level mirror in sync if this is teacher's active classroom
+          if (parsed._multiClasses && parsed._multiClasses.activeClassId === resolvedClassId) {
+            parsed.students = targetClass.students;
+            parsed.desks = targetClass.desks;
+            parsed.rows = targetClass.rows;
+            parsed.cols = targetClass.cols;
+            parsed.removedStudents = targetClass.removedStudents;
+            parsed.updatedAt = nowMs;
+          }
+
+          sheet.getRange(i + 1, 2).setValue(JSON.stringify(parsed));
+          sheet.getRange(i + 1, 3).setValue(new Date());
+
+          return jsonResponse({
+            status: 'success',
+            studentId: studentId,
+            joinedAt: nowMs,
+            classId: resolvedClassId,
+            classList: classList,
+            classroom: targetClass
+          });
+        }
+      }
+      return jsonResponse({ status: 'error', message: 'ไม่พบห้องเรียนของครูท่านนี้' });
+    }
+
+    // 9. ครูโพลล์ดึงรายชื่อนักเรียนที่เพิ่งเข้าร่วม สถานะส่งงาน เช็คชื่อ และคำขอความช่วยเหลือล่าสุด
+    if (action === 'getTeacherLiveUpdates') {
+      const teacher = String(req.teacher || '').trim().toLowerCase();
+      const rawJson = getUserState(ss, teacher);
+      if (!rawJson) return jsonResponse({ status: 'error', message: 'No state found' });
+
+      const parsed = JSON.parse(rawJson);
+      let classroom = parsed;
+      if (parsed._multiClasses && parsed._multiClasses.classes && parsed._multiClasses.classes[req.classId]) {
+        classroom = parsed._multiClasses.classes[req.classId];
+      }
+      return jsonResponse({
+        status: 'success',
+        classroom: {
+          students: classroom.students || [],
+          desks: classroom.desks || {},
+          rows: classroom.rows || 4,
+          cols: classroom.cols || 6,
+          attendance: classroom.attendance || {},
+          tasks: classroom.tasks || [],
+          helpRequests: classroom.helpRequests || {},
+          removedStudents: classroom.removedStudents || {},
+          clearedAt: classroom.clearedAt || 0,
+          updatedAt: classroom.updatedAt || 0
+        }
+      });
+    }
+
+    // 10. นักเรียนส่งอีเวนต์สด (เช็คชื่อ / ยกมือขอความช่วยเหลือ / ส่งงาน)
+    if (action === 'studentLiveEvent') {
+      const sheet = getOrCreateSheet(ss, SHEET_DATA, HEADERS_DATA);
+      const data = sheet.getDataRange().getValues();
+      const teacher = String(req.teacher || '').trim().toLowerCase();
+      const nowMs = Date.now();
+
+      for (let i = 1; i < data.length; i++) {
+        if (String(data[i][0]).trim().toLowerCase() === teacher) {
+          const parsed = JSON.parse(data[i][1]);
+          const targets = [];
+
+          if (parsed._multiClasses && parsed._multiClasses.classes && parsed._multiClasses.classes[req.classId]) {
+            targets.push(parsed._multiClasses.classes[req.classId]);
+            if (parsed._multiClasses.activeClassId === req.classId) {
+              targets.push(parsed);
+            }
+          } else {
+            targets.push(parsed);
+          }
+
+          // Verify student is still a member of this classroom before applying live event
+          const primaryClass = targets[0];
+          const studentsArr = (primaryClass && Array.isArray(primaryClass.students)) ? primaryClass.students : [];
+          let existsInRoster = false;
+          for (let s = 0; s < studentsArr.length; s++) {
+            if (studentsArr[s].id === req.studentId) {
+              existsInRoster = true;
+              break;
+            }
+          }
+          if (!existsInRoster) {
+            return jsonResponse({
+              status: 'removed',
+              message: 'คุณถูกนำออกจากห้องเรียนโดยครูผู้สอนแล้ว'
+            });
+          }
+
+          const today = Utilities.formatDate(new Date(), 'Asia/Bangkok', 'yyyy-MM-dd');
+          const nowTime = Utilities.formatDate(new Date(), 'Asia/Bangkok', 'HH:mm');
+
+          for (let idx = 0; idx < targets.length; idx++) {
+            const targetClass = targets[idx];
+            if (req.eventType === 'checkin') {
+              if (!targetClass.attendance) targetClass.attendance = {};
+              if (!targetClass.attendance[today]) targetClass.attendance[today] = {};
+              targetClass.attendance[today][req.studentId] = 'present';
+            } else if (req.eventType === 'help') {
+              if (!targetClass.helpRequests) targetClass.helpRequests = {};
+              if (req.payload && req.payload.active) {
+                targetClass.helpRequests[req.studentId] = {
+                  active: true,
+                  note: req.payload.note || 'ต้องการความช่วยเหลือ',
+                  time: nowTime
+                };
+              } else {
+                delete targetClass.helpRequests[req.studentId];
+              }
+            } else if (req.eventType === 'submitTask') {
+              const tasks = targetClass.tasks || [];
+              const nextStatus = (req.payload && req.payload.status) ? req.payload.status : 'submitted';
+              for (let t = 0; t < tasks.length; t++) {
+                if (tasks[t].id === req.payload.taskId) {
+                  if (!tasks[t].submissions) tasks[t].submissions = {};
+                  tasks[t].submissions[req.studentId] = nextStatus;
+                }
+              }
+            }
+            targetClass.updatedAt = nowMs;
+          }
+
+          sheet.getRange(i + 1, 2).setValue(JSON.stringify(parsed));
+          sheet.getRange(i + 1, 3).setValue(new Date());
+          return jsonResponse({ status: 'success' });
+        }
+      }
+      return jsonResponse({ status: 'error', message: 'ไม่พบห้องเรียนของครู' });
+    }
+
+    return jsonResponse({ status: 'error', message: 'Invalid action' });
+  } catch (err) {
+    return jsonResponse({ status: 'error', message: err.toString() });
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+function getOrCreateSheet(ss, name, headers) {
+  if (!ss) ss = getSpreadsheet();
+
+  if (name === SHEET_USERS) headers = HEADERS_USERS;
+  else if (name === SHEET_STUDENTS) headers = HEADERS_STUDENTS;
+  else if (name === SHEET_DATA) headers = HEADERS_DATA;
+
+  let sheet = ss.getSheetByName(name);
+  if (!sheet) {
+    sheet = ss.insertSheet(name);
+  }
+
+  if (headers && headers.length > 0) {
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow(headers);
+      formatHeaderRow(sheet, headers.length, name);
+    } else {
+      const firstCell = sheet.getRange(1, 1).getValue();
+      if (!isHeaderText(firstCell)) {
+        sheet.insertRowBefore(1);
+        sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
+        formatHeaderRow(sheet, headers.length, name);
+      }
+    }
+  }
+  return sheet;
+}
+
+function formatHeaderRow(sheet, colCount, name) {
+  let bg = '#e0e7ff';
+  let fg = '#1e1b4b';
+  if (name === SHEET_STUDENTS) {
+    bg = '#e0f2fe';
+    fg = '#0c4a6e';
+  } else if (name === SHEET_DATA) {
+    bg = '#d1fae5';
+    fg = '#064e3b';
+  }
+
+  sheet.getRange(1, 1, 1, colCount)
+    .setFontWeight('bold')
+    .setBackground(bg)
+    .setFontColor(fg)
+    .setHorizontalAlignment('center');
+  sheet.setFrozenRows(1);
+}
+
+function getUserState(ss, username) {
+  if (!ss) ss = getSpreadsheet();
+  const sheet = getOrCreateSheet(ss, SHEET_DATA, HEADERS_DATA);
+  const data = sheet.getDataRange().getValues();
+  for (let i = 1; i < data.length; i++) {
+    if (String(data[i][0]).trim().toLowerCase() === username) {
+      return data[i][1];
+    }
+  }
+  return null;
+}
+
+function jsonResponse(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}

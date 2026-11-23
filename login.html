@@ -1,0 +1,1813 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>เข้าสู่ระบบ | Smart Classroom</title>
+  <!-- Browser Tab Logo (Favicon): แสดงอัตโนมัติ หรือวางไฟล์ favicon.png ในโฟลเดอร์โปรเจกต์ -->
+  <link id="app-favicon" rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%234f46e5%22/%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%237c3aed%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2216%22%20fill%3D%22url%28%23g%29%22/%3E%3Cpath%20d%3D%22M21%2017h22a3%203%200%200%201%203%203v12H18V20a3%203%200%200%201%203-3zm-5%2017h32a3%203%200%200%201%203%203v4a2%202%200%200%201-2%202h-3v8a2%202%200%200%201-4%200v-8H22v8a2%202%200%200%201-4%200v-8h-3a2%202%200%200%201-2-2v-4a3%203%200%200%201%203-3z%22%20fill%3D%22%23ffffff%22/%3E%3C/svg%3E" />
+  <link id="app-apple-icon" rel="apple-touch-icon" href="./favicon.png" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"TH Niramit AS"', '"Niramit"', 'sans-serif'],
+            body: ['"TH Niramit AS"', '"Niramit"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Google Fonts (Fallbacks & Optional Web Fonts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Mali:wght@400;500;600;700&family=Niramit:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&family=Prompt:wght@300;400;500;600;700&family=Sarabun:ital,wght@0,400;0,600;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <script src="config.js"></script>
+  <style>
+    /* ================= CUSTOM UPLOADED FONTS ================= */
+    @font-face {
+      font-family: 'TH Niramit AS';
+      src:
+        url('./fonts/TH%20Niramit%20AS.ttf') format('truetype'),
+        url('./TH%20Niramit%20AS.ttf') format('truetype'),
+        local('TH Niramit AS');
+      font-weight: 100 500;
+      font-style: normal;
+      font-display: swap;
+      size-adjust: 122%;
+    }
+    @font-face {
+      font-family: 'TH Niramit AS';
+      src:
+        url('./fonts/TH%20Niramit%20AS%20Italic.ttf') format('truetype'),
+        url('./TH%20Niramit%20AS%20Italic.ttf') format('truetype'),
+        local('TH Niramit AS Italic');
+      font-weight: 100 500;
+      font-style: italic;
+      font-display: swap;
+      size-adjust: 122%;
+    }
+    @font-face {
+      font-family: 'TH Niramit AS';
+      src:
+        url('./fonts/TH%20Niramit%20AS%20Bold.ttf') format('truetype'),
+        url('./TH%20Niramit%20AS%20Bold.ttf') format('truetype'),
+        local('TH Niramit AS Bold');
+      font-weight: 600 900;
+      font-style: normal;
+      font-display: swap;
+      size-adjust: 122%;
+    }
+    @font-face {
+      font-family: 'TH Niramit AS';
+      src:
+        url('./fonts/TH%20Niramit%20AS%20Bold%20Italic.ttf') format('truetype'),
+        url('./TH%20Niramit%20AS%20Bold%20Italic.ttf') format('truetype'),
+        local('TH Niramit AS Bold Italic');
+      font-weight: 600 900;
+      font-style: italic;
+      font-display: swap;
+      size-adjust: 122%;
+    }
+
+    @font-face {
+      font-family: 'TH Sarabun PSK';
+      src:
+        url('./fonts/THSarabun.ttf') format('truetype'),
+        url('./THSarabun.ttf') format('truetype'),
+        local('TH SarabunPSK'),
+        local('TH Sarabun New');
+      font-weight: 100 500;
+      font-style: normal;
+      font-display: swap;
+      size-adjust: 122%;
+    }
+    @font-face {
+      font-family: 'TH Sarabun PSK';
+      src:
+        url('./fonts/THSarabun%20Italic.ttf') format('truetype'),
+        url('./THSarabun%20Italic.ttf') format('truetype'),
+        local('TH SarabunPSK Italic');
+      font-weight: 100 500;
+      font-style: italic;
+      font-display: swap;
+      size-adjust: 122%;
+    }
+    @font-face {
+      font-family: 'TH Sarabun PSK';
+      src:
+        url('./fonts/THSarabun%20Bold.ttf') format('truetype'),
+        url('./THSarabun%20Bold.ttf') format('truetype'),
+        local('TH SarabunPSK Bold');
+      font-weight: 600 900;
+      font-style: normal;
+      font-display: swap;
+      size-adjust: 122%;
+    }
+    @font-face {
+      font-family: 'TH Sarabun PSK';
+      src:
+        url('./fonts/THSarabun%20Bold%20Italic.ttf') format('truetype'),
+        url('./THSarabun%20Bold%20Italic.ttf') format('truetype'),
+        local('TH SarabunPSK Bold Italic');
+      font-weight: 600 900;
+      font-style: italic;
+      font-display: swap;
+      size-adjust: 122%;
+    }
+
+    @font-face {
+      font-family: 'JaoHalloween';
+      src:
+        url('./fonts/%E0%B8%AA%E0%B8%B3%E0%B9%80%E0%B8%99%E0%B8%B2%E0%B8%82%E0%B8%AD%E0%B8%87%20JaoHalloween%20Bold.ttf') format('truetype'),
+        url('./fonts/JaoHalloween%20Bold.ttf') format('truetype'),
+        url('./%E0%B8%AA%E0%B8%B3%E0%B9%80%E0%B8%99%E0%B8%B2%E0%B8%82%E0%B8%AD%E0%B8%87%20JaoHalloween%20Bold.ttf') format('truetype'),
+        url('./JaoHalloween%20Bold.ttf') format('truetype'),
+        local('JaoHalloween Bold'),
+        local('JaoHalloween');
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+      size-adjust: 112%;
+      ascent-override: 95%;
+      descent-override: 25%;
+    }
+
+    @font-face {
+      font-family: 'Royal Institute of Siam New';
+      src:
+        url('./fonts/Royal-Institute-of-Siam-New.ttf') format('truetype'),
+        url('./Royal-Institute-of-Siam-New.ttf') format('truetype'),
+        local('Royal Institute of Siam New');
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: swap;
+      size-adjust: 105%;
+    }
+
+    :root {
+      --app-font-family: 'TH Niramit AS', 'Niramit', sans-serif;
+      --app-accent: #4f46e5;
+      --app-accent-2: #7c3aed;
+      --app-accent-soft: #eef2ff;
+      --app-accent-border: #c7d2fe;
+      --app-accent-text: #3730a3;
+    }
+
+    html, body, button, input, select, textarea {
+      font-family: var(--app-font-family) !important;
+    }
+    .fa-solid, .fa-regular, .fa-brands, .fas, .far, .fab {
+      font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands' !important;
+    }
+
+    /* ================= CUSTOM BACKGROUND IMAGE & GLASS SURFACE SYSTEM ================= */
+    #app-bg-layer {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+      display: none;
+    }
+    body.has-custom-bg #app-bg-layer {
+      display: block;
+    }
+    body.has-custom-bg {
+      background-color: transparent !important;
+      background-image: none !important;
+    }
+    #app-bg-image {
+      position: absolute;
+      inset: -18px;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      transition: filter 0.25s ease;
+    }
+    #app-bg-overlay {
+      position: absolute;
+      inset: 0;
+      transition: background-color 0.25s ease;
+    }
+
+    /* Frosted glass transparency so custom background shines cleanly while keeping high readability */
+    body.has-custom-bg.bg-glass-mode header,
+    body.has-custom-bg.bg-glass-mode aside,
+    body.has-custom-bg.bg-glass-mode #config-toolbar,
+    body.has-custom-bg.bg-glass-mode #chart-container {
+      background-color: rgba(255, 255, 255, 0.84) !important;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    body.dark-theme.has-custom-bg.bg-glass-mode header,
+    body.dark-theme.has-custom-bg.bg-glass-mode aside,
+    body.dark-theme.has-custom-bg.bg-glass-mode #config-toolbar,
+    body.dark-theme.has-custom-bg.bg-glass-mode #chart-container {
+      background-color: rgba(15, 23, 42, 0.82) !important;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    /* Custom Theme Accent Application */
+    body.has-custom-accent #classroom-selector {
+      border-color: var(--app-accent-border) !important;
+    }
+    body.has-custom-accent #btn-add-classroom,
+    body.has-custom-accent .preset-btn.is-active-preset,
+    body.has-custom-accent #size-btn-auto.is-active-size,
+    body.has-custom-accent #size-btn-xs.is-active-size,
+    body.has-custom-accent #size-btn-sm.is-active-size,
+    body.has-custom-accent #size-btn-md.is-active-size,
+    body.has-custom-accent #btn-save-student-count {
+      background: linear-gradient(135deg, var(--app-accent), var(--app-accent-2)) !important;
+      border-color: var(--app-accent) !important;
+      color: #ffffff !important;
+    }
+    body.has-custom-accent #ui-icon-size-badge {
+      background-color: var(--app-accent) !important;
+    }
+    body.has-custom-accent header {
+      border-bottom-color: var(--app-accent-border) !important;
+    }
+    body.has-custom-accent #settings-modal-header {
+      background: linear-gradient(135deg, var(--app-accent), var(--app-accent-2)) !important;
+    }
+
+    /* ================= HIGH-CONTRAST SIDEBAR STAT CARDS (0.5 CM ICON-NUMBER GAP) ================= */
+    .stat-pill-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 19px; /* ~0.5 cm spacing between icon and number */
+      padding: 10px 6px;
+      border-radius: 0.85rem;
+      border-width: 1.5px;
+      transition: transform 0.15s ease, background-color 0.2s ease, border-color 0.2s ease;
+    }
+    .stat-pill-card:hover {
+      transform: translateY(-1px);
+    }
+    .stat-pill-icon {
+      font-size: 0.95rem;
+      line-height: 1;
+    }
+    .stat-pill-val {
+      font-size: 0.92rem;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: 0.01em;
+    }
+
+    /* Light Mode Stat Cards */
+    .stat-pill-seated     { background-color: #eef2ff; border-color: #a5b4fc; }
+    .stat-pill-seated .stat-pill-icon { color: #4338ca; }
+    .stat-pill-seated .stat-pill-val  { color: #1e1b4b; }
+
+    .stat-pill-unassigned { background-color: #f8fafc; border-color: #cbd5e1; }
+    .stat-pill-unassigned .stat-pill-icon { color: #d97706; }
+    .stat-pill-unassigned .stat-pill-val  { color: #0f172a; }
+
+    .stat-pill-present    { background-color: #ecfdf5; border-color: #6ee7b7; }
+    .stat-pill-present .stat-pill-icon { color: #059669; }
+    .stat-pill-present .stat-pill-val  { color: #064e3b; }
+
+    .stat-pill-task       { background-color: #fffbeb; border-color: #fcd34d; }
+    .stat-pill-task .stat-pill-icon { color: #d97706; }
+    .stat-pill-task .stat-pill-val  { color: #78350f; }
+
+    /* Dark Mode High-Contrast Stat Cards */
+    body.dark-theme .stat-pill-seated     { background-color: #1e293b !important; border-color: #818cf8 !important; }
+    body.dark-theme .stat-pill-seated .stat-pill-icon { color: #a5b4fc !important; }
+    body.dark-theme .stat-pill-seated .stat-pill-val  { color: #ffffff !important; }
+
+    body.dark-theme .stat-pill-unassigned { background-color: #1e293b !important; border-color: #fbbf24 !important; }
+    body.dark-theme .stat-pill-unassigned .stat-pill-icon { color: #fcd34d !important; }
+    body.dark-theme .stat-pill-unassigned .stat-pill-val  { color: #fef3c7 !important; }
+
+    body.dark-theme .stat-pill-present    { background-color: #064e3b !important; border-color: #34d399 !important; }
+    body.dark-theme .stat-pill-present .stat-pill-icon { color: #6ee7b7 !important; }
+    body.dark-theme .stat-pill-present .stat-pill-val  { color: #ffffff !important; }
+
+    body.dark-theme .stat-pill-task       { background-color: #451a03 !important; border-color: #f59e0b !important; }
+    body.dark-theme .stat-pill-task .stat-pill-icon { color: #fde047 !important; }
+    body.dark-theme .stat-pill-task .stat-pill-val  { color: #ffffff !important; }
+
+    /* ================= MOBILE HEADER & ICON FIT OPTIMIZATION ================= */
+    @media (max-width: 1023px) {
+      header .header-inner-wrap {
+        flex-wrap: wrap !important;
+        padding-top: 0.4rem !important;
+        padding-bottom: 0.4rem !important;
+        gap: 0.4rem !important;
+      }
+      header .header-left-group {
+        width: 100% !important;
+        justify-content: space-between;
+      }
+      header #classroom-selector {
+        flex: 1 1 auto !important;
+        max-width: none !important;
+        min-width: 0 !important;
+        height: 38px !important;
+      }
+      header #header-right-controls {
+        width: 100% !important;
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: space-between !important;
+        overflow-x: visible !important;
+        gap: 6px !important;
+        padding-top: 4px !important;
+        padding-bottom: 2px !important;
+        border-top: 1px solid rgba(148, 163, 184, 0.22);
+      }
+      header #header-right-controls .header-divider {
+        display: none !important;
+      }
+    }
+    @media (max-width: 639px) {
+      header .ui-icon-btn {
+        width: 36px !important;
+        height: 36px !important;
+        min-width: 36px !important;
+        min-height: 36px !important;
+      }
+      header .ui-icon-btn i {
+        font-size: 0.95rem !important;
+      }
+      header #header-right-controls {
+        display: grid !important;
+        grid-template-columns: repeat(8, minmax(0, 1fr)) !important;
+        gap: 6px !important;
+        justify-items: center !important;
+      }
+      #config-toolbar .ui-tb-btn {
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+        min-height: 34px !important;
+      }
+      #chart-container {
+        padding: 0.5rem !important;
+      }
+    }
+
+    body { font-family: var(--app-font-family); }
+    body.dark-theme {
+      background: linear-gradient(135deg, #090d16 0%, #0f172a 50%, #1e1b4b 100%) !important;
+      color: #f1f5f9 !important;
+    }
+    body.dark-theme .auth-card {
+      background-color: #0f172a !important;
+      border-color: #1e293b !important;
+    }
+    body.dark-theme .auth-surface {
+      background-color: #162032 !important;
+      border-color: #334155 !important;
+    }
+    body.dark-theme input {
+      background-color: #1e293b !important;
+      color: #f8fafc !important;
+      border-color: #334155 !important;
+    }
+    body.dark-theme label,
+    body.dark-theme .text-slate-700,
+    body.dark-theme .text-slate-800 {
+      color: #e2e8f0 !important;
+    }
+    body.dark-theme .text-slate-500 {
+      color: #94a3b8 !important;
+    }
+    body.dark-theme .bg-slate-50 {
+      background-color: #162032 !important;
+      border-color: #334155 !important;
+    }
+    body.dark-theme .bg-emerald-50 {
+      background-color: #064e3b !important;
+      border-color: #10b981 !important;
+      color: #d1fae5 !important;
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-indigo-50 via-slate-100 to-sky-100 flex items-center justify-center p-4 transition-colors duration-300">
+
+  <!-- Top-right quick theme button -->
+  <button
+    type="button"
+    id="login-theme-btn"
+    onclick="toggleLoginTheme()"
+    class="fixed top-4 right-4 w-11 h-11 rounded-2xl bg-white/90 hover:bg-white shadow-md border border-slate-200 text-indigo-600 flex items-center justify-center transition z-20"
+    title="เปลี่ยนสีพื้นหลัง (ขาว / ดำ)"
+  >
+    <i id="login-theme-icon" class="fa-solid fa-moon text-lg"></i>
+  </button>
+
+  <div class="auth-card max-w-md w-full bg-white rounded-3xl shadow-2xl border border-slate-200/80 overflow-hidden">
+    <!-- Dynamic Header Banner -->
+    <div id="auth-banner" class="bg-gradient-to-r from-indigo-600 to-violet-600 p-6 text-center text-white transition-all duration-300">
+      <div id="auth-banner-logo-box" class="w-16 h-16 aspect-square rounded-2xl bg-white/15 backdrop-blur-xs flex items-center justify-center mx-auto mb-3 shadow-inner overflow-hidden">
+        <i id="auth-banner-icon" class="fa-solid fa-chalkboard-user text-3xl"></i>
+      </div>
+      <h1 class="text-xl font-extrabold">Smart Classroom Cloud</h1>
+      <p id="auth-banner-sub" class="text-xs text-indigo-100 mt-1">ระบบจัดการห้องเรียนสำหรับครูผู้สอนและนักเรียน</p>
+    </div>
+
+    <!-- ROLE SELECTION (Teacher vs Student) -->
+    <div class="p-4 pb-2 auth-surface bg-slate-50/80 border-b border-slate-200">
+      <div class="text-[11px] font-bold text-slate-500 uppercase tracking-wider text-center mb-2">
+        เลือกบทบาทผู้ใช้งาน (Select Role)
+      </div>
+      <div class="grid grid-cols-2 gap-2.5">
+        <button
+          type="button"
+          id="role-btn-teacher"
+          onclick="selectRole('teacher')"
+          class="py-3 px-3 rounded-2xl border-2 border-indigo-600 bg-indigo-50 text-indigo-800 font-extrabold text-sm flex flex-col items-center gap-1 shadow-xs transition"
+        >
+          <i class="fa-solid fa-chalkboard-user text-xl"></i>
+          <span>ครูผู้สอน (Teacher)</span>
+        </button>
+
+        <button
+          type="button"
+          id="role-btn-student"
+          onclick="selectRole('student')"
+          class="py-3 px-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-sky-300 text-slate-600 font-bold text-sm flex flex-col items-center gap-1 transition"
+        >
+          <i class="fa-solid fa-graduation-cap text-xl"></i>
+          <span>นักเรียน (Student)</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mode Switcher Tabs (Login vs Register) -->
+    <div id="auth-mode-tabs" class="grid grid-cols-2 border-b border-slate-200 auth-surface bg-slate-50/50">
+      <button id="tab-login" onclick="switchMode('login')" class="py-3 text-sm font-bold text-indigo-600 border-b-2 border-indigo-600 bg-white transition">
+        <i class="fa-solid fa-right-to-bracket mr-1.5"></i> เข้าสู่ระบบ
+      </button>
+      <button id="tab-register" onclick="switchMode('register')" class="py-3 text-sm font-medium text-slate-500 hover:text-slate-700 transition">
+        <i class="fa-solid fa-user-plus mr-1.5"></i> สมัครสมาชิกใหม่
+      </button>
+    </div>
+
+    <div class="p-6">
+      <!-- Alert Box -->
+      <div id="alert-box" class="hidden mb-4 p-3 rounded-xl text-xs font-semibold flex items-center gap-2"></div>
+
+      <!-- FORM: LOGIN (Shared for Teacher & Student, routes based on selected role) -->
+      <form id="form-login" onsubmit="handleLogin(event)" class="space-y-4">
+        <div>
+          <label id="login-user-label" class="block text-xs font-bold text-slate-700 mb-1">ชื่อผู้ใช้งานครู (Username)</label>
+          <div class="relative">
+            <i class="fa-solid fa-user absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+            <input type="text" id="login-username" required placeholder="กรอกชื่อผู้ใช้งานของคุณ"
+              class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-sm outline-none" />
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="block text-xs font-bold text-slate-700">รหัสผ่าน (Password)</label>
+            <button
+              type="button"
+              onclick="openForgotPasswordMode()"
+              class="text-xs font-semibold text-indigo-600 hover:text-indigo-800 hover:underline transition"
+            >
+              ลืมรหัสผ่าน?
+            </button>
+          </div>
+          <div class="relative">
+            <i class="fa-solid fa-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+            <input type="password" id="login-password" required placeholder="กรอกรหัสผ่าน"
+              class="w-full pl-10 pr-11 py-2.5 rounded-xl border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-sm outline-none" />
+            <button
+              type="button"
+              onclick="togglePasswordVisibility('login-password', 'eye-login-password')"
+              class="absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg text-slate-400 hover:text-indigo-600 flex items-center justify-center transition"
+              title="แสดง/ซ่อนรหัสผ่าน"
+              aria-label="แสดงหรือซ่อนรหัสผ่าน"
+            >
+              <i id="eye-login-password" class="fa-solid fa-eye text-sm"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" id="btn-login"
+          class="w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-extrabold text-sm shadow-md shadow-indigo-200 transition active:scale-[0.99]">
+          <i class="fa-solid fa-right-to-bracket mr-1.5"></i> เข้าสู่ระบบครูผู้สอน
+        </button>
+      </form>
+
+      <!-- FORM: PASSWORD RECOVERY & RESET (2-Step Flow for Teacher & Student) -->
+      <div id="form-forgot-password" class="space-y-4 hidden">
+        <div class="flex items-center justify-between border-b border-slate-200 pb-2.5">
+          <div class="flex items-center gap-2">
+            <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center">
+              <i class="fa-solid fa-key text-sm"></i>
+            </span>
+            <div>
+              <h2 class="text-sm font-extrabold text-slate-800">กู้คืนและรีเซ็ตรหัสผ่าน</h2>
+              <p id="forgot-role-subtitle" class="text-[11px] text-slate-500">สำหรับบัญชีครูผู้สอน</p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onclick="switchMode('login')"
+            class="text-xs font-bold text-slate-500 hover:text-indigo-600 flex items-center gap-1 transition"
+          >
+            <i class="fa-solid fa-arrow-left"></i> กลับ
+          </button>
+        </div>
+
+        <!-- Step 1: Verify Identity -->
+        <form id="forgot-step-verify" onsubmit="handleVerifyRecovery(event)" class="space-y-3.5">
+          <div>
+            <label id="forgot-user-label" class="block text-xs font-bold text-slate-700 mb-1">ชื่อผู้ใช้งานครู (Username)</label>
+            <div class="relative">
+              <i class="fa-solid fa-user absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+              <input type="text" id="forgot-username" required placeholder="กรอกชื่อผู้ใช้งานที่ลืมรหัสผ่าน"
+                class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:border-amber-500 text-sm outline-none" />
+            </div>
+          </div>
+
+          <!-- Extra field for Student role: Student Number -->
+          <div id="forgot-student-number-wrap" class="hidden">
+            <label class="block text-xs font-bold text-slate-700 mb-1">เลขที่ (Student Number)</label>
+            <div class="relative">
+              <i class="fa-solid fa-hashtag absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+              <input type="number" id="forgot-student-number" min="1" max="80" placeholder="กรอกเลขที่ที่ลงทะเบียนไว้"
+                class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:border-amber-500 text-sm outline-none" />
+            </div>
+          </div>
+
+          <div>
+            <label id="forgot-verify-label" class="block text-xs font-bold text-slate-700 mb-1">ยืนยันด้วย ชื่อ-นามสกุล หรือ ชื่อโรงเรียน ที่ลงทะเบียนไว้</label>
+            <div class="relative">
+              <i class="fa-solid fa-shield-halved absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+              <input type="text" id="forgot-verify-text" required placeholder="เช่น นายนวชล ประตา หรือชื่อโรงเรียน"
+                class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:border-amber-500 text-sm outline-none" />
+            </div>
+          </div>
+
+          <button type="submit" id="btn-verify-recovery"
+            class="w-full py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-slate-950 font-extrabold text-sm shadow-md transition active:scale-[0.99]">
+            <i class="fa-solid fa-magnifying-glass mr-1.5"></i> ตรวจสอบบัญชีเพื่อรีเซ็ตรหัสผ่าน
+          </button>
+        </form>
+
+        <!-- Step 2: Set New Password (Shown after verification succeeds) -->
+        <form id="forgot-step-reset" onsubmit="handleResetPassword(event)" class="space-y-3.5 hidden">
+          <div id="forgot-verified-card" class="p-3 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2.5">
+            <i class="fa-solid fa-circle-check text-emerald-600 text-base shrink-0"></i>
+            <div class="min-w-0">
+              <div class="font-extrabold">ยืนยันตัวตนสำเร็จ!</div>
+              <div id="forgot-verified-account-name" class="truncate opacity-90">บัญชี: -</div>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">ตั้งรหัสผ่านใหม่ (New Password)</label>
+            <div class="relative">
+              <i class="fa-solid fa-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+              <input type="password" id="reset-new-password" required minlength="4" placeholder="อย่างน้อย 4 ตัวอักษร"
+                class="w-full pl-10 pr-11 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-500 text-sm outline-none" />
+              <button
+                type="button"
+                onclick="togglePasswordVisibility('reset-new-password', 'eye-reset-new')"
+                class="absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg text-slate-400 hover:text-indigo-600 flex items-center justify-center transition"
+                title="แสดง/ซ่อนรหัสผ่าน"
+              >
+                <i id="eye-reset-new" class="fa-solid fa-eye text-sm"></i>
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">ยืนยันรหัสผ่านใหม่ (Confirm Password)</label>
+            <div class="relative">
+              <i class="fa-solid fa-lock absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+              <input type="password" id="reset-confirm-password" required minlength="4" placeholder="กรอกรหัสผ่านใหม่อีกครั้ง"
+                class="w-full pl-10 pr-11 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-500 text-sm outline-none" />
+              <button
+                type="button"
+                onclick="togglePasswordVisibility('reset-confirm-password', 'eye-reset-confirm')"
+                class="absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg text-slate-400 hover:text-indigo-600 flex items-center justify-center transition"
+                title="แสดง/ซ่อนรหัสผ่าน"
+              >
+                <i id="eye-reset-confirm" class="fa-solid fa-eye text-sm"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button
+              type="button"
+              onclick="resetForgotFlow()"
+              class="px-4 py-3 rounded-xl border border-slate-300 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition"
+            >
+              ย้อนกลับ
+            </button>
+            <button type="submit" id="btn-save-new-password"
+              class="flex-1 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm shadow-md transition active:scale-[0.99]">
+              <i class="fa-solid fa-floppy-disk mr-1.5"></i> บันทึกรหัสผ่านใหม่
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- FORM: TEACHER REGISTER -->
+      <form id="form-register-teacher" onsubmit="handleTeacherRegister(event)" class="space-y-3.5 hidden">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">ชื่อ-นามสกุล (ครูผู้สอน)</label>
+          <input type="text" id="reg-fullname" required placeholder="เช่น นายนวชล ประตา"
+            class="w-full px-3.5 py-2 rounded-xl border border-slate-300 focus:border-indigo-500 text-sm outline-none" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">โรงเรียน / สถานศึกษา</label>
+          <input type="text" id="reg-school" required placeholder="เช่น โรงเรียนมอสวนขิงพิทยาสรรพ์"
+            class="w-full px-3.5 py-2 rounded-xl border border-slate-300 focus:border-indigo-500 text-sm outline-none" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">ตั้งชื่อผู้ใช้งาน (Username ภาษาอังกฤษ/ตัวเลข)</label>
+          <input type="text" id="reg-username" required pattern="[a-zA-Z0-9_]{3,20}" placeholder="อย่างน้อย 3 ตัวอักษร (เช่น teacher_k)"
+            class="w-full px-3.5 py-2 rounded-xl border border-slate-300 focus:border-indigo-500 text-sm outline-none" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">ตั้งรหัสผ่าน (Password)</label>
+          <div class="relative">
+            <input type="password" id="reg-password" required minlength="4" placeholder="อย่างน้อย 4 ตัวอักษร"
+              class="w-full pl-3.5 pr-11 py-2 rounded-xl border border-slate-300 focus:border-indigo-500 text-sm outline-none" />
+            <button
+              type="button"
+              onclick="togglePasswordVisibility('reg-password', 'eye-reg-password')"
+              class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg text-slate-400 hover:text-indigo-600 flex items-center justify-center transition"
+              title="แสดง/ซ่อนรหัสผ่าน"
+            >
+              <i id="eye-reg-password" class="fa-solid fa-eye text-sm"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" id="btn-register-teacher"
+          class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm shadow-md shadow-emerald-200 transition active:scale-[0.99]">
+          <i class="fa-solid fa-user-plus mr-1.5"></i> สมัครสมาชิกครูผู้สอน
+        </button>
+      </form>
+
+      <!-- FORM: STUDENT REGISTER -->
+      <form id="form-register-student" onsubmit="handleStudentRegister(event)" class="space-y-3 hidden">
+        <div class="grid grid-cols-3 gap-2">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">เลขที่</label>
+            <input type="number" id="st-reg-number" min="1" max="80" required placeholder="12"
+              class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:border-sky-500 text-sm font-bold text-center outline-none" />
+          </div>
+          <div class="col-span-2">
+            <label class="block text-xs font-bold text-slate-700 mb-1">ชื่อเล่น</label>
+            <input type="text" id="st-reg-nickname" required placeholder="เช่น น้องกิต / แพรว"
+              class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:border-sky-500 text-sm outline-none" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">ชื่อ-นามสกุลจริง</label>
+          <input type="text" id="st-reg-fullname" required placeholder="เช่น ด.ช. กิตติพงศ์ ทองดี"
+            class="w-full px-3.5 py-2 rounded-xl border border-slate-300 focus:border-sky-500 text-sm outline-none" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">ระดับชั้น / ห้องเรียน</label>
+          <input type="text" id="st-reg-classroom" required placeholder="เช่น ม.1/1"
+            class="w-full px-3.5 py-2 rounded-xl border border-slate-300 focus:border-sky-500 text-sm outline-none" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">รหัสนักเรียน / Username</label>
+          <input type="text" id="st-reg-username" required pattern="[a-zA-Z0-9_]{3,20}" placeholder="ภาษาอังกฤษหรือตัวเลข 3-20 ตัว"
+            class="w-full px-3.5 py-2 rounded-xl border border-slate-300 focus:border-sky-500 text-sm outline-none" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">ตั้งรหัสผ่าน (Password)</label>
+          <div class="relative">
+            <input type="password" id="st-reg-password" required minlength="4" placeholder="อย่างน้อย 4 ตัวอักษร"
+              class="w-full pl-3.5 pr-11 py-2 rounded-xl border border-slate-300 focus:border-sky-500 text-sm outline-none" />
+            <button
+              type="button"
+              onclick="togglePasswordVisibility('st-reg-password', 'eye-st-reg-password')"
+              class="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg text-slate-400 hover:text-sky-600 flex items-center justify-center transition"
+              title="แสดง/ซ่อนรหัสผ่าน"
+            >
+              <i id="eye-st-reg-password" class="fa-solid fa-eye text-sm"></i>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" id="btn-register-student"
+          class="w-full py-3 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-extrabold text-sm shadow-md shadow-sky-200 transition active:scale-[0.99]">
+          <i class="fa-solid fa-graduation-cap mr-1.5"></i> สมัครสมาชิกนักเรียน
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const TEACHER_SESSION_KEY = (typeof APP_CONFIG !== 'undefined' && APP_CONFIG.SESSION_KEY)
+      ? APP_CONFIG.SESSION_KEY
+      : 'SMART_SEATING_CURRENT_USER';
+    const STUDENT_SESSION_KEY = 'SMART_SEATING_STUDENT_SESSION_V1';
+    const LOCAL_TEACHERS_DB_KEY = 'SMART_SEATING_LOCAL_TEACHER_ACCOUNTS_V1';
+    const LOCAL_STUDENTS_DB_KEY = 'SMART_SEATING_LOCAL_STUDENT_ACCOUNTS_V1';
+    const MULTI_CLASS_KEY = 'SMART_SEATING_MULTI_CLASSES_V1';
+    const THEME_STORAGE_KEY = 'SMART_SEATING_THEME_MODE';
+    const CUSTOM_LOGO_STORAGE_KEY = 'SMART_SEATING_CUSTOM_LOGO_V1';
+
+    let selectedRole = 'teacher'; // 'teacher' | 'student'
+    let currentMode = 'login';    // 'login' | 'register' | 'forgot'
+    let verifiedRecoveryPayload = null;
+
+    const urlParams = new URLSearchParams(window.location.search);
+
+    // Password Show/Hide Toggle
+    function togglePasswordVisibility(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+      if (!input) return;
+      const isHidden = input.type === 'password';
+      input.type = isHidden ? 'text' : 'password';
+      if (icon) {
+        icon.className = isHidden ? 'fa-solid fa-eye-slash text-sm text-indigo-600' : 'fa-solid fa-eye text-sm';
+      }
+      input.focus();
+    }
+
+    // --- BROWSER TAB LOGO (FAVICON) CONTROLLER ---
+    const DEFAULT_TAB_FAVICON_URI = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%25%22%20stop-color%3D%22%234f46e5%22/%3E%3Cstop%20offset%3D%22100%25%22%20stop-color%3D%22%237c3aed%22/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2216%22%20fill%3D%22url%28%23g%29%22/%3E%3Cpath%20d%3D%22M21%2017h22a3%203%200%200%201%203%203v12H18V20a3%203%200%200%201%203-3zm-5%2017h32a3%203%200%200%201%203%203v4a2%202%200%200%201-2%202h-3v8a2%202%200%200%201-4%200v-8H22v8a2%202%200%200%201-4%200v-8h-3a2%202%200%200%201-2-2v-4a3%203%200%200%201%203-3z%22%20fill%3D%22%23ffffff%22/%3E%3C/svg%3E';
+    const FAVICON_COLOR_HEX = {
+      indigo:  ['#4f46e5', '#7c3aed'],
+      sky:     ['#0ea5e9', '#0891b2'],
+      emerald: ['#10b981', '#0d9488'],
+      amber:   ['#f59e0b', '#ea580c'],
+      rose:    ['#ec4899', '#e11d48'],
+      slate:   ['#334155', '#0f172a']
+    };
+
+    function buildColorSvgFaviconUri(colorId) {
+      const pair = FAVICON_COLOR_HEX[colorId] || FAVICON_COLOR_HEX.indigo;
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="${pair[0]}"/><stop offset="100%" stop-color="${pair[1]}"/></linearGradient></defs><rect width="64" height="64" rx="16" fill="url(#g)"/><path d="M21 17h22a3 3 0 0 1 3 3v12H18V20a3 3 0 0 1 3-3zm-5 17h32a3 3 0 0 1 3 3v4a2 2 0 0 1-2 2h-3v8a2 2 0 0 1-4 0v-8H22v8a2 2 0 0 1-4 0v-8h-3a2 2 0 0 1-2-2v-4a3 3 0 0 1 3-3z" fill="#ffffff"/></svg>`;
+      return 'data:image/svg+xml,' + encodeURIComponent(svg);
+    }
+
+    function setBrowserTabFavicon(href, mimeType = 'image/png') {
+      let link = document.getElementById('app-favicon') || document.querySelector('link[rel~="icon"]');
+      if (!link) {
+        link = document.createElement('link');
+        link.id = 'app-favicon';
+        link.rel = 'icon';
+        document.head.appendChild(link);
+      }
+      link.type = mimeType;
+      link.href = href;
+
+      const apple = document.getElementById('app-apple-icon');
+      if (apple && mimeType === 'image/png') {
+        apple.href = href;
+      }
+    }
+
+    function applyBrowserTabFavicon(logoOverride = null) {
+      try {
+        let logo = logoOverride;
+        if (!logo) {
+          const raw = localStorage.getItem('SMART_SEATING_CUSTOM_LOGO_V1');
+          if (raw) logo = JSON.parse(raw);
+        }
+
+        // 1. If user uploaded a custom 1:1 logo image, apply it directly to the browser tab!
+        if (logo && logo.type === 'image' && logo.dataUrl) {
+          setBrowserTabFavicon(logo.dataUrl, 'image/png');
+          return;
+        }
+
+        // 2. Otherwise check if a static ./favicon.png file exists in the project folder
+        const probe = new Image();
+        probe.onload = () => setBrowserTabFavicon('./favicon.png', 'image/png');
+        probe.onerror = () => {
+          const colorId = (logo && logo.colorId) ? logo.colorId : 'indigo';
+          setBrowserTabFavicon(buildColorSvgFaviconUri(colorId), 'image/svg+xml');
+        };
+        probe.src = './favicon.png';
+      } catch (e) {
+        setBrowserTabFavicon(DEFAULT_TAB_FAVICON_URI, 'image/svg+xml');
+      }
+    }
+
+    /*************************************************************************
+     * APPEARANCE & SETTINGS ENGINE (FONTS, FONT SIZE, COLOR THEME, BACKGROUND)
+     *************************************************************************/
+    const APPEARANCE_STORAGE_KEY = 'SMART_SEATING_APPEARANCE_V1';
+
+    const AVAILABLE_FONTS = [
+      { id: 'TH Niramit AS',              label: 'TH Niramit AS',              desc: 'สุภาพ นุ่มนวล อ่านง่าย (ค่าเริ่มต้น)',   stack: "'TH Niramit AS', 'Niramit', sans-serif", uploaded: true },
+      { id: 'TH Sarabun PSK',             label: 'TH Sarabun PSK',             desc: 'มาตรฐานราชการไทย คมชัด',                 stack: "'TH Sarabun PSK', 'Sarabun', sans-serif", uploaded: true },
+      { id: 'JaoHalloween',               label: 'JaoHalloween Bold',          desc: 'หัวกลมน่ารัก ขี้เล่น สดใส',               stack: "'JaoHalloween', 'Mali', sans-serif", uploaded: true },
+      { id: 'Royal Institute of Siam New',label: 'Royal Institute of Siam',    desc: 'ไทยร่วมสมัย ภูมิฐาน คลาสสิก',             stack: "'Royal Institute of Siam New', 'Niramit', serif", uploaded: true },
+      { id: 'Kanit',                      label: 'Kanit',                      desc: 'ทันสมัย กะทัดรัด ชัดเจนบนหน้าจอ',         stack: "'Kanit', sans-serif", uploaded: false },
+      { id: 'Mali',                       label: 'Mali',                       desc: 'ลายมือเด็กน่ารัก เหมาะกับห้องเรียน',      stack: "'Mali', cursive, sans-serif", uploaded: false },
+      { id: 'Prompt',                     label: 'Prompt',                     desc: 'โมเดิร์น โปร่ง สะอาดตา',                 stack: "'Prompt', sans-serif", uploaded: false }
+    ];
+
+    const ACCENT_THEMES = [
+      { id: 'indigo',  label: 'คราม-ม่วง',   c1: '#4f46e5', c2: '#7c3aed', soft: '#eef2ff', border: '#a5b4fc' },
+      { id: 'sky',     label: 'ฟ้าสดใส',     c1: '#0284c7', c2: '#06b6d4', soft: '#e0f2fe', border: '#7dd3fc' },
+      { id: 'emerald', label: 'เขียวมิ้นต์', c1: '#059669', c2: '#14b8a6', soft: '#d1fae5', border: '#6ee7b7' },
+      { id: 'rose',    label: 'ชมพูซากุระ',  c1: '#e11d48', c2: '#ec4899', soft: '#ffe4e6', border: '#fda4af' },
+      { id: 'amber',   label: 'ส้มอบอุ่น',   c1: '#d97706', c2: '#f97316', soft: '#fef3c7', border: '#fcd34d' },
+      { id: 'violet',  label: 'ม่วงพาสเทล',  c1: '#7c3aed', c2: '#c026d3', soft: '#f3e8ff', border: '#d8b4fe' },
+      { id: 'crimson', label: 'แดงทับทิม',   c1: '#dc2626', c2: '#e11d48', soft: '#fee2e2', border: '#fca5a5' },
+      { id: 'slate',   label: 'เทามินิมอล',  c1: '#334155', c2: '#475569', soft: '#f1f5f9', border: '#94a3b8' }
+    ];
+
+    const DEFAULT_APPEARANCE = {
+      fontFamily: 'TH Niramit AS',
+      fontSizePct: 100,
+      accentId: 'indigo',
+      customAccentHex: '#4f46e5',
+      bgImage: '',
+      bgGradient: '',
+      bgDim: 35,
+      bgBlur: 0,
+      bgGlass: true
+    };
+
+    function getSavedAppearance() {
+      try {
+        const raw = localStorage.getItem(APPEARANCE_STORAGE_KEY);
+        if (raw) return { ...DEFAULT_APPEARANCE, ...JSON.parse(raw) };
+      } catch (e) {}
+      return { ...DEFAULT_APPEARANCE };
+    }
+
+    function saveAppearance(nextObj, notifyMsg = '') {
+      const merged = { ...DEFAULT_APPEARANCE, ...nextObj };
+      try {
+        localStorage.setItem(APPEARANCE_STORAGE_KEY, JSON.stringify(merged));
+      } catch (quotaErr) {
+        // If custom image was too big for quota, keep settings without image and alert user
+        merged.bgImage = '';
+        localStorage.setItem(APPEARANCE_STORAGE_KEY, JSON.stringify(merged));
+        if (typeof showToast === 'function') {
+          showToast('ไฟล์รูปพื้นหลังใหญ่เกินพื้นที่จัดเก็บ กรุณาเลือกรูปที่ขนาดเล็กลง', 'amber');
+        }
+      }
+      applySavedAppearance(merged);
+      if (document.getElementById('settings-modal') && !document.getElementById('settings-modal').classList.contains('hidden')) {
+        renderSettingsModalContent();
+      }
+      if (notifyMsg && typeof showToast === 'function') {
+        showToast(notifyMsg, 'indigo');
+      }
+    }
+
+    function shadeHexColor(hex, percent) {
+      const clean = String(hex || '#4f46e5').replace('#', '');
+      if (clean.length !== 6) return '#7c3aed';
+      const num = parseInt(clean, 16);
+      const r = Math.min(255, Math.max(0, (num >> 16) + Math.round(2.55 * percent)));
+      const g = Math.min(255, Math.max(0, ((num >> 8) & 0x00ff) + Math.round(2.55 * percent)));
+      const b = Math.min(255, Math.max(0, (num & 0x0000ff) + Math.round(2.55 * percent)));
+      return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+    }
+
+    function ensureBackgroundLayerElement() {
+      let layer = document.getElementById('app-bg-layer');
+      if (!layer) {
+        layer = document.createElement('div');
+        layer.id = 'app-bg-layer';
+        layer.innerHTML = '<div id="app-bg-image"></div><div id="app-bg-overlay"></div>';
+        document.body.prepend(layer);
+      }
+      return layer;
+    }
+
+    function applySavedAppearance(override = null) {
+      const cfg = override || getSavedAppearance();
+      const root = document.documentElement;
+
+      // 1. Font Family
+      const fontObj = AVAILABLE_FONTS.find(f => f.id === cfg.fontFamily) || AVAILABLE_FONTS[0];
+      root.style.setProperty('--app-font-family', fontObj.stack);
+
+      // 2. Root Font Size Scaling (scales all Tailwind rem text proportionally)
+      const pct = Math.min(130, Math.max(85, Number(cfg.fontSizePct) || 100));
+      root.style.fontSize = `${(16 * pct / 100).toFixed(2)}px`;
+
+      // 3. Accent Color Theme
+      let c1 = '#4f46e5', c2 = '#7c3aed', soft = '#eef2ff', border = '#a5b4fc';
+      if (cfg.accentId === 'custom' && cfg.customAccentHex) {
+        c1 = cfg.customAccentHex;
+        c2 = shadeHexColor(c1, -18);
+        soft = c1 + '22';
+        border = c1 + '88';
+      } else {
+        const preset = ACCENT_THEMES.find(t => t.id === cfg.accentId) || ACCENT_THEMES[0];
+        c1 = preset.c1; c2 = preset.c2; soft = preset.soft; border = preset.border;
+      }
+      root.style.setProperty('--app-accent', c1);
+      root.style.setProperty('--app-accent-2', c2);
+      root.style.setProperty('--app-accent-soft', soft);
+      root.style.setProperty('--app-accent-border', border);
+      if (cfg.accentId && cfg.accentId !== 'indigo') {
+        document.body.classList.add('has-custom-accent');
+      } else {
+        document.body.classList.remove('has-custom-accent');
+      }
+
+      // Apply accent to student.html header if present
+      const stHeader = document.getElementById('student-top-header');
+      if (stHeader && cfg.accentId && cfg.accentId !== 'indigo') {
+        stHeader.style.background = `linear-gradient(90deg, ${c1}, ${c2})`;
+      } else if (stHeader) {
+        stHeader.style.background = '';
+      }
+
+      // 4. Custom Background Image / Gradient
+      const layer = ensureBackgroundLayerElement();
+      const bgImgEl = document.getElementById('app-bg-image');
+      const bgOverlayEl = document.getElementById('app-bg-overlay');
+      const isDark = document.body.classList.contains('dark-theme');
+
+      if (cfg.bgImage || cfg.bgGradient) {
+        document.body.classList.add('has-custom-bg');
+        if (cfg.bgGlass !== false) document.body.classList.add('bg-glass-mode');
+        else document.body.classList.remove('bg-glass-mode');
+
+        if (cfg.bgImage) {
+          bgImgEl.style.backgroundImage = `url("${cfg.bgImage}")`;
+        } else {
+          bgImgEl.style.backgroundImage = cfg.bgGradient;
+        }
+        const blurPx = Math.max(0, Math.min(14, Number(cfg.bgBlur) || 0));
+        bgImgEl.style.filter = blurPx > 0 ? `blur(${blurPx}px)` : 'none';
+
+        const dimAlpha = Math.max(0, Math.min(0.85, (Number(cfg.bgDim) || 0) / 100));
+        bgOverlayEl.style.backgroundColor = isDark
+          ? `rgba(9, 13, 22, ${dimAlpha})`
+          : `rgba(241, 245, 249, ${dimAlpha})`;
+      } else {
+        document.body.classList.remove('has-custom-bg', 'bg-glass-mode');
+        bgImgEl.style.backgroundImage = 'none';
+        bgOverlayEl.style.backgroundColor = 'transparent';
+      }
+
+      if (typeof applyResponsiveGridFit === 'function') {
+        requestAnimationFrame(() => applyResponsiveGridFit());
+      }
+    }
+
+    function openSettingsModal() {
+      renderSettingsModalContent();
+      const modal = document.getElementById('settings-modal');
+      if (!modal) return;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeSettingsModal() {
+      const modal = document.getElementById('settings-modal');
+      if (!modal) return;
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function renderSettingsModalContent() {
+      const cfg = getSavedAppearance();
+      const isDark = document.body.classList.contains('dark-theme');
+
+      // 1. Font Cards
+      const fontGrid = document.getElementById('settings-font-grid');
+      const fontBadge = document.getElementById('settings-current-font-badge');
+      if (fontBadge) fontBadge.textContent = cfg.fontFamily;
+      if (fontGrid) {
+        fontGrid.innerHTML = AVAILABLE_FONTS.map(f => {
+          const active = cfg.fontFamily === f.id;
+          return `
+            <button
+              type="button"
+              onclick="setAppearanceFont('${f.id}')"
+              class="p-3 rounded-2xl border-2 text-left transition flex items-center justify-between gap-2 ${
+                active
+                  ? 'border-indigo-600 bg-indigo-50/70 shadow-xs'
+                  : 'border-slate-200 bg-white hover:border-indigo-300'
+              }"
+            >
+              <div class="min-w-0">
+                <div class="text-sm font-bold text-slate-900 truncate" style="font-family: ${f.stack} !important;">
+                  ${f.label} • กขคง 123
+                </div>
+                <div class="text-[11px] text-slate-500 truncate">${f.desc}</div>
+              </div>
+              <div class="shrink-0">
+                ${active
+                  ? '<span class="w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center text-xs"><i class="fa-solid fa-check"></i></span>'
+                  : (f.uploaded ? '<span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 text-[9px] font-bold">ฟอนต์หลัก</span>' : '')
+                }
+              </div>
+            </button>
+          `;
+        }).join('');
+      }
+
+      // 2. Font Size Slider & Preset Buttons
+      const slider = document.getElementById('settings-font-size-slider');
+      const sizeVal = document.getElementById('settings-font-size-value');
+      if (slider) slider.value = String(cfg.fontSizePct || 100);
+      if (sizeVal) sizeVal.textContent = `${cfg.fontSizePct || 100}%`;
+      document.querySelectorAll('.settings-fsize-btn').forEach(btn => {
+        const v = Number(btn.getAttribute('data-fsize'));
+        if (v === Number(cfg.fontSizePct || 100)) {
+          btn.className = 'settings-fsize-btn py-1.5 rounded-xl border-2 border-indigo-600 bg-indigo-600 text-white text-xs font-extrabold transition';
+        } else {
+          btn.className = 'settings-fsize-btn py-1.5 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-700 hover:border-indigo-400 transition';
+        }
+      });
+
+      // 3. Light / Dark Mode Buttons
+      const btnL = document.getElementById('settings-mode-light');
+      const btnD = document.getElementById('settings-mode-dark');
+      if (btnL && btnD) {
+        btnL.className = !isDark
+          ? 'p-3 rounded-2xl border-2 border-indigo-600 bg-indigo-50 flex items-center justify-center gap-2 text-xs sm:text-sm font-extrabold text-indigo-900 shadow-xs transition'
+          : 'p-3 rounded-2xl border-2 border-slate-600 bg-slate-800 flex items-center justify-center gap-2 text-xs sm:text-sm font-bold text-slate-300 hover:border-indigo-400 transition';
+        btnD.className = isDark
+          ? 'p-3 rounded-2xl border-2 border-indigo-400 bg-slate-950 text-white flex items-center justify-center gap-2 text-xs sm:text-sm font-extrabold shadow-xs transition'
+          : 'p-3 rounded-2xl border-2 border-slate-200 bg-slate-800 text-white flex items-center justify-center gap-2 text-xs sm:text-sm font-bold hover:border-indigo-400 transition';
+      }
+
+      // Accent Swatches
+      const accentGrid = document.getElementById('settings-accent-grid');
+      const customPicker = document.getElementById('settings-custom-color-picker');
+      if (customPicker && cfg.customAccentHex) customPicker.value = cfg.customAccentHex;
+      if (accentGrid) {
+        accentGrid.innerHTML = ACCENT_THEMES.map(t => {
+          const active = cfg.accentId === t.id;
+          return `
+            <button
+              type="button"
+              onclick="setAppearanceAccent('${t.id}')"
+              class="h-10 rounded-xl flex items-center justify-center text-white transition ${active ? 'ring-2 ring-offset-2 ring-slate-900 scale-105' : 'opacity-85 hover:opacity-100'}"
+              style="background: linear-gradient(135deg, ${t.c1}, ${t.c2});"
+              title="${t.label}"
+            >
+              ${active ? '<i class="fa-solid fa-check text-xs"></i>' : ''}
+            </button>
+          `;
+        }).join('');
+      }
+
+      // 4. Custom Background Preview & Sliders
+      const preview = document.getElementById('settings-bg-preview');
+      const rmBtn = document.getElementById('settings-btn-remove-bg');
+      const dimSlider = document.getElementById('settings-bg-dim-slider');
+      const dimVal = document.getElementById('settings-bg-dim-val');
+      const blurSlider = document.getElementById('settings-bg-blur-slider');
+      const blurVal = document.getElementById('settings-bg-blur-val');
+      const glassToggle = document.getElementById('settings-bg-glass-toggle');
+
+      if (preview) {
+        if (cfg.bgImage) {
+          preview.style.backgroundImage = `url("${cfg.bgImage}")`;
+          preview.innerHTML = '';
+        } else if (cfg.bgGradient) {
+          preview.style.backgroundImage = cfg.bgGradient;
+          preview.innerHTML = '';
+        } else {
+          preview.style.backgroundImage = 'none';
+          preview.innerHTML = '<i class="fa-regular fa-image text-2xl mb-1"></i><span>ยังไม่ได้ตั้งภาพพื้นหลัง</span>';
+        }
+      }
+      if (rmBtn) {
+        if (cfg.bgImage || cfg.bgGradient) rmBtn.classList.remove('hidden');
+        else rmBtn.classList.add('hidden');
+      }
+      if (dimSlider) dimSlider.value = String(cfg.bgDim ?? 35);
+      if (dimVal) dimVal.textContent = `${cfg.bgDim ?? 35}%`;
+      if (blurSlider) blurSlider.value = String(cfg.bgBlur ?? 0);
+      if (blurVal) blurVal.textContent = `${cfg.bgBlur ?? 0} px`;
+      if (glassToggle) glassToggle.checked = cfg.bgGlass !== false;
+    }
+
+    function setAppearanceFont(fontId) {
+      const curr = getSavedAppearance();
+      saveAppearance({ ...curr, fontFamily: fontId }, `เปลี่ยนฟอนต์เป็น "${fontId}" แล้ว ✨`);
+    }
+
+    function setAppearanceFontSize(val) {
+      const pct = Math.min(130, Math.max(85, parseInt(val, 10) || 100));
+      const curr = getSavedAppearance();
+      saveAppearance({ ...curr, fontSizePct: pct });
+    }
+
+    function setAppearanceDarkMode(isDark) {
+      if (typeof setAppTheme === 'function') {
+        setAppTheme(isDark ? 'dark' : 'light', false);
+      } else if (typeof applyStudentTheme === 'function') {
+        applyStudentTheme(isDark ? 'dark' : 'light');
+      }
+      applySavedAppearance();
+      renderSettingsModalContent();
+    }
+
+    function setAppearanceAccent(accentId) {
+      const curr = getSavedAppearance();
+      const preset = ACCENT_THEMES.find(t => t.id === accentId);
+      saveAppearance({ ...curr, accentId, customAccentHex: preset ? preset.c1 : curr.customAccentHex }, `เปลี่ยนธีมสี UI เป็น "${preset ? preset.label : accentId}" แล้ว 🎨`);
+    }
+
+    function setAppearanceCustomAccent(hex) {
+      const curr = getSavedAppearance();
+      saveAppearance({ ...curr, accentId: 'custom', customAccentHex: hex });
+    }
+
+    function setPresetBgGradient(grad) {
+      const curr = getSavedAppearance();
+      saveAppearance({ ...curr, bgImage: '', bgGradient: grad }, grad ? 'ตั้งค่าพื้นหลังสำเร็จรูปแล้ว ✨' : 'ลบภาพพื้นหลังแล้ว');
+    }
+
+    function setAppearanceBgDim(val) {
+      const curr = getSavedAppearance();
+      saveAppearance({ ...curr, bgDim: parseInt(val, 10) || 0 });
+    }
+
+    function setAppearanceBgBlur(val) {
+      const curr = getSavedAppearance();
+      saveAppearance({ ...curr, bgBlur: parseInt(val, 10) || 0 });
+    }
+
+    function setAppearanceBgGlass(enabled) {
+      const curr = getSavedAppearance();
+      saveAppearance({ ...curr, bgGlass: Boolean(enabled) });
+    }
+
+    function clearAppearanceBackground() {
+      const curr = getSavedAppearance();
+      saveAppearance({ ...curr, bgImage: '', bgGradient: '' }, 'ลบภาพพื้นหลังเรียบร้อยแล้ว');
+    }
+
+    function handleAppearanceBgUpload(event) {
+      const file = event.target.files && event.target.files[0];
+      event.target.value = '';
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          // Compress nicely to max 1600px so it stays sharp and fits smoothly inside localStorage
+          const maxDim = 1600;
+          let w = img.naturalWidth || img.width;
+          let h = img.naturalHeight || img.height;
+          if (w > maxDim || h > maxDim) {
+            const ratio = maxDim / Math.max(w, h);
+            w = Math.round(w * ratio);
+            h = Math.round(h * ratio);
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.80);
+
+          const curr = getSavedAppearance();
+          saveAppearance({ ...curr, bgImage: dataUrl, bgGradient: '' }, 'ตั้งค่ารูปภาพพื้นหลังใหม่เรียบร้อยแล้ว! 🖼️');
+        };
+        img.onerror = () => {
+          if (typeof showToast === 'function') showToast('ไม่สามารถอ่านไฟล์รูปภาพนี้ได้', 'amber');
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function resetAllAppearanceSettings() {
+      localStorage.removeItem(APPEARANCE_STORAGE_KEY);
+      applySavedAppearance(DEFAULT_APPEARANCE);
+      if (document.getElementById('settings-modal') && !document.getElementById('settings-modal').classList.contains('hidden')) {
+        renderSettingsModalContent();
+      }
+      if (typeof showToast === 'function') {
+        showToast('คืนค่าฟอนต์ ขนาดตัวอักษร สีธีม และพื้นหลังกลับเป็นค่าเริ่มต้นแล้ว', 'slate');
+      }
+    }
+
+
+    // Apply saved custom brand logo to login banner if user uploaded one
+    function applyCustomLogoToLoginBanner() {
+      try {
+        const raw = localStorage.getItem(CUSTOM_LOGO_STORAGE_KEY);
+        if (!raw) return false;
+        const logo = JSON.parse(raw);
+        const box = document.getElementById('auth-banner-logo-box');
+        if (!box) return false;
+        if (logo.type === 'image' && logo.dataUrl) {
+          box.innerHTML = `<img src="${logo.dataUrl}" alt="Logo 1:1" class="w-full h-full aspect-square object-cover bg-white/95 rounded-2xl" />`;
+          return true;
+        } else if (logo.type === 'icon' && logo.icon) {
+          box.innerHTML = `<i id="auth-banner-icon" class="${logo.icon} text-3xl"></i>`;
+          return true;
+        }
+      } catch (e) {}
+      return false;
+    }
+
+    // Apply saved theme
+    function applyLoginTheme() {
+      const mode = localStorage.getItem(THEME_STORAGE_KEY) || 'light';
+      const icon = document.getElementById('login-theme-icon');
+      if (mode === 'dark') {
+        document.body.classList.add('dark-theme');
+        if (icon) icon.className = 'fa-solid fa-sun text-amber-400 text-lg';
+      } else {
+        document.body.classList.remove('dark-theme');
+        if (icon) icon.className = 'fa-solid fa-moon text-indigo-600 text-lg';
+      }
+    }
+    function toggleLoginTheme() {
+      const next = document.body.classList.contains('dark-theme') ? 'light' : 'dark';
+      localStorage.setItem(THEME_STORAGE_KEY, next);
+      applyLoginTheme();
+      if (typeof applySavedAppearance === 'function') applySavedAppearance();
+    }
+
+    function buildStudentRedirectUrl() {
+      const params = new URLSearchParams();
+      const cid = urlParams.get('classId') || localStorage.getItem('PENDING_JOIN_CLASS_ID') || '';
+      const tch = urlParams.get('teacher') || localStorage.getItem('PENDING_JOIN_TEACHER') || '';
+      if (cid) params.set('classId', cid);
+      if (tch) params.set('teacher', tch);
+      const qs = params.toString();
+      return qs ? `student.html?${qs}` : 'student.html';
+    }
+
+    window.onload = function () {
+      applyLoginTheme();
+
+      const requestedRole = urlParams.get('role');
+      const forceSwitch = urlParams.get('switch') === '1';
+
+      // Preserve scanned QR params in localStorage for student flow
+      if (urlParams.get('classId')) {
+        localStorage.setItem('PENDING_JOIN_CLASS_ID', urlParams.get('classId'));
+        localStorage.setItem('LAST_SCANNED_CLASS_ID', urlParams.get('classId'));
+      }
+      if (urlParams.get('teacher')) {
+        localStorage.setItem('PENDING_JOIN_TEACHER', urlParams.get('teacher'));
+        localStorage.setItem('LAST_SCANNED_TEACHER', urlParams.get('teacher'));
+      }
+
+      // Auto-redirect if already authenticated (unless explicitly switching accounts)
+      if (!forceSwitch) {
+        if (requestedRole === 'student' && localStorage.getItem(STUDENT_SESSION_KEY)) {
+          window.location.href = buildStudentRedirectUrl();
+          return;
+        }
+        if (requestedRole !== 'student' && localStorage.getItem(TEACHER_SESSION_KEY)) {
+          window.location.href = 'index.html';
+          return;
+        }
+        if (!requestedRole && localStorage.getItem(STUDENT_SESSION_KEY)) {
+          window.location.href = buildStudentRedirectUrl();
+          return;
+        }
+      }
+
+      if (requestedRole === 'student' || urlParams.get('portal') === '1') {
+        selectRole('student');
+      } else {
+        selectRole('teacher');
+      }
+      applyCustomLogoToLoginBanner();
+      applyBrowserTabFavicon();
+      applySavedAppearance();
+    };
+
+    function selectRole(role) {
+      selectedRole = role;
+      document.getElementById('alert-box').classList.add('hidden');
+
+      const banner = document.getElementById('auth-banner');
+      const bannerIcon = document.getElementById('auth-banner-icon');
+      const bannerSub = document.getElementById('auth-banner-sub');
+      const btnT = document.getElementById('role-btn-teacher');
+      const btnS = document.getElementById('role-btn-student');
+      const userLabel = document.getElementById('login-user-label');
+      const btnLogin = document.getElementById('btn-login');
+
+      if (role === 'teacher') {
+        banner.className = 'bg-gradient-to-r from-indigo-600 to-violet-600 p-6 text-center text-white transition-all duration-300';
+        if (bannerIcon) bannerIcon.className = 'fa-solid fa-chalkboard-user text-3xl';
+        bannerSub.textContent = 'เข้าสู่ระบบสำหรับครูผู้สอน • จัดผังที่นั่ง เช็คชื่อ และมอบหมายงาน';
+        btnT.className = 'py-3 px-3 rounded-2xl border-2 border-indigo-600 bg-indigo-50 text-indigo-800 font-extrabold text-sm flex flex-col items-center gap-1 shadow-xs transition';
+        btnS.className = 'py-3 px-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-sky-300 text-slate-600 font-bold text-sm flex flex-col items-center gap-1 transition';
+        userLabel.textContent = 'ชื่อผู้ใช้งานครู (Username)';
+        btnLogin.className = 'w-full py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-extrabold text-sm shadow-md shadow-indigo-200 transition active:scale-[0.99]';
+        btnLogin.innerHTML = '<i class="fa-solid fa-right-to-bracket mr-1.5"></i> เข้าสู่ระบบครูผู้สอน';
+      } else {
+        banner.className = 'bg-gradient-to-r from-sky-600 via-cyan-600 to-teal-600 p-6 text-center text-white transition-all duration-300';
+        if (bannerIcon) bannerIcon.className = 'fa-solid fa-graduation-cap text-3xl';
+        bannerSub.textContent = 'เข้าสู่ระบบสำหรับนักเรียน • สแกน QR ส่งงาน และขอความช่วยเหลือ';
+        btnS.className = 'py-3 px-3 rounded-2xl border-2 border-sky-600 bg-sky-50 text-sky-900 font-extrabold text-sm flex flex-col items-center gap-1 shadow-xs transition';
+        btnT.className = 'py-3 px-3 rounded-2xl border-2 border-slate-200 bg-white hover:border-indigo-300 text-slate-600 font-bold text-sm flex flex-col items-center gap-1 transition';
+        userLabel.textContent = 'รหัสนักเรียน / Username';
+        btnLogin.className = 'w-full py-3 rounded-xl bg-gradient-to-r from-sky-600 to-teal-600 hover:from-sky-700 hover:to-teal-700 text-white font-extrabold text-sm shadow-md shadow-sky-200 transition active:scale-[0.99]';
+        btnLogin.innerHTML = '<i class="fa-solid fa-right-to-bracket mr-1.5"></i> เข้าสู่ระบบนักเรียน';
+      }
+
+      updateForgotFormRoleFields();
+      switchMode(currentMode);
+    }
+
+    function updateForgotFormRoleFields() {
+      const sub = document.getElementById('forgot-role-subtitle');
+      const uLabel = document.getElementById('forgot-user-label');
+      const vLabel = document.getElementById('forgot-verify-label');
+      const vInput = document.getElementById('forgot-verify-text');
+      const stNumWrap = document.getElementById('forgot-student-number-wrap');
+      const stNumInput = document.getElementById('forgot-student-number');
+
+      if (selectedRole === 'teacher') {
+        sub.textContent = 'สำหรับบัญชีครูผู้สอน (Teacher Account)';
+        uLabel.textContent = 'ชื่อผู้ใช้งานครู (Username)';
+        vLabel.textContent = 'ยืนยันด้วย ชื่อ-นามสกุล หรือ ชื่อโรงเรียน ที่เคยลงทะเบียน';
+        vInput.placeholder = 'เช่น นายนวชล ประตา หรือชื่อโรงเรียน';
+        stNumWrap.classList.add('hidden');
+        stNumInput.required = false;
+      } else {
+        sub.textContent = 'สำหรับบัญชีนักเรียน (Student Account)';
+        uLabel.textContent = 'รหัสนักเรียน / Username';
+        vLabel.textContent = 'ยืนยันด้วย ชื่อ-นามสกุล หรือ ชื่อเล่น ที่เคยลงทะเบียน';
+        vInput.placeholder = 'เช่น ด.ช. กิตติพงศ์ ทองดี หรือ น้องกิต';
+        stNumWrap.classList.remove('hidden');
+        stNumInput.required = true;
+      }
+      resetForgotFlow();
+    }
+
+    function openForgotPasswordMode() {
+      const existingUser = (document.getElementById('login-username').value || '').trim();
+      if (existingUser) {
+        document.getElementById('forgot-username').value = existingUser;
+      }
+      resetForgotFlow();
+      switchMode('forgot');
+    }
+
+    function resetForgotFlow() {
+      verifiedRecoveryPayload = null;
+      document.getElementById('forgot-step-verify').classList.remove('hidden');
+      document.getElementById('forgot-step-reset').classList.add('hidden');
+      document.getElementById('reset-new-password').value = '';
+      document.getElementById('reset-confirm-password').value = '';
+    }
+
+    function switchMode(mode) {
+      currentMode = mode;
+      document.getElementById('alert-box').classList.add('hidden');
+
+      const formLogin = document.getElementById('form-login');
+      const formRegTeacher = document.getElementById('form-register-teacher');
+      const formRegStudent = document.getElementById('form-register-student');
+      const formForgot = document.getElementById('form-forgot-password');
+      const tabLogin = document.getElementById('tab-login');
+      const tabReg = document.getElementById('tab-register');
+
+      const accentText = selectedRole === 'teacher' ? 'text-indigo-600 border-indigo-600' : 'text-sky-600 border-sky-600';
+
+      formLogin.classList.add('hidden');
+      formRegTeacher.classList.add('hidden');
+      formRegStudent.classList.add('hidden');
+      formForgot.classList.add('hidden');
+
+      if (mode === 'login') {
+        formLogin.classList.remove('hidden');
+        tabLogin.className = `py-3 text-sm font-bold ${accentText} border-b-2 bg-white transition`;
+        tabReg.className = 'py-3 text-sm font-medium text-slate-500 hover:text-slate-700 transition';
+      } else if (mode === 'register') {
+        if (selectedRole === 'teacher') {
+          formRegTeacher.classList.remove('hidden');
+        } else {
+          formRegStudent.classList.remove('hidden');
+        }
+        tabReg.className = 'py-3 text-sm font-bold text-emerald-600 border-b-2 border-emerald-600 bg-white transition';
+        tabLogin.className = 'py-3 text-sm font-medium text-slate-500 hover:text-slate-700 transition';
+      } else if (mode === 'forgot') {
+        formForgot.classList.remove('hidden');
+        tabLogin.className = 'py-3 text-sm font-medium text-slate-500 hover:text-slate-700 transition';
+        tabReg.className = 'py-3 text-sm font-medium text-slate-500 hover:text-slate-700 transition';
+      }
+    }
+
+    function showAlert(msg, isError = true) {
+      const box = document.getElementById('alert-box');
+      box.className = `mb-4 p-3 rounded-xl text-xs font-semibold flex items-center gap-2 ${
+        isError ? 'bg-rose-50 text-rose-700 border border-rose-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+      }`;
+      box.innerHTML = `<i class="fa-solid ${isError ? 'fa-circle-exclamation' : 'fa-circle-check'}"></i> <span>${msg}</span>`;
+      box.classList.remove('hidden');
+    }
+
+    function isCloudConfigured() {
+      return typeof APP_CONFIG !== 'undefined' && APP_CONFIG.API_URL && !APP_CONFIG.API_URL.includes('YOUR_SCRIPT_ID');
+    }
+
+    /*************************************************************************
+     * PASSWORD RECOVERY & RESET HANDLERS (CLOUD + LOCAL FALLBACK)
+     *************************************************************************/
+    function verifyRecoveryLocally(role, username, verifyText, number) {
+      const vLower = verifyText.toLowerCase();
+      if (role === 'teacher') {
+        const db = JSON.parse(localStorage.getItem(LOCAL_TEACHERS_DB_KEY) || '{}');
+        const acc = db[username];
+        if (!acc) return { ok: false, message: 'ไม่พบชื่อผู้ใช้งานครูนี้ในระบบ' };
+        const fn = String(acc.fullname || '').trim().toLowerCase();
+        const sc = String(acc.school || '').trim().toLowerCase();
+        if (vLower === fn || vLower === sc) {
+          return { ok: true, label: `${acc.fullname} (${acc.school || 'ครูผู้สอน'})` };
+        }
+        return { ok: false, message: 'ชื่อ-นามสกุล หรือชื่อโรงเรียนไม่ตรงกับข้อมูลที่ลงทะเบียนไว้' };
+      } else {
+        const db = JSON.parse(localStorage.getItem(LOCAL_STUDENTS_DB_KEY) || '{}');
+        const acc = db[username];
+        if (!acc) return { ok: false, message: 'ไม่พบรหัสนักเรียน/ชื่อผู้ใช้งานนี้ในระบบ' };
+        const fn = String(acc.fullname || '').trim().toLowerCase();
+        const nk = String(acc.nickname || '').trim().toLowerCase();
+        const numMatch = String(acc.number || '').trim() === String(number || '').trim();
+        if (numMatch && (vLower === fn || vLower === nk)) {
+          return { ok: true, label: `เลขที่ ${acc.number} • ${acc.fullname} (${acc.nickname || '-'})` };
+        }
+        return { ok: false, message: 'เลขที่ หรือชื่อ-นามสกุล/ชื่อเล่น ไม่ตรงกับข้อมูลที่ลงทะเบียนไว้' };
+      }
+    }
+
+    async function handleVerifyRecovery(e) {
+      e.preventDefault();
+      document.getElementById('alert-box').classList.add('hidden');
+
+      const btn = document.getElementById('btn-verify-recovery');
+      const username = document.getElementById('forgot-username').value.trim().toLowerCase();
+      const verifyText = document.getElementById('forgot-verify-text').value.trim();
+      const number = selectedRole === 'student' ? document.getElementById('forgot-student-number').value.trim() : '';
+
+      const origHtml = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> กำลังตรวจสอบบัญชี...';
+
+      try {
+        let verifiedLabel = null;
+        let cloudErrorMsg = null;
+
+        if (isCloudConfigured()) {
+          try {
+            const res = await fetch(APP_CONFIG.API_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+              body: JSON.stringify({
+                action: 'verifyRecovery',
+                role: selectedRole,
+                username,
+                verifyText,
+                number
+              })
+            });
+            const data = await res.json();
+            if (data.status === 'success' && data.account) {
+              verifiedLabel = selectedRole === 'teacher'
+                ? `${data.account.fullname} (${data.account.school || 'ครูผู้สอน'})`
+                : `เลขที่ ${number} • ${data.account.fullname}${data.account.nickname ? ` (${data.account.nickname})` : ''}`;
+            } else if (data.message && data.message !== 'Invalid action') {
+              cloudErrorMsg = data.message;
+            }
+          } catch (cloudErr) {}
+        }
+
+        // Local fallback if cloud didn't verify or is offline
+        if (!verifiedLabel) {
+          const localRes = verifyRecoveryLocally(selectedRole, username, verifyText, number);
+          if (localRes.ok) {
+            verifiedLabel = localRes.label;
+          } else {
+            showAlert(cloudErrorMsg || localRes.message);
+            return;
+          }
+        }
+
+        // Move to Step 2: Set new password
+        verifiedRecoveryPayload = { role: selectedRole, username, verifyText, number };
+        document.getElementById('forgot-verified-account-name').textContent = `บัญชี: ${verifiedLabel}`;
+        document.getElementById('forgot-step-verify').classList.add('hidden');
+        document.getElementById('forgot-step-reset').classList.remove('hidden');
+        document.getElementById('reset-new-password').focus();
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = origHtml;
+      }
+    }
+
+    async function handleResetPassword(e) {
+      e.preventDefault();
+      if (!verifiedRecoveryPayload) {
+        resetForgotFlow();
+        return;
+      }
+
+      const newPassword = document.getElementById('reset-new-password').value;
+      const confirmPassword = document.getElementById('reset-confirm-password').value;
+
+      if (newPassword.length < 4) {
+        showAlert('รหัสผ่านใหม่ต้องมีอย่างน้อย 4 ตัวอักษร');
+        return;
+      }
+      if (newPassword !== confirmPassword) {
+        showAlert('รหัสผ่านใหม่และการยืนยันรหัสผ่านไม่ตรงกัน กรุณาตรวจสอบอีกครั้ง');
+        return;
+      }
+
+      const btn = document.getElementById('btn-save-new-password');
+      const origHtml = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> กำลังบันทึกรหัสผ่านใหม่...';
+
+      try {
+        const { role, username, verifyText, number } = verifiedRecoveryPayload;
+        let cloudSuccess = false;
+
+        if (isCloudConfigured()) {
+          try {
+            const res = await fetch(APP_CONFIG.API_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+              body: JSON.stringify({
+                action: 'resetPassword',
+                role,
+                username,
+                verifyText,
+                number,
+                newPassword
+              })
+            });
+            const data = await res.json();
+            if (data.status === 'success') {
+              cloudSuccess = true;
+            } else if (data.message && data.message !== 'Invalid action') {
+              // Still check if local exists, else show server error
+              const dbKey = role === 'teacher' ? LOCAL_TEACHERS_DB_KEY : LOCAL_STUDENTS_DB_KEY;
+              const localDb = JSON.parse(localStorage.getItem(dbKey) || '{}');
+              if (!localDb[username]) {
+                showAlert(data.message);
+                return;
+              }
+            }
+          } catch (cloudErr) {}
+        }
+
+        // Always update local fallback DB if record exists
+        const dbKey = role === 'teacher' ? LOCAL_TEACHERS_DB_KEY : LOCAL_STUDENTS_DB_KEY;
+        const localDb = JSON.parse(localStorage.getItem(dbKey) || '{}');
+        if (localDb[username]) {
+          localDb[username].password = newPassword;
+          localStorage.setItem(dbKey, JSON.stringify(localDb));
+        } else if (!cloudSuccess) {
+          showAlert('ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์เพื่อรีเซ็ตรหัสผ่านได้ กรุณาตรวจสอบการอัปเดต Apps Script');
+          return;
+        }
+
+        const recoveredUsername = username;
+        resetForgotFlow();
+        switchMode('login');
+        document.getElementById('login-username').value = recoveredUsername;
+        document.getElementById('login-password').value = '';
+        showAlert('เปลี่ยนรหัสผ่านใหม่สำเร็จแล้ว! กรุณาเข้าสู่ระบบด้วยรหัสผ่านใหม่', false);
+        document.getElementById('login-password').focus();
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = origHtml;
+      }
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btn-login');
+      const username = document.getElementById('login-username').value.trim().toLowerCase();
+      const password = document.getElementById('login-password').value;
+
+      const origHtml = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> กำลังตรวจสอบข้อมูล...';
+
+      try {
+        if (selectedRole === 'teacher') {
+          // 1. Try Cloud Apps Script first
+          if (isCloudConfigured()) {
+            try {
+              const res = await fetch(APP_CONFIG.API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ action: 'login', username, password })
+              });
+              const data = await res.json();
+              if (data.status === 'success' && data.user) {
+                const teacherUser = { ...data.user, role: 'teacher' };
+                localStorage.setItem(TEACHER_SESSION_KEY, JSON.stringify(teacherUser));
+                if (data.savedState) {
+                  localStorage.setItem('SMART_SEATING_CHART_STATE_V2', data.savedState);
+                  try {
+                    const parsedSaved = JSON.parse(data.savedState);
+                    if (parsedSaved && parsedSaved._multiClasses && parsedSaved._multiClasses.classes) {
+                      localStorage.setItem(MULTI_CLASS_KEY, JSON.stringify(parsedSaved._multiClasses));
+                      if (parsedSaved._multiClasses.customLogo) {
+                        localStorage.setItem(CUSTOM_LOGO_STORAGE_KEY, JSON.stringify(parsedSaved._multiClasses.customLogo));
+                      }
+                    }
+                  } catch (ex) {}
+                }
+                window.location.href = 'index.html';
+                return;
+              }
+              if (data.status === 'error' && data.message) {
+                // Check local fallback before failing
+                const localT = JSON.parse(localStorage.getItem(LOCAL_TEACHERS_DB_KEY) || '{}');
+                if (localT[username] && localT[username].password === password) {
+                  localStorage.setItem(TEACHER_SESSION_KEY, JSON.stringify({ ...localT[username], role: 'teacher' }));
+                  window.location.href = 'index.html';
+                  return;
+                }
+                showAlert(data.message);
+                return;
+              }
+            } catch (err) {
+              // Network fallback to local storage
+            }
+          }
+
+          // 2. Local fallback for Teacher
+          const localTeachers = JSON.parse(localStorage.getItem(LOCAL_TEACHERS_DB_KEY) || '{}');
+          if (localTeachers[username] && localTeachers[username].password === password) {
+            localStorage.setItem(TEACHER_SESSION_KEY, JSON.stringify({ ...localTeachers[username], role: 'teacher' }));
+            window.location.href = 'index.html';
+            return;
+          }
+          showAlert('ชื่อผู้ใช้งานหรือรหัสผ่านครูไม่ถูกต้อง หรือไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้');
+        } else {
+          // STUDENT LOGIN
+          // 1. Check Cloud Apps Script first so cloud password resets take precedence
+          if (isCloudConfigured()) {
+            try {
+              const res = await fetch(APP_CONFIG.API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ action: 'loginStudent', username, password })
+              });
+              const data = await res.json();
+              if (data.status === 'success' && data.user) {
+                localStorage.setItem(STUDENT_SESSION_KEY, JSON.stringify({ ...data.user, role: 'student' }));
+                window.location.href = buildStudentRedirectUrl();
+                return;
+              }
+              if (data.status === 'error' && data.message) {
+                const localS = JSON.parse(localStorage.getItem(LOCAL_STUDENTS_DB_KEY) || '{}');
+                if (localS[username] && localS[username].password === password) {
+                  localStorage.setItem(STUDENT_SESSION_KEY, JSON.stringify({ ...localS[username], role: 'student' }));
+                  window.location.href = buildStudentRedirectUrl();
+                  return;
+                }
+                showAlert(data.message);
+                return;
+              }
+            } catch (err) {}
+          }
+
+          // 2. Local fallback for Student
+          const localStudents = JSON.parse(localStorage.getItem(LOCAL_STUDENTS_DB_KEY) || '{}');
+          if (localStudents[username] && localStudents[username].password === password) {
+            localStorage.setItem(STUDENT_SESSION_KEY, JSON.stringify({ ...localStudents[username], role: 'student' }));
+            window.location.href = buildStudentRedirectUrl();
+            return;
+          }
+
+          showAlert('รหัสนักเรียนหรือรหัสผ่านไม่ถูกต้อง (หากยังไม่มีบัญชี กดแท็บสมัครสมาชิกใหม่)');
+        }
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = origHtml;
+      }
+    }
+
+    async function handleTeacherRegister(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btn-register-teacher');
+      const payload = {
+        action: 'register',
+        role: 'teacher',
+        fullname: document.getElementById('reg-fullname').value.trim(),
+        school: document.getElementById('reg-school').value.trim(),
+        username: document.getElementById('reg-username').value.trim().toLowerCase(),
+        password: document.getElementById('reg-password').value
+      };
+
+      const origHtml = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> กำลังสร้างบัญชีครู...';
+
+      try {
+        const localTeachers = JSON.parse(localStorage.getItem(LOCAL_TEACHERS_DB_KEY) || '{}');
+        localTeachers[payload.username] = payload;
+        localStorage.setItem(LOCAL_TEACHERS_DB_KEY, JSON.stringify(localTeachers));
+
+        if (isCloudConfigured()) {
+          const res = await fetch(APP_CONFIG.API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload)
+          });
+          const data = await res.json();
+          if (data.status !== 'success') {
+            showAlert(data.message || 'สมัครสมาชิกไม่สำเร็จ');
+            return;
+          }
+        }
+
+        showAlert('สมัครสมาชิกครูผู้สอนสำเร็จ! กรุณาเข้าสู่ระบบ', false);
+        document.getElementById('login-username').value = payload.username;
+        setTimeout(() => switchMode('login'), 1000);
+      } catch (err) {
+        showAlert('บันทึกบัญชีในเครื่องแล้ว (ไม่สามารถเชื่อมต่อ Cloud ในขณะนี้)', false);
+        document.getElementById('login-username').value = payload.username;
+        setTimeout(() => switchMode('login'), 1200);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = origHtml;
+      }
+    }
+
+    async function handleStudentRegister(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btn-register-student');
+      const payload = {
+        action: 'registerStudent',
+        role: 'student',
+        number: parseInt(document.getElementById('st-reg-number').value, 10),
+        nickname: document.getElementById('st-reg-nickname').value.trim(),
+        fullname: document.getElementById('st-reg-fullname').value.trim(),
+        classroom: document.getElementById('st-reg-classroom').value.trim(),
+        username: document.getElementById('st-reg-username').value.trim().toLowerCase(),
+        password: document.getElementById('st-reg-password').value
+      };
+
+      const origHtml = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1.5"></i> กำลังสร้างบัญชีนักเรียน...';
+
+      try {
+        const localStudents = JSON.parse(localStorage.getItem(LOCAL_STUDENTS_DB_KEY) || '{}');
+        if (localStudents[payload.username]) {
+          showAlert('ชื่อผู้ใช้งานนี้ถูกสมัครไปแล้ว กรุณาใช้ชื่ออื่น');
+          return;
+        }
+        localStudents[payload.username] = payload;
+        localStorage.setItem(LOCAL_STUDENTS_DB_KEY, JSON.stringify(localStudents));
+
+        if (isCloudConfigured()) {
+          try {
+            const res = await fetch(APP_CONFIG.API_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+              body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            if (data.status === 'error' && data.message) {
+              showAlert(data.message);
+              return;
+            }
+          } catch (cloudErr) {}
+        }
+
+        showAlert('สมัครสมาชิกนักเรียนสำเร็จ! กรุณาเข้าสู่ระบบ', false);
+        document.getElementById('login-username').value = payload.username;
+        setTimeout(() => switchMode('login'), 1000);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = origHtml;
+      }
+    }
+  </script>
+</body>
+</html>
