@@ -1,5 +1,3 @@
-// หากเปิดจากเมนู "ส่วนขยาย > Apps Script" ใน Google Sheets ให้เว้นว่างไว้
-// หากสร้างโปรเจกต์แยกต่างหาก ให้ใส่รหัสไฟล์ Google Sheets (ระหว่าง /d/ กับ /edit)
 const SPREADSHEET_ID = '';
 
 const SHEET_USERS = 'Users';
